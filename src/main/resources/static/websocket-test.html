@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket 테스트</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <style>
+        #chat-messages {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #location-updates {
+            height: 200px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>WebSocket 테스트</h2>
+    
+    <div>
+        <h3>채팅</h3>
+        <div id="chat-messages"></div>
+        <input type="text" id="message" placeholder="메시지를 입력하세요">
+        <input type="text" id="receiver" placeholder="받는 사람">
+        <button onclick="sendMessage()">전송</button>
+    </div>
+
+    <div>
+        <h3>위치 업데이트</h3>
+        <div id="location-updates"></div>
+        <input type="number" id="latitude" placeholder="위도">
+        <input type="number" id="longitude" placeholder="경도">
+        <button onclick="updateLocation()">위치 업데이트</button>
+    </div>
+
+    <script>
+        let stompClient = null;
+        let username = 'user1'; // 테스트용 사용자명
+
+        function connect() {
+            let socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                
+                // 채팅 메시지 구독
+                stompClient.subscribe('/user/queue/messages', function(message) {
+                    showMessage(JSON.parse(message.body));
+                });
+
+                // 위치 업데이트 구독
+                stompClient.subscribe('/topic/locations', function(message) {
+                    showLocationUpdate(JSON.parse(message.body));
+                });
+
+                // 사용자 연결 알림
+                stompClient.send("/app/chat.addUser", {}, JSON.stringify({
+                    sender: username,
+                    type: 'JOIN'
+                }));
+            });
+        }
+
+        function sendMessage() {
+            let messageContent = document.getElementById('message').value;
+            let receiver = document.getElementById('receiver').value;
+            
+            stompClient.send("/app/chat.send", {}, JSON.stringify({
+                sender: username,
+                receiver: receiver,
+                content: messageContent,
+                type: 'CHAT',
+                timestamp: new Date().toISOString()
+            }));
+        }
+
+        function updateLocation() {
+            let latitude = document.getElementById('latitude').value;
+            let longitude = document.getElementById('longitude').value;
+            
+            stompClient.send("/app/location.update", {}, JSON.stringify({
+                userId: 1,
+                username: username,
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                timestamp: new Date().toISOString()
+            }));
+        }
+
+        function showMessage(message) {
+            let messagesDiv = document.getElementById('chat-messages');
+            messagesDiv.innerHTML += '<p><strong>' + message.sender + ':</strong> ' + message.content + '</p>';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showLocationUpdate(location) {
+            let locationDiv = document.getElementById('location-updates');
+            locationDiv.innerHTML += '<p><strong>' + location.username + ':</strong> ' + 
+                '위도: ' + location.latitude + ', 경도: ' + location.longitude + '</p>';
+            locationDiv.scrollTop = locationDiv.scrollHeight;
+        }
+
+        // 페이지 로드 시 연결
+        window.onload = function() {
+            connect();
+        };
+    </script>
+</body>
+</html> 
