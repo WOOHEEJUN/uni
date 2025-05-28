@@ -93,22 +93,19 @@
         <input type="password" id="confirmPassword" name="confirmPassword" required>
 
         <label for="university">대학교</label>
-        <select id="university" name="university" required>
+        <select id="university" name="universityId" required>
             <option value="">대학교를 선택하세요</option>
-            <option value="snu.ac.kr">서울대학교</option>
-            <option value="yonsei.ac.kr">연세대학교</option>
-            <option value="korea.ac.kr">고려대학교</option>
-            <option value="skku.edu">성균관대학교</option>
-            <option value="hanyang.ac.kr">한양대학교</option>
-            <option value="cau.ac.kr">중앙대학교</option>
-            <option value="khu.ac.kr">경희대학교</option>
-            <option value="ewha.ac.kr">이화여자대학교</option>
-            <option value="konkuk.ac.kr">건국대학교</option>
-            <option value="hongik.ac.kr">홍익대학교</option>
+            <option value="1">서울대학교</option>
+            <option value="2">연세대학교</option>
+            <option value="3">고려대학교</option>
+            <option value="4">성균관대학교</option>
+            <option value="5">한양대학교</option>
+            <option value="6">중앙대학교</option>
+            <option value="7">경희대학교</option>
+            <option value="8">이화여자대학교</option>
+            <option value="9">건국대학교</option>
+            <option value="10">홍익대학교</option>
         </select>
-
-        <label for="enrollmentProof">📎 재학증명서 업로드</label>
-        <input type="file" id="enrollmentProof" name="enrollmentProof" accept=".pdf,.jpg,.jpeg,.png" required>
 
         <button type="submit" class="submit-btn">회원가입 신청</button>
         <div id="errorBox" class="error-message"></div>
@@ -116,18 +113,17 @@
 </div>
 
 <script>
-    document.getElementById("signupForm").addEventListener("submit", function(e) {
+    document.getElementById("signupForm").addEventListener("submit", async function(e) {
         e.preventDefault();
 
         const username = document.getElementById("username").value.trim();
         const nickname = document.getElementById("nickname").value.trim();
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
-        const university = document.getElementById("university").value;
-        const enrollmentProof = document.getElementById("enrollmentProof").files.length;
+        const universityId = parseInt(document.getElementById("university").value);
         const errorBox = document.getElementById("errorBox");
 
-        if (!username || !nickname || !password || !confirmPassword || !university || enrollmentProof === 0) {
+        if (!username || !nickname || !password || !confirmPassword || !universityId) {
             errorBox.textContent = "모든 필드를 입력해주세요.";
             return;
         }
@@ -137,8 +133,31 @@
             return;
         }
 
-        // 모든 조건 통과 시 페이지 이동
-        location.href = "pending.html";
+        try {
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    nickname,
+                    password,
+                    universityId
+                })
+            });
+
+            if (response.ok) {
+                // 회원가입 성공 시 pending.html로 이동
+                window.location.href = "pending.html";
+            } else {
+                const errorData = await response.json();
+                errorBox.textContent = errorData.message || "회원가입 중 오류가 발생했습니다.";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorBox.textContent = "서버와 통신 중 오류가 발생했습니다.";
+        }
     });
 </script>
 </body>
