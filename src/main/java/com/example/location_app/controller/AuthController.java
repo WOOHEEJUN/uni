@@ -1,6 +1,8 @@
 package com.example.location_app.controller;
 
 import com.example.location_app.dto.SignUpRequest;
+import com.example.location_app.dto.LoginResponse;
+import com.example.location_app.dto.LoginRequest;
 import com.example.location_app.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +23,11 @@ public class AuthController {
     public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest request) {
         authService.signUp(request);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
     }
 } 
