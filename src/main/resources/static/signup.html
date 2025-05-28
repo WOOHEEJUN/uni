@@ -70,8 +70,8 @@
 
         .error-message {
             color: red;
-            font-size: 0.9rem;
             margin-bottom: 10px;
+            font-size: 0.9rem;
             text-align: center;
         }
     </style>
@@ -79,9 +79,7 @@
 <body>
 <div class="form-container">
     <h2>🎓 Uni messenger 회원가입</h2>
-    <form id="signupForm" action="signupProcess.jsp" method="post" enctype="multipart/form-data">
-        <div id="errorMessage" class="error-message"></div>
-
+    <form id="signupForm">
         <label for="username">아이디</label>
         <input type="text" id="username" name="username" required>
 
@@ -112,45 +110,36 @@
         <label for="enrollmentProof">📎 재학증명서 업로드</label>
         <input type="file" id="enrollmentProof" name="enrollmentProof" accept=".pdf,.jpg,.jpeg,.png" required>
 
-       <button type="button" class="submit-btn" onclick="handleSubmit()">회원가입 신청</button>
+        <button type="submit" class="submit-btn">회원가입 신청</button>
+        <div id="errorBox" class="error-message"></div>
     </form>
 </div>
 
 <script>
-    function handleSubmit() {
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
         const username = document.getElementById("username").value.trim();
         const nickname = document.getElementById("nickname").value.trim();
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
         const university = document.getElementById("university").value;
         const enrollmentProof = document.getElementById("enrollmentProof").files.length;
-        const studentIdCard = document.getElementById("studentIdCard").files.length;
-        const errorDiv = document.getElementById("errorMessage");
+        const errorBox = document.getElementById("errorBox");
 
-        let errorMessage = "";
-
-        if (username.length < 4) {
-            errorMessage = "아이디는 최소 4자 이상이어야 합니다.";
-        } else if (nickname === "") {
-            errorMessage = "닉네임을 입력해주세요.";
-        } else if (password.length < 6) {
-            errorMessage = "비밀번호는 최소 6자 이상이어야 합니다.";
-        } else if (password !== confirmPassword) {
-            errorMessage = "비밀번호와 비밀번호 확인이 일치하지 않습니다.";
-        } else if (university === "") {
-            errorMessage = "대학교를 선택해주세요.";
-        } else if (enrollmentProof === 0) {
-            errorMessage = "재학증명서를 업로드해주세요.";
-        } else if (studentIdCard === 0) {
-            errorMessage = "을 업로드해주세요.";
+        if (!username || !nickname || !password || !confirmPassword || !university || enrollmentProof === 0) {
+            errorBox.textContent = "모든 필드를 입력해주세요.";
+            return;
         }
 
-        if (errorMessage !== "") {
-            errorDiv.textContent = errorMessage;
-        } else {
-            location.href = "pending.html";
+        if (password !== confirmPassword) {
+            errorBox.textContent = "비밀번호가 일치하지 않습니다.";
+            return;
         }
-    }
+
+        // 모든 조건 통과 시 페이지 이동
+        location.href = "pending.html";
+    });
 </script>
 </body>
 </html>
