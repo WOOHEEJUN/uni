@@ -32,9 +32,20 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/submitEnrollment.html", "/loginjb.html", 
-                    "/css/**", "/js/**", "/images/**", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", 
-                    "/Uni 로고.png").permitAll()
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/",
+                    "/*.html",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**",
+                    "/*.png",
+                    "/*.jpg",
+                    "/*.jpeg",
+                    "/*.gif",
+                    "/Uni 로고.png",
+                    "/favicon.ico"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
