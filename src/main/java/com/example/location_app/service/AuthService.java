@@ -63,15 +63,9 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        // 계정 상태 확인
-        if (user.getStatus() == VerificationStatus.PENDING) {
-            throw new RuntimeException("승인 대기 중인 계정입니다.");
-        } else if (user.getStatus() == VerificationStatus.REJECTED) {
-            throw new RuntimeException("승인 거절된 계정입니다.");
-        }
-
-        // JWT 토큰 생성
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+        // JWT 토큰 생성 (승인된 사용자만)
+        String token = user.getStatus() == VerificationStatus.APPROVED ? 
+            jwtTokenProvider.createToken(user.getUsername(), user.getRole()) : null;
 
         // 응답 데이터 생성
         return LoginResponse.builder()
@@ -79,6 +73,7 @@ public class AuthService {
             .username(user.getUsername())
             .nickname(user.getNickname())
             .role(user.getRole())
+            .status(user.getStatus())
             .redirectUrl(user.getRole() == UserRole.ADMIN ? "/admin" : "/")
             .build();
     }

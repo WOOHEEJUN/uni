@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,23 +10,10 @@
             padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .bg-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 7rem;
-            font-weight: 700;
-            color: rgba(0, 123, 255, 0.1);
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 0;
-            user-select: none;
         }
 
         .form-container {
@@ -36,31 +22,13 @@
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
-            position: relative;
-            z-index: 1;
-            margin: 0 auto;
-            top: 50%;
-            transform: translateY(-50%);
+            max-width: 480px;
         }
 
         h2 {
             text-align: center;
             color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        .emoji {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .error-message {
-            color: red;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            margin-bottom: 30px;
         }
 
         label {
@@ -96,6 +64,13 @@
             background-color: #0056b3;
         }
 
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
         .signup-link {
             text-align: center;
             margin-top: 16px;
@@ -106,22 +81,12 @@
             color: #007bff;
             text-decoration: none;
         }
-
-        @media (max-width: 500px) {
-            .bg-text {
-                font-size: 3.5rem;
-            }
-        }
     </style>
 </head>
 <body>
-<div class="bg-text">Uni messenger</div>
-
 <div class="form-container">
-    <div class="emoji">🔐</div>
-    <h2>로그인</h2>
-
-    <form action="index.html" method="post">
+    <h2>🔐 Uni messenger 로그인</h2>
+    <form id="loginForm">
         <label for="username">아이디</label>
         <input type="text" id="username" name="username" required>
 
@@ -129,10 +94,59 @@
         <input type="password" id="password" name="password" required>
 
         <button type="submit" class="submit-btn">로그인</button>
+        <div id="errorBox" class="error-message"></div>
     </form>
     <div class="signup-link">
         아직 계정이 없으신가요? <a href="signup.html">회원가입</a>
     </div>
 </div>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+        const errorBox = document.getElementById("errorBox");
+
+        if (!username || !password) {
+            errorBox.textContent = "아이디와 비밀번호를 모두 입력해주세요.";
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Login response:', data); // 응답 데이터 확인용 로그
+                
+                // 사용자 상태에 따라 페이지 이동
+                if (data.status === 'PENDING') {
+                    window.location.replace("pending.html");
+                } else if (data.status === 'REJECTED') {
+                    window.location.replace("submitEnrollment.html");
+                } else {
+                    window.location.replace("index.html");
+                }
+            } else {
+                const errorData = await response.json();
+                errorBox.textContent = errorData.message || "로그인에 실패했습니다.";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorBox.textContent = "서버와 통신 중 오류가 발생했습니다.";
+        }
+    });
+</script>
 </body>
 </html>
