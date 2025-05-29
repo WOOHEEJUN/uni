@@ -46,7 +46,7 @@ public class AuthService {
             .nickname(request.getNickname())
             .university(university)
             .role(UserRole.USER)
-            .status(VerificationStatus.PENDING)
+            .status(VerificationStatus.REJECTED)
             .build();
 
         userRepository.save(user);
