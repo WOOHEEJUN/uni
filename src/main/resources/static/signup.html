@@ -148,8 +148,7 @@
             });
 
             if (response.ok) {
-                // 회원가입 성공 시 pending.html로 이동
-                window.location.href = "pending.html";
+                window.location.href = "submitEnrollment.html";
             } else {
                 const errorData = await response.json();
                 errorBox.textContent = errorData.message || "회원가입 중 오류가 발생했습니다.";
