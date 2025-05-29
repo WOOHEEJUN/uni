@@ -1,0 +1,35 @@
+// === chat.html (resources/static/chat.html) ===
+<!-- WebSocket 기반 익명 채팅 테스트 클라이언트 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>익명 채팅</title>
+</head>
+<body>
+    <h2>익명 채팅방</h2>
+    <!-- 닉네임 입력 제거 -->
+    <div style="height: 300px; overflow-y: scroll; border: 1px solid gray; padding: 10px;" id="chatBox"></div>
+    <br>
+    <input type="text" id="message" placeholder="메시지 입력" />
+    <button onclick="sendMessage()">전송</button>
+
+    <script>
+        let socket = new WebSocket("ws://localhost:8080/ws/chat");
+
+        socket.onmessage = function(event) {
+            const chatBox = document.getElementById("chatBox");
+            chatBox.innerHTML += `<div>${event.data}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMessage() {
+            const message = document.getElementById("message").value;
+            if (message) {
+                socket.send(message);
+                document.getElementById("message").value = "";
+            }
+        }
+    </script>
+</body>
+</html>
