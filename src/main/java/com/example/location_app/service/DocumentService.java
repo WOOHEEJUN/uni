@@ -52,8 +52,11 @@ public class DocumentService { //증명서 제출
             .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         log.info("User found: {}", user.getUsername());
 
-        // 사용자별 디렉토리 생성
-        Path userDir = Paths.get(uploadDir, username);
+        // 사용자 ID로 디렉토리 생성
+        String userId = user.getId().toString();
+        // uploadDir의 끝에 있는 공백 제거 및 경로 구분자 정규화
+        String normalizedUploadDir = uploadDir.trim().replace('\\', '/');
+        Path userDir = Paths.get(normalizedUploadDir, userId);
         if (!Files.exists(userDir)) {
             log.info("Creating user directory at: {}", userDir);
             Files.createDirectories(userDir);
@@ -69,7 +72,7 @@ public class DocumentService { //증명서 제출
             log.info("File saved successfully at: {}", filePath);
 
             // DB에 문서 정보 저장 (상대 경로 저장)
-            String relativePath = username + "/" + fileName;
+            String relativePath = userId + "/" + fileName;
             UserDocument document = UserDocument.builder()
                 .user(user)
                 .imagePath(relativePath)
