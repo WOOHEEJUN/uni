@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Uni Messenger - 홈</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #e8d9ff, #ffd1e8);
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #a65bff;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .mypage-box {
+      background-color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .mypage-box span {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .mypage-box a, .mypage-box button {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #a65bff;
+      color: white;
+      text-decoration: none;
+    }
+
+    .mypage-box a:hover, .mypage-box button:hover {
+      background-color: #8e45db;
+    }
+
+    main {
+      display: flex;
+      gap: 20px;
+    }
+
+    .left {
+      width: 25%;
+    }
+
+    .center {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .right {
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      color: #a65bff;
+    }
+
+    .section ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .section ul li {
+      margin-bottom: 8px;
+      padding: 8px;
+      background: #f4f4f4;
+      border-radius: 6px;
+    }
+
+    .section ul li a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      font-weight: 500;
+    }
+
+    .section ul li a:hover {
+      color: #a65bff;
+    }
+
+    .message-box {
+      height: 200px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      font-size: 1.1rem;
+      color: #444;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="UserIndex.html" class="logo">
+      <img src="Uni 로고.png" alt="Uni 로고">
+      Uni messenger
+    </a>
+    <div class="mypage-box">
+      <span>@@님 안녕하세요!</span>
+      <a href="mypage.html">마이페이지</a>
+      <button onclick="logout()">로그아웃</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="left">
+      <div class="section">
+        <h3>🔥 HOT 게시물</h3>
+        <ul>
+          <li><a href="#">인기 글 1</a></li>
+          <li><a href="#">인기 글 2</a></li>
+          <li><a href="#">인기 글 3</a></li>
+          <li><a href="#">인기 글 4</a></li>
+          <li><a href="#">인기 글 5</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="center">
+      <div class="message-box">
+        💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="section">
+        <h3>📁 게시판 목록</h3>
+        <ul>
+          <li><a href="#">자유 게시판</a></li>
+          <li><a href="#">중고 거래</a></li>
+          <li><a href="#">비밀 게시판</a></li>
+          <li><a href="#">학과 게시판</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function logout() {
+      alert("로그아웃 되었습니다.");
+      window.location.href = "loginjb.html";
+    }
+  </script>
+</body>
+</html>

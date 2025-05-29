@@ -17,36 +17,29 @@
       padding: 20px;
     }
 
-    /* ✅ 헤더 레이아웃 */
     header {
-      position: relative;
-      height: 70px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
       margin-bottom: 20px;
     }
 
-    .logo-left {
-      position: absolute;
-      left: 20px;
+    .logo {
       display: flex;
       align-items: center;
+      gap: 10px;
+      text-decoration: none;
     }
 
-    .logo-left img {
-      width: 40px;
+    .logo img {
+      width: 50px;
+      height: 50px;
     }
 
-    .logo-center {
+    .logo span {
       font-size: 1.8rem;
       font-weight: bold;
       color: #007bff;
-    }
-
-    .auth-buttons {
-      position: absolute;
-      right: 20px;
     }
 
     .auth-buttons a {
@@ -69,7 +62,6 @@
       background-color: #0056b3;
     }
 
-    /* ✅ 메인 영역 */
     main {
       display: flex;
       gap: 20px;
@@ -143,14 +135,13 @@
   </style>
 </head>
 <body>
+
   <!-- ✅ 헤더 -->
   <header>
-    <div class="logo-left">
-      <img src="logo.png" alt="Uni">
-    </div>
-    <div class="logo-center">
-      Uni messenger
-    </div>
+    <a href="index.html" class="logo">
+      <img src="Uni 로고.png" alt="메인으로">
+      <span>Uni messenger</span>
+    </a>
     <div class="auth-buttons">
       <a href="loginjb.html"><button>로그인</button></a>
       <a href="signup.html"><button>회원가입</button></a>
@@ -190,5 +181,6 @@
       </div>
     </div>
   </main>
+
 </body>
 </html>
