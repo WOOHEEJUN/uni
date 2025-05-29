@@ -130,30 +130,22 @@
                 const data = await response.json();
                 console.log('Login response:', data); // 응답 데이터 확인용 로그
                 
-                // JWT 토큰 저장
-                if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    console.log('Token saved:', data.token); // 토큰 저장 확인용 로그
+                
+                // 사용자 상태에 따라 페이지 이동
+                if(data.role === 'ADMIN'){
+                    window.location.replace("admin.html");
+                }else {
+                    if (data.status === 'PENDING') {
+                    window.location.replace("pending.html");
+                } else if (data.status === 'REJECTED') {
+                    window.location.replace("submitEnrollment.html");
                 } else {
-                    console.error('No token in response'); // 토큰이 없는 경우 로그
+                    window.location.replace("userindex.html");
+                }
                 }
                 
-                // 사용자 역할에 따라 페이지 이동
-                if (data.role === 'ADMIN') {
-                    window.location.replace("admin.html");
-                } else {
-                    // 일반 사용자의 경우 상태에 따라 페이지 이동
-                    if (data.status === 'PENDING') {
-                        window.location.replace("pending.html");
-                    } else if (data.status === 'REJECTED') {
-                        window.location.replace("submitEnrollment.html");
-                    } else {
-                        window.location.replace("userIndex.html");
-                    }
-                }
             } else {
                 const errorData = await response.json();
-                console.error('Login failed:', errorData); // 로그인 실패 로그
                 errorBox.textContent = errorData.message || "로그인에 실패했습니다.";
             }
         } catch (error) {
