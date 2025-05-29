@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Uni messenger</title>
+  <title>Uni messenger - 홈</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -17,24 +17,36 @@
       padding: 20px;
     }
 
+    /* ✅ 헤더 레이아웃 */
     header {
+      position: relative;
+      height: 70px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: center;
       margin-bottom: 20px;
     }
 
-    .logo {
+    .logo-left {
+      position: absolute;
+      left: 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
+    }
+
+    .logo-left img {
+      width: 40px;
+    }
+
+    .logo-center {
       font-size: 1.8rem;
       font-weight: bold;
       color: #007bff;
     }
 
-    .logo img {
-      width: 40px;
+    .auth-buttons {
+      position: absolute;
+      right: 20px;
     }
 
     .auth-buttons a {
@@ -57,6 +69,7 @@
       background-color: #0056b3;
     }
 
+    /* ✅ 메인 영역 */
     main {
       display: flex;
       gap: 20px;
@@ -95,6 +108,7 @@
 
     .section ul {
       list-style: none;
+      padding-left: 0;
     }
 
     .section ul li {
@@ -102,7 +116,17 @@
       padding: 8px;
       background: #f4f4f4;
       border-radius: 6px;
-      cursor: pointer;
+    }
+
+    .section ul li a {
+      text-decoration: none;
+      color: #333;
+      display: block;
+      font-weight: 500;
+    }
+
+    .section ul li a:hover {
+      color: #007bff;
     }
 
     .message-box {
@@ -110,15 +134,22 @@
       background: white;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 15px;
+      padding: 20px;
+      font-size: 1.1rem;
+      color: #444;
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
 <body>
+  <!-- ✅ 헤더 -->
   <header>
-    <div class="Home">
-      <img  alt="Uni">
-    
+    <div class="logo-left">
+      <img src="logo.png" alt="Uni">
+    </div>
+    <div class="logo-center">
+      Uni messenger
     </div>
     <div class="auth-buttons">
       <a href="loginjb.html"><button>로그인</button></a>
@@ -126,23 +157,24 @@
     </div>
   </header>
 
+  <!-- ✅ 메인 -->
   <main>
     <div class="left">
       <div class="section">
         <h3>🔥 HOT 게시물</h3>
         <ul>
-          <li>인기 글 1</li>
-          <li>인기 글 2</li>
-          <li>인기 글 3</li>
-          <li>인기 글 4</li>
-          <li>인기 글 5</li>
+          <li><a href="post1.html">인기 글 1</a></li>
+          <li><a href="post2.html">인기 글 2</a></li>
+          <li><a href="post3.html">인기 글 3</a></li>
+          <li><a href="post4.html">인기 글 4</a></li>
+          <li><a href="post5.html">인기 글 5</a></li>
         </ul>
       </div>
     </div>
 
     <div class="center">
       <div class="message-box">
-        💬 공지 및 메시지 공간입니다.
+        💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.
       </div>
     </div>
 
@@ -150,10 +182,10 @@
       <div class="section">
         <h3>📁 게시판 목록</h3>
         <ul>
-          <li>자유 게시판</li>
-          <li>중고거래</li>
-          <li>비밀 게시판</li>
-          <li>학과 게시판</li>
+          <li><a href="freeBoard.html">자유 게시판</a></li>
+          <li><a href="marketBoard.html">중고 거래</a></li>
+          <li><a href="secretBoard.html">비밀 게시판</a></li>
+          <li><a href="departmentBoard.html">학과 게시판</a></li>
         </ul>
       </div>
     </div>

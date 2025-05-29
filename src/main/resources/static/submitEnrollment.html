@@ -10,10 +10,59 @@
             padding: 0;
             font-family: 'Noto Sans KR', sans-serif;
             background: linear-gradient(to bottom right, #e0f7fa, #fff3e0);
+            min-height: 100vh;
+        }
+
+        header {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
+            padding: 15px 30px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 45px;
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-buttons span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .header-buttons button {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header-buttons button:hover {
+            background-color: #0056b3;
         }
 
         .form-container {
@@ -23,6 +72,7 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 480px;
+            margin: 40px auto;
             text-align: center;
         }
 
@@ -70,19 +120,59 @@
             color: #666;
             margin-top: 10px;
         }
+
+        .success-message {
+            margin-top: 15px;
+            color: #388e3c;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+<header>
+    <div class="logo" onclick="location.href='UserIndex.html'">
+        <img src="Uni 로고.png" alt="Uni Messenger 로고">
+        <span>Uni messenger</span>
+    </div>
+    <div class="header-buttons">
+        <span>홍길동님 안녕하세요!</span>
+        <button onclick="location.href='mypage.html'">마이페이지</button>
+        <button onclick="logout()">로그아웃</button>
+    </div>
+</header>
+
 <div class="form-container">
     <h2>📎 재학증명서 제출</h2>
-    <form action="enrollmentUploadProcess.jsp" method="post" enctype="multipart/form-data">
+    <form id="enrollmentForm">
         <label for="enrollmentProof">재학증명서 파일 (.pdf, .jpg, .png)</label>
         <input type="file" id="enrollmentProof" name="enrollmentProof" accept=".pdf,.jpg,.jpeg,.png" required>
         <button type="submit" class="submit-btn">제출하기</button>
+        <div class="info">
+            제출된 파일은 관리자 승인 후 반영됩니다.
+        </div>
+        <div id="successMsg" class="success-message" style="display: none;">제출이 완료되었습니다.</div>
     </form>
-    <div class="info">
-        제출된 파일은 관리자 승인 후 반영됩니다.
-    </div>
 </div>
+
+<script>
+    document.getElementById("enrollmentForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const fileInput = document.getElementById("enrollmentProof");
+        if (!fileInput.files.length) {
+            alert("파일을 선택해주세요.");
+            return;
+        }
+
+        // 여기에 파일 전송 처리 로직이 들어감 (Ajax 등)
+        // 성공했다고 가정하고 메시지 표시
+        document.getElementById("successMsg").style.display = "block";
+    });
+
+    function logout() {
+        alert("로그아웃 되었습니다.");
+        location.href = "loginjb.html";
+    }
+</script>
 </body>
 </html>
