@@ -160,7 +160,7 @@
 </div>
 
 <script>
-    document.getElementById("enrollmentForm").addEventListener("submit", function(event) {
+    document.getElementById("enrollmentForm").addEventListener("submit", async function(event) {
         event.preventDefault();
 
         const fileInput = document.getElementById("enrollmentProof");
@@ -169,9 +169,42 @@
             return;
         }
 
-        // 여기에 파일 전송 처리 로직이 들어감 (Ajax 등)
-        // 성공했다고 가정하고 메시지 표시
-        document.getElementById("successMsg").style.display = "block";
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            location.href = "loginjb.html";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        try {
+            const response = await fetch('/api/documents/upload', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                document.getElementById("successMsg").style.display = "block";
+                document.getElementById("successMsg").textContent = await response.text();
+            } else {
+                const errorMessage = await response.text();
+                console.error('Upload failed:', errorMessage);
+                if (response.status === 401) {
+                    alert("로그인이 필요합니다.");
+                    location.href = "loginjb.html";
+                } else {
+                    alert(errorMessage || "파일 업로드에 실패했습니다.");
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("파일 업로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
     });
 
     function logout() {

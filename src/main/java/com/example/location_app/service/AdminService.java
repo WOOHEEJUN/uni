@@ -29,7 +29,7 @@ public class AdminService {
     }
 
     @Transactional
-    public void updateUserStatus(Long userId, VerificationStatus status) {
+    public void updateUserStatus(Integer userId, VerificationStatus status) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자입니다."));
         

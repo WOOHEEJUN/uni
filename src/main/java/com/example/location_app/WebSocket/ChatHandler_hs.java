@@ -38,9 +38,11 @@ public class ChatHandler_hs extends TextWebSocketHandler {
         // 인증된 사용자로부터 nickname 가져오기
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String sender;
-        if (principal instanceof User user) {
+        if (principal instanceof User) {
+            User user = (User) principal;
             sender = user.getNickname();
-        } else if (principal instanceof UserDetails userDetails) {
+        } else if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
             sender = userDetails.getUsername(); // fallback
         } else {
             sender = "익명"; // fallback

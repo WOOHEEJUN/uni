@@ -63,9 +63,8 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        // JWT 토큰 생성 (승인된 사용자만)
-        String token = user.getStatus() == VerificationStatus.APPROVED ? 
-            jwtTokenProvider.createToken(user.getUsername(), user.getRole()) : null;
+        // JWT 토큰 생성 (모든 상태의 사용자에게 발급)
+        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
 
         // 응답 데이터 생성
         return LoginResponse.builder()

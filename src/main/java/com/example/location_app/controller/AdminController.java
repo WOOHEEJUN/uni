@@ -25,7 +25,7 @@ public class AdminController {
     @PutMapping("/users/{userId}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateUserStatus(
-            @PathVariable Long userId,
+            @PathVariable Integer userId,
             @Valid @RequestBody UserStatusUpdateRequest request) {
         adminService.updateUserStatus(userId, request.getStatus());
         return ResponseEntity.ok().build();
