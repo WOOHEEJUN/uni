@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Uni Messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+ <style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  body {
+    background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .logo img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-actions span {
+    font-weight: 500;
+    color: #444;
+  }
+
+  .user-actions button,
+  .user-actions a {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .user-actions button.chat-btn {
+    background-color: #ff8bd4;
+  }
+
+  .user-actions button.chat-btn:hover {
+    background-color: #ff6fc2;
+  }
+
+  .user-actions a.mypage-btn,
+  .user-actions button.logout-btn {
+    background-color: #007bff;
+  }
+
+  .user-actions a.mypage-btn:hover,
+  .user-actions button.logout-btn:hover {
+    background-color: #0056b3;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    padding: 30px 40px;
+  }
+
+  .left, .right {
+    width: 20%;
+  }
+
+  .center {
+    flex: 1;
+  }
+
+  .section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+
+  .section h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
+
+  .section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .section ul li {
+    margin-bottom: 8px;
+  }
+
+  .section ul li a,
+  .section ul li button {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .section ul li a:hover,
+  .section ul li button:hover {
+    color: #007bff;
+  }
+
+  footer {
+    background: #f8f8f8;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header>
+    <a href="noTokenUserIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="메인으로">
+      <span>Uni messenger</span>
+    </a>
+    <div class="user-actions">
+      <a href="pending.html"><button style="background-color: #ff8bd4;">💬 익명채팅</button></a>
+      <span>@@님 안녕하세요!</span>
+      <a href="myPage.html" class="mypage-btn">마이페이지</a>
+      <button class="logout-btn" onclick="logout()">로그아웃</button>
+    </div>
+  </header>
+
+  <!-- 본문 -->
+  <main>
+    <div class="left">
+      <div class="section">
+        <h3>🔥 HOT 게시물</h3>
+        <ul>
+          <li><a href="pending.html">인기 글 1</a></li>
+          <li><a href="pending.html">인기 글 2</a></li>
+          <li><a href="pending.html">인기 글 3</a></li>
+          <li><a href="pending.html">인기 글 4</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="center">
+      <div class="section">
+        <h3>📢 공지사항</h3>
+        <p>💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.</p>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="section">
+        <h3>📁 게시판 목록</h3>
+        <ul>
+          <li><button onclick="goPage('freeBoard.html')">자유 게시판</button></li>
+          <li><button onclick="goPage('marketBoard.html')">중고 거래</button></li>
+          <li><button onclick="goPage('secretBoard.html')">비밀 게시판</button></li>
+          <li><button onclick="goPage('departmentBoard.html')">학과 게시판</button></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer>
+    ⓒ 2025 Uni Messenger. All rights reserved.
+  </footer>
+
+  <!-- 스크립트 -->
+  <script>
+    function logout() {
+      alert("로그아웃 되었습니다.");
+      window.location.href = "loginjb.html";
+    }
+
+    function goChat() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        window.location.href = "pending.html"; // 익명 사용자는 보류 페이지로
+      } else {
+        window.location.href = "chat.html";
+      }
+    }
+
+    function goPage(target) {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        window.location.href = "pending.html";
+      } else {
+        window.location.href = target;
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      fetch("/api/user/me", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("accessToken")
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("인증 실패");
+        return response.text();
+      })
+      .then(nickname => {
+        document.querySelector(".user-actions span").innerText = nickname + "님 안녕하세요!";
+      })
+      .catch(err => {
+        console.error("닉네임 불러오기 실패:", err);
+        document.querySelector(".user-actions span").innerText = "닉네임 부분";
+      });
+    });
+  </script>
+
+</body>
+</html>

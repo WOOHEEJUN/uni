@@ -84,6 +84,12 @@
     </style>
 </head>
 <body>
+
+<!-- 왼쪽 상단 메인 로고 버튼 -->
+<a href="index.html" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 50px; height: 50px;">
+</a>
+
 <div class="form-container">
     <h2>🔐 Uni messenger 로그인</h2>
     <form id="loginForm">
@@ -120,31 +126,25 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username,
-                    password
-                })
+                body: JSON.stringify({ username, password })
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Login response:', data); // 응답 데이터 확인용 로그
-                
-                // 토큰을 localStorage에 저장
+
+                // 토큰 저장
                 localStorage.setItem('token', data.token);
-                
-                // 사용자 상태에 따라 페이지 이동
-                if(data.role === 'ADMIN'){
+
+                // 상태 체크 후 페이지 이동
+                if (data.role === 'ADMIN') {
                     window.location.replace("admin.html");
-                }else {
-                    if (data.status === 'PENDING') {
-                        window.location.replace("pending.html");
-                    } else if (data.status === 'REJECTED') {
-                        window.location.replace("submitEnrollment.html");
-                    } else {
-                        window.location.replace("userindex.html");
-                    }
+                } else if (data.status === 'APPROVED') {
+                    window.location.replace("userindex.html");
+                } else {
+                    // PENDING 또는 REJECTED
+                    window.location.replace("noTokenUserIndex.html");
                 }
+
             } else {
                 const errorData = await response.json();
                 errorBox.textContent = errorData.message || "로그인에 실패했습니다.";

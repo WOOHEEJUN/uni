@@ -1,133 +1,133 @@
+
+<!-- ✅ 마이페이지(mypage.html) 최종본 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>마이페이지</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Noto Sans KR', sans-serif;
-    }
+ <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 
-    body {
-      background: linear-gradient(to bottom right, #fbeaff, #fff6f9);
-      min-height: 100vh;
-      padding: 40px;
-    }
+  body {
+    background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+    min-height: 100vh;
+    padding: 40px;
+  }
 
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
-      background-color: #fff;
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
 
-    .top-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 30px;
-    }
+  .top-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
 
-    .top-buttons button {
-      padding: 10px 20px;
-      background-color: #ffa3cf;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+  .top-buttons button {
+    padding: 10px 20px;
+    background-color: #a65bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-    .top-buttons button:hover {
-      background-color: #ff8abc;
-    }
+  .top-buttons button:hover {
+    background-color: #8e45db;
+  }
 
-    .profile-img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: 4px solid #ffb6d9;
-      object-fit: cover;
-      margin: 0 auto 20px;
-    }
+  .profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #a65bff;
+    object-fit: cover;
+    margin: 0 auto 20px;
+  }
 
-    .nickname {
-      font-size: 1.4rem;
-      font-weight: bold;
-      margin-bottom: 30px;
-    }
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
-    .menu-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+  .menu-buttons button {
+    padding: 14px;
+    border: 2px solid #cfaaff;
+    border-radius: 10px;
+    background-color: #f3e5ff;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #6a2dbf;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
 
-    .menu-buttons button {
-      padding: 14px;
-      border: 2px solid #ffcce3;
-      border-radius: 10px;
-      background-color: #fff0f6;
-      font-size: 1rem;
-      font-weight: bold;
-      color: #a64d79;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .menu-buttons button:hover {
-      background-color: #ffe6f0;
-    }
-  </style>
+  .menu-buttons button:hover {
+    background-color: #e2ccff;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="top-buttons">
-      <button onclick="location.href='index.html'">홈으로</button>
-      <div>
-        <button onclick="location.href='chat.html'">💬 채팅으로</button>
-        <button onclick="logout()">로그아웃</button>
-      </div>
-    </div>
-
-    <img src="default-profile.png" alt="유저 프로필 사진" class="profile-img">
-    <!-- <div class="nickname" id="nickname">유저 닉네임</div> -->
-
-    <div class="menu-buttons">
-      <button onclick="location.href='submitEnrollment.html'">🎓 재학증명서 업로드</button>
-      <button onclick="location.href='#'">✏️ 개인정보 수정</button>
-      <button onclick="location.href='#'">📞 고객센터</button>
-    </div>
+<a href="#" onclick="goMain()" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 50px; height: 50px;">
+</a>
+<div class="container">
+  <div class="top-buttons">
+    <button onclick="goMain()">홈으로</button>
+    <button onclick="logout()">로그아웃</button>
   </div>
+  <img src="default-profile.png" alt="유저 프로필 사진" class="profile-img">
+  <div class="menu-buttons">
+    <button onclick="location.href='submitEnrollment.html'">🎓 건사증명서 업로드</button>
+    <button onclick="location.href='#'">✏️ 개인정보 수정</button>
+    <button onclick="location.href='#'">📞 고객센터</button>
+  </div>
+</div>
+<script>
+  function logout() {
+    alert("로그아웃 되었습니다.");
+    location.href = "loginjb.html";
+  }
 
-  <script>
-    function logout() {
-      alert("로그아웃 되었습니다.");
-      window.location.href = "login.html";
+  function goMain() {
+    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+    if (!token) {
+      location.href = "noTokenUserIndex.html";
+      return;
     }
 
-    // 닉네임 불러오기 예시
-    window.addEventListener("DOMContentLoaded", () => {
-      fetch("/api/user/me", {
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        }
-      })
-      .then(res => res.text())
-      .then(name => {
-        // document.getElementById("nickname").innerText = name + "님";
-      })
-      .catch(err => {
-        console.warn("닉네임 불러오기 실패", err);
-      });
-    });
-  </script>
+    fetch("/api/user/me", {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    })
+    .then(res => res.ok ? res.json() : Promise.reject("인증 실패"))
+    .then(user => {
+      const status = user.status || user.userStatus || user.verificationStatus;
+      if (status === "APPROVED") {
+        location.href = "userIndex.html";
+      } else {
+        location.href = "noTokenUserIndex.html";
+      }
+    })
+    .catch(() => location.href = "noTokenUserIndex.html");
+  }
+</script>
 </body>
 </html>

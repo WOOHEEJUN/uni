@@ -79,6 +79,9 @@
 <body>
 <div class="form-container">
     <h2>🎓 Uni messenger 회원가입</h2>
+    <a href="index.html" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 50px; height: 50px;">
+</a>
     <form id="signupForm">
         <label for="username">아이디</label>
         <input type="text" id="username" name="username" required>
@@ -112,7 +115,7 @@
     </form>
 </div>
 
-<script>
+<<script>
     document.getElementById("signupForm").addEventListener("submit", async function(e) {
         e.preventDefault();
 
@@ -155,8 +158,8 @@
             }
         } catch (error) {
             console.error('Error:', error);
-            errorBox.textContent = "서버와 통신 중 오류가 발생했습니다.";
-        }
+            errorBox.textContent = "이미 존재하는 계정입니다.";
+        } // ← 이 catch까지 포함해야 try 완성됨
     });
 </script>
 </body>
