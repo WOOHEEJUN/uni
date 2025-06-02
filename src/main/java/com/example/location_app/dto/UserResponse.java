@@ -11,6 +11,7 @@ public class UserResponse {
     private Integer id;
     private String username;
     private String nickname;
+    private Integer university_id;
     private String universityName;
     private VerificationStatus status;
     private UserRole role;

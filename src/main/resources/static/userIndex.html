@@ -145,10 +145,18 @@
       <span>Uni messenger</span>
     </a>
     <div class="user-actions">
+<<<<<<< HEAD
       <button class="chat-btn" onclick="goChat()">💬 채팅 메시지</button>
       <span>닉네임 부분</span>
       <button class="blue-btn" onclick="goMyPage()">마이페이지</button>
       <button class="blue-btn" onclick="logout()">로그아웃</button>
+=======
+      <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
+      <span id="userGreeting">@@님 안녕하세요!</span>
+      <span id="universityName" style="color: #a65bff; font-weight: bold; margin: 0 10px;"></span>
+      <a href="myPage.html">마이페이지</a>
+      <button onclick="logout()">로그아웃</button>
+>>>>>>> ca26722c7e765a020e625744cca252cb6388522e
     </div>
   </header>
 
@@ -193,7 +201,47 @@
 
   <!-- 스크립트 -->
   <script>
+    let currentUser = null;
+
+    // 로그인된 유저의 정보 불러오기
+    async function loadUserInfo() {
+      try {
+        const response = await fetch("/api/user/me", {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+        
+        if (!response.ok) throw new Error("인증 실패");
+        
+        currentUser = await response.json();
+        
+        // 콘솔에 사용자 정보 표시
+        console.log("ID:", currentUser.id);
+        console.log("아이디:", currentUser.username);
+        console.log("닉네임:", currentUser.nickname);
+        console.log("대학교 ID:", currentUser.university_id);
+        console.log("대학교:", currentUser.universityName);
+        console.log("상태:", currentUser.status);
+        console.log("권한:", currentUser.role);
+        
+        // 사용자 정보 표시
+        document.querySelector("#userGreeting").innerText = currentUser.nickname + "님 안녕하세요!";
+        
+        // 대학교 이름 표시
+        if (currentUser.universityName) {
+          document.querySelector("#universityName").innerText = `🏫 ${currentUser.universityName}`;
+        }
+      } catch (err) {
+        console.error("사용자 정보 불러오기 실패:", err);
+        document.querySelector("#userGreeting").innerText = "로그인이 필요합니다.";
+        window.location.href = "loginjb.html";
+      }
+    }
+
     function logout() {
+      localStorage.removeItem("token");
       alert("로그아웃 되었습니다.");
       window.location.href = "loginjb.html";
     }
@@ -202,6 +250,7 @@
       window.location.href = "chat.html";  
     }
 
+<<<<<<< HEAD
     function goMyPage() {
       const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
       if (!token) {
@@ -259,6 +308,10 @@
     document.querySelector(".user-actions span").innerText = "로그인 오류";
   });
 });
+=======
+    // 페이지 로드 시 사용자 정보 로드
+    window.addEventListener("DOMContentLoaded", loadUserInfo);
+>>>>>>> ca26722c7e765a020e625744cca252cb6388522e
   </script>
 
 </body>
