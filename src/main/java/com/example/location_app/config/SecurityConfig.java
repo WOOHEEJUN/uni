@@ -1,7 +1,5 @@
 package com.example.location_app.config;
 
-import com.example.location_app.security.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.example.location_app.security.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -32,20 +34,15 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/api/auth/**",
-                    "/",
-                    "/*.html",
-                    "/css/**",
-                    "/js/**",
-                    "/images/**",
-                    "/*.png",
-                    "/*.jpg",
-                    "/*.jpeg",
-                    "/*.gif",
-                    "/Uni 로고.png",
-                    "/favicon.ico"
-                ).permitAll()
+               .requestMatchers(
+     "/**",                // 모든 정적 리소스 포함
+    "/userIndex.html",    // 직접 명시해도 됨
+    "/img/**",            // 이미지
+    "/css/**",
+    "/js/**",
+    "/favicon.ico",
+    "/api/auth/**"
+).permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())

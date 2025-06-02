@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     }
 
     body {
-      background: linear-gradient(to bottom right, #e0f0ff, #ffe4ef);
+      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -34,7 +34,7 @@
       gap: 10px;
       font-size: 1.8rem;
       font-weight: bold;
-      color: #a65bff;
+      color: #007bff;
       text-decoration: none;
     }
 
@@ -54,19 +54,33 @@
       color: #444;
     }
 
-    .user-actions a, .user-actions button {
+    .user-actions a,
+    .user-actions button {
       padding: 8px 14px;
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
-      background-color: #a65bff;
       color: white;
       text-decoration: none;
       cursor: pointer;
     }
 
-    .user-actions a:hover, .user-actions button:hover {
-      background-color: #8e45db;
+    /* 채팅 버튼 (분홍) */
+    .chat-btn {
+      background-color: #ff8bd4;
+    }
+
+    .chat-btn:hover {
+      background-color: #f173c2;
+    }
+
+    /* 마이페이지, 로그아웃 버튼 (파랑) */
+    .blue-btn {
+      background-color: #007bff;
+    }
+
+    .blue-btn:hover {
+      background-color: #0056b3;
     }
 
     main {
@@ -93,7 +107,7 @@
     }
 
     .section h3 {
-      color: #a65bff;
+      color: #007bff;
       margin-bottom: 15px;
       font-size: 1.1rem;
     }
@@ -114,11 +128,11 @@
     }
 
     .section ul li a:hover {
-      color: #a65bff;
+      color: #007bff;
     }
 
     footer {
-      background: #f8f8f8;
+      background: #f4f4f4;
       text-align: center;
       padding: 20px;
       font-size: 0.9rem;
@@ -130,15 +144,15 @@
 
   <!-- 헤더 -->
   <header>
-    <a href="/" class="logo">
-      <img src="Uni 로고.png" alt="로고">
-      Uni messenger
+    <a href="userIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="메인으로">
+      <span>Uni messenger</span>
     </a>
     <div class="user-actions">
-      <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
-      <span>@@님 안녕하세요!</span>
-      <a href="myPage.html">마이페이지</a>
-      <button onclick="logout()">로그아웃</button>
+      <button class="chat-btn" onclick="goChat()">💬 채팅 메시지</button>
+      <span>닉네임 부분</span>
+      <a href="myPage.html" class="blue-btn">마이페이지</a>
+      <button class="blue-btn" onclick="logout()">로그아웃</button>
     </div>
   </header>
 
@@ -192,12 +206,14 @@
       window.location.href = "chat.html";  
     }
 
-    // 로그인된 유저의 닉네임 불러오기
     window.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
       fetch("/api/user/me", {
         method: "GET",
         headers: {
-          "Authorization": "Bearer " + localStorage.getItem("accessToken")
+          "Authorization": "Bearer " + token
         }
       })
       .then(response => {
@@ -209,7 +225,6 @@
       })
       .catch(err => {
         console.error("닉네임 불러오기 실패:", err);
-        document.querySelector(".user-actions span").innerText = "로그인이 필요합니다.";
       });
     });
   </script>

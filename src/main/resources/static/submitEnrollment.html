@@ -1,216 +1,133 @@
+<!-- ✅ 재학증명서 제출 페이지(submitEnrollment.html) 최종본 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>재학증명서 제출 - Uni messenger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(to bottom right, #e0f7fa, #fff3e0);
-            min-height: 100vh;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .logo img {
-            width: 45px;
-        }
-
-        .logo span {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        .header-buttons {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-buttons span {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .header-buttons button {
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .header-buttons button:hover {
-            background-color: #0056b3;
-        }
-
-        .form-container {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 480px;
-            margin: 40px auto;
-            text-align: center;
-        }
-
-        h2 {
-            color: #00796b;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #333;
-            text-align: left;
-        }
-
-        input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #00796b;
-            color: white;
-            font-size: 1rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            background-color: #004d40;
-        }
-
-        .info {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        .success-message {
-            margin-top: 15px;
-            color: #388e3c;
-            font-weight: bold;
-        }
-    </style>
-</head>
-    <body>
-  <!-- 왼쪽 상단 로고 -->
-  <a href="index.html" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
-    <img src="Uni 로고.png" alt="메인으로" style="width: 50px; height: 50px;">
-  </a>
-
-<header>
-    <div class="logo" onclick="location.href='UserIndex.html'">
-        <img src="Uni 로고.png" alt="Uni Messenger 로고">
-        <span>Uni messenger</span>
-    </div>
-    <div class="header-buttons">
-        <span>홍길동님 안녕하세요!</span>
-        <button onclick="location.href='mypage.html'">마이페이지</button>
-        <button onclick="logout()">로그아웃</button>
-    </div>
-</header>
-
-<div class="form-container">
-    <h2>📎 재학증명서 제출</h2>
-    <form id="enrollmentForm">
-        <label for="enrollmentProof">재학증명서 파일 (.pdf, .jpg, .png)</label>
-        <input type="file" id="enrollmentProof" name="enrollmentProof" accept=".pdf,.jpg,.jpeg,.png" required>
-        <button type="submit" class="submit-btn">제출하기</button>
-        <div class="info">
-            제출된 파일은 관리자 승인 후 반영됩니다.
-        </div>
-        <div id="successMsg" class="success-message" style="display: none;">제출이 완료되었습니다.</div>
-    </form>
-</div>
-
-<script>
-    document.getElementById("enrollmentForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
-
-        const fileInput = document.getElementById("enrollmentProof");
-        if (!fileInput.files.length) {
-            alert("파일을 선택해주세요.");
-            return;
-        }
-
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert("로그인이 필요합니다.");
-            location.href = "loginjb.html";
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("file", fileInput.files[0]);
-
-        try {
-            const response = await fetch('/api/documents/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                body: formData
-            });
-
-            if (response.ok) {
-                document.getElementById("successMsg").style.display = "block";
-                document.getElementById("successMsg").textContent = await response.text();
-            } else {
-                const errorMessage = await response.text();
-                console.error('Upload failed:', errorMessage);
-                if (response.status === 401) {
-                    alert("로그인이 필요합니다.");
-                    location.href = "loginjb.html";
-                } else {
-                    alert(errorMessage || "파일 업로드에 실패했습니다.");
-                }
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("파일 업로드 중 오류가 발생했습니다. 다시 시도해주세요.");
-        }
-    });
-
-    function logout() {
-        alert("로그아웃 되었습니다.");
-        location.href = "loginjb.html";
+  <meta charset="UTF-8">
+  <title>재학증명서 제출 - Uni messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #fff3e0);
+      min-height: 100vh;
     }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .logo img { width: 45px; }
+    .logo span {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .header-buttons { display: flex; align-items: center; gap: 12px; }
+    .header-buttons span { font-weight: bold; color: #333; }
+    .header-buttons button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .form-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%; max-width: 480px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    h2 { color: #a65bff; margin-bottom: 20px; }
+    label {
+      display: block; margin-bottom: 10px;
+      font-weight: bold; color: #333; text-align: left;
+    }
+    input[type="file"] {
+      width: 100%; padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px; margin-bottom: 20px;
+    }
+    .submit-btn {
+      width: 100%; padding: 12px;
+      background-color: #a65bff;
+      color: white; font-weight: bold;
+      border: none; border-radius: 10px;
+      cursor: pointer;
+    }
+    .success-message {
+      margin-top: 15px;
+      color: #cfaaff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="#" class="logo" onclick="goMain()">
+    <img src="/img/Uni_logo.png" alt="Uni Messenger 로고">
+    <span>Uni messenger</span>
+  </a>
+  <div class="header-buttons">
+    <span>홍길동님 안녕하세요!</span>
+    <button onclick="location.href='mypage.html'">마이페이지</button>
+    <button onclick="logout()">로그아웃</button>
+  </div>
+</header>
+<div class="form-container">
+  <h2>📎 재학증명서</h2>
+  <form id="enrollmentForm">
+    <label for="enrollmentProof">파일 (.pdf, .jpg, .png)</label>
+    <input type="file" id="enrollmentProof" name="enrollmentProof" accept=".pdf,.jpg,.jpeg,.png" required>
+    <button type="submit" class="submit-btn">제출하기</button>
+    <div class="success-message" id="successMsg" style="display: none;"></div>
+  </form>
+</div>
+<script>
+  function logout() {
+    alert("로그아웃 되었습니다.");
+    location.href = "loginjb.html";
+  }
+
+  function goMain() {
+    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+    if (!token) {
+      location.href = "noTokenUserIndex.html";
+      return;
+    }
+
+    fetch("/api/user/me", {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    })
+    .then(res => res.ok ? res.json() : Promise.reject("인증 실패"))
+    .then(user => {
+      const status = user.status || user.userStatus || user.verificationStatus;
+      if (status === "APPROVED") {
+        location.href = "userIndex.html";
+      } else {
+        location.href = "noTokenUserIndex.html";
+      }
+    })
+    .catch(() => location.href = "noTokenUserIndex.html");
+  }
 </script>
 </body>
 </html>
