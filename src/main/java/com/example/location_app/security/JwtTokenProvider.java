@@ -1,5 +1,6 @@
 package com.example.location_app.security;
 
+import com.example.location_app.entity.User;
 import com.example.location_app.entity.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,9 +17,14 @@ public class JwtTokenProvider {
     
     private final long tokenValidityInMilliseconds = 1000 * 60 * 60 * 24; // 24시간
 
-    public String createToken(String username, UserRole role) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("role", role.name());
+    public String createToken(User user) {
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        claims.put("id", user.getId());
+        claims.put("universityId", user.getUniversity().getId());
+        claims.put("username", user.getUsername());
+        claims.put("nickname", user.getNickname());
+        claims.put("role", user.getRole().name());
+        claims.put("status", user.getStatus().name());
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);

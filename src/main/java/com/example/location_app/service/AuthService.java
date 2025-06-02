@@ -66,7 +66,7 @@ public class AuthService {
         }
 
         // JWT 토큰 생성 (모든 상태의 사용자에게 발급)
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+        String token = jwtTokenProvider.createToken(user);
 
         // 응답 데이터 생성
         return LoginResponse.builder()

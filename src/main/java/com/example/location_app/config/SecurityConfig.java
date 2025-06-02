@@ -34,16 +34,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-               .requestMatchers(
-     "/**",                // 모든 정적 리소스 포함
-    "/userIndex.html",    // 직접 명시해도 됨
-    "/img/**",            // 이미지
-    "/css/**",
-    "/js/**",
-    "/favicon.ico",
-    "/api/auth/**"
-).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()  // 모든 요청 허용
             )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
