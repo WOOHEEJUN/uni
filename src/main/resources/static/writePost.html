@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>글쓰기 - Uni Messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    body {
+      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: linear-gradient(to right, #cde6ff, #ffe4ed);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .logo img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 4px;
+    }
+    .logo span {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #6a2dbf;
+    }
+    .user-buttons {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .user-buttons span {
+      font-weight: 600;
+      color: #333;
+    }
+    .user-buttons button {
+      background-color: #a65bff;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .write-container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px 50px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      border: 2px solid #e3d6ff;
+    }
+    .write-container h2 {
+      font-size: 2rem;
+      color: #6a2dbf;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .write-container label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    .write-container input,
+    .write-container textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      border: 2px solid #cfaaff;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    .write-container button {
+      background-color: #a65bff;
+      color: white;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+    }
+    .write-container button:hover {
+      background-color: #8e45db;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="userIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="메인으로">     
+ </a>
+  <div class="user-buttons">
+    <span id="nickname">닉네임님</span>
+    <button onclick="location.href='mypage.html'">마이페이지</button>
+    <button onclick="logout()">로그아웃</button>
+  </div>
+</header>
+
+<div class="write-container">
+  <h2>✏️ 게시글 작성</h2>
+  <form>
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="content">내용</label>
+    <textarea id="content" name="content" rows="10" required></textarea>
+
+    <button type="submit">등록하기</button>
+  </form>
+</div>
+
+<script>
+  function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
+    alert("로그아웃 되었습니다.");
+    location.href = "loginjb.html";
+  }
+
+  window.onload = function () {
+    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+    if (!token) return;
+    fetch("/api/user/me", {
+      headers: { "Authorization": "Bearer " + token }
+    })
+      .then(res => res.json())
+      .then(user => {
+        document.getElementById("nickname").innerText = `${user.nickname}님`;
+        if (user.university && user.university.name) {
+          document.getElementById("universityName").innerText = `${user.university.name} 커뮤니티`;
+        }
+      })
+      .catch(() => {
+        document.getElementById("nickname").innerText = "익명님";
+        document.getElementById("universityName").innerText = "학교 정보 없음";
+      });
+  };
+</script>
+
+</body>
+</html>

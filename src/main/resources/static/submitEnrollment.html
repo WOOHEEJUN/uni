@@ -85,7 +85,7 @@
     <span>Uni messenger</span>
   </a>
   <div class="header-buttons">
-    <span>홍길동님 안녕하세요!</span>
+   <span id="nicknameArea">님 안녕하세요!</span>
     <button onclick="location.href='mypage.html'">마이페이지</button>
     <button onclick="logout()">로그아웃</button>
   </div>
@@ -100,6 +100,29 @@
   </form>
 </div>
 <script>
+  window.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+  if (!token) return;
+
+  fetch("/api/user/me", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("인증 실패");
+    return response.json();
+  })
+  .then(user => {
+    const nickname = user.nickname || "사용자";
+    document.getElementById("nicknameArea").innerText = `${nickname}님 안녕하세요!`;
+  })
+  .catch(err => {
+    console.error("닉네임 불러오기 실패:", err);
+    document.getElementById("nicknameArea").innerText = "로그인 오류";
+  });
+});
   function logout() {
     alert("로그아웃 되었습니다.");
     location.href = "loginjb.html";

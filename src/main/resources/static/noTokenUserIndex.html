@@ -160,7 +160,7 @@
     </a>
     <div class="user-actions">
       <a href="pending.html"><button style="background-color: #ff8bd4;">💬 익명채팅</button></a>
-      <span>@@님 안녕하세요!</span>
+      <span id="nicknameArea">님 안녕하세요!</span>
       <a href="myPage.html" class="mypage-btn">마이페이지</a>
       <button class="logout-btn" onclick="logout()">로그아웃</button>
     </div>
@@ -231,24 +231,28 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      fetch("/api/user/me", {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("accessToken")
-        }
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("인증 실패");
-        return response.text();
-      })
-      .then(nickname => {
-        document.querySelector(".user-actions span").innerText = nickname + "님 안녕하세요!";
-      })
-      .catch(err => {
-        console.error("닉네임 불러오기 실패:", err);
-        document.querySelector(".user-actions span").innerText = "닉네임 부분";
-      });
-    });
+  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+  if (!token) return;
+
+  fetch("/api/user/me", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("인증 실패");
+    return response.json();
+  })
+  .then(user => {
+    const nickname = user.nickname || "사용자";
+    document.getElementById("nicknameArea").innerText = `${nickname}님 안녕하세요!`;
+  })
+  .catch(err => {
+    console.error("닉네임 불러오기 실패:", err);
+    document.getElementById("nicknameArea").innerText = "로그인 오류";
+  });
+});
   </script>
 
 </body>
