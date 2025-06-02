@@ -99,34 +99,41 @@
   </div>
 </div>
 <script>
-  function logout() {
-    alert("로그아웃 되었습니다.");
-    location.href = "loginjb.html";
-  }
-
   function goMain() {
-    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-    if (!token) {
-      location.href = "noTokenUserIndex.html";
-      return;
-    }
+  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
 
-    fetch("/api/user/me", {
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    })
-    .then(res => res.ok ? res.json() : Promise.reject("인증 실패"))
-    .then(user => {
-      const status = user.status || user.userStatus || user.verificationStatus;
-      if (status === "APPROVED") {
-        location.href = "userIndex.html";
-      } else {
-        location.href = "noTokenUserIndex.html";
-      }
-    })
-    .catch(() => location.href = "noTokenUserIndex.html");
+  if (!token) {
+    console.warn("❌ 토큰 없음");
+    location.href = "noTokenUserIndex.html";
+    return;
   }
+
+  fetch("/api/user/me", {
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("❌ 인증 실패 or 응답 오류");
+    return res.json();
+  })
+  .then(user => {
+    console.log("✅ 사용자 정보:", user);
+    const status = (user.status || user.userStatus || user.verificationStatus || "").toUpperCase();
+
+    if (status === "APPROVED") {
+      console.log("✅ 승인된 사용자 → userIndex.html로 이동");
+      location.href = "userIndex.html";
+    } else {
+      console.warn("⚠️ 승인되지 않은 사용자 상태:", status);
+      location.href = "noTokenUserIndex.html";
+    }
+  })
+  .catch(err => {
+    console.error("❌ 에러 발생:", err);
+    location.href = "noTokenUserIndex.html";
+  });
+}
 </script>
 </body>
 </html>

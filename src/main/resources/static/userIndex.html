@@ -54,18 +54,15 @@
       color: #444;
     }
 
-    .user-actions a,
     .user-actions button {
       padding: 8px 14px;
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
       color: white;
-      text-decoration: none;
       cursor: pointer;
     }
 
-    /* 채팅 버튼 (분홍) */
     .chat-btn {
       background-color: #ff8bd4;
     }
@@ -74,7 +71,6 @@
       background-color: #f173c2;
     }
 
-    /* 마이페이지, 로그아웃 버튼 (파랑) */
     .blue-btn {
       background-color: #007bff;
     }
@@ -151,7 +147,7 @@
     <div class="user-actions">
       <button class="chat-btn" onclick="goChat()">💬 채팅 메시지</button>
       <span>닉네임 부분</span>
-      <a href="myPage.html" class="blue-btn">마이페이지</a>
+      <button class="blue-btn" onclick="goMyPage()">마이페이지</button>
       <button class="blue-btn" onclick="logout()">로그아웃</button>
     </div>
   </header>
@@ -206,6 +202,40 @@
       window.location.href = "chat.html";  
     }
 
+    function goMyPage() {
+      const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        location.href = "loginjb.html";
+        return;
+      }
+
+      fetch("/api/user/me", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("인증 실패");
+        return res.json();
+      })
+      .then(user => {
+        const status = (user.status || user.userStatus || user.verificationStatus || "").toUpperCase();
+        if (status !== "APPROVED") {
+          alert("승인되지 않은 사용자입니다.");
+          location.href = "noTokenUserIndex.html";
+        } else {
+          location.href = "myPage.html";
+        }
+      })
+      .catch(() => {
+        alert("사용자 정보를 확인할 수 없습니다.");
+        location.href = "loginjb.html";
+      });
+    }
+
+    // 닉네임 불러오기
     window.addEventListener("DOMContentLoaded", () => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
@@ -218,7 +248,7 @@
       })
       .then(response => {
         if (!response.ok) throw new Error("인증 실패");
-        return response.text();
+        return response.json();
       })
       .then(nickname => {
         document.querySelector(".user-actions span").innerText = nickname + "님 안녕하세요!";
