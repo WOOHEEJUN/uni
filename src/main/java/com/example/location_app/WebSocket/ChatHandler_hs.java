@@ -1,22 +1,25 @@
 // === ChatHandler_hs.java ===
 package com.example.location_app.WebSocket;
 
-import com.example.location_app.entity.ChatMessage_hs;
-import com.example.location_app.entity.User;
-import com.example.location_app.repository.ChatMessageRepository_hs;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.*;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import com.example.location_app.entity.ChatMessage_hs;
+import com.example.location_app.entity.User;
+import com.example.location_app.repository.ChatMessageRepository_hs;
+
+import lombok.RequiredArgsConstructor;
 
 // 실시간 채팅 메시지를 처리하는 WebSocket 핸들러
 @Component

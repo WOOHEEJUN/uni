@@ -54,32 +54,18 @@
       color: #444;
     }
 
-    .user-actions a,
-    .user-actions button {
+    .user-actions a, .user-actions button {
       padding: 8px 14px;
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
+      background-color: #007bff;
       color: white;
       text-decoration: none;
       cursor: pointer;
     }
 
-    /* 채팅 버튼 (분홍) */
-    .chat-btn {
-      background-color: #ff8bd4;
-    }
-
-    .chat-btn:hover {
-      background-color: #f173c2;
-    }
-
-    /* 마이페이지, 로그아웃 버튼 (파랑) */
-    .blue-btn {
-      background-color: #007bff;
-    }
-
-    .blue-btn:hover {
+    .user-actions a:hover, .user-actions button:hover {
       background-color: #0056b3;
     }
 
@@ -132,7 +118,7 @@
     }
 
     footer {
-      background: #f4f4f4;
+      background: #f8f8f8;
       text-align: center;
       padding: 20px;
       font-size: 0.9rem;
@@ -144,15 +130,16 @@
 
   <!-- 헤더 -->
   <header>
-    <a href="userIndex.html" class="logo">
-      <img src="/img/Uni_logo.png" alt="메인으로">
-      <span>Uni messenger</span>
+    <a href="/userIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="로고">
+      Uni messenger
     </a>
     <div class="user-actions">
-      <button class="chat-btn" onclick="goChat()">💬 채팅 메시지</button>
-      <span>닉네임 부분</span>
-      <a href="myPage.html" class="blue-btn">마이페이지</a>
-      <button class="blue-btn" onclick="logout()">로그아웃</button>
+      <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
+      <span id="userGreeting">@@님 안녕하세요!</span>
+      <span id="universityName" style="color: #007bff; font-weight: bold; margin: 0 10px;"></span>
+      <a href="myPage.html">마이페이지</a>
+      <button onclick="logout()">로그아웃</button>
     </div>
   </header>
 
@@ -160,7 +147,7 @@
   <main>
     <div class="left">
       <div class="section">
-        <h3>🔥 HOT 게시물</h3>
+        <h3>🔥 HOT 학과 게시물</h3>
         <ul>
           <li><a href="#">인기 글 1</a></li>
           <li><a href="#">인기 글 2</a></li>
@@ -181,9 +168,9 @@
       <div class="section">
         <h3>📁 게시판 목록</h3>
         <ul>
-          <li><a href="#">자유 게시판</a></li>
+          <li><a href="freeBorad.html">자유 게시판</a></li>
           <li><a href="#">중고 거래</a></li>
-          <li><a href="#">비밀 게시판</a></li>
+          <li><a href="secretBoard.html">비밀 게시판</a></li>
           <li><a href="#">학과 게시판</a></li>
         </ul>
       </div>
@@ -197,36 +184,42 @@
 
   <!-- 스크립트 -->
   <script>
+    let currentUser = null;
+
+    async function loadUserInfo() {
+      try {
+        const response = await fetch("/api/user/me", {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+
+        if (!response.ok) throw new Error("인증 실패");
+
+        currentUser = await response.json();
+        document.querySelector("#userGreeting").innerText = currentUser.nickname + "님 안녕하세요!";
+        if (currentUser.universityName) {
+          document.querySelector("#universityName").innerText = `🏫 ${currentUser.universityName}`;
+        }
+      } catch (err) {
+        console.error("사용자 정보 불러오기 실패:", err);
+        document.querySelector("#userGreeting").innerText = "로그인이 필요합니다.";
+        window.location.href = "loginjb.html";
+      }
+    }
+
     function logout() {
+      localStorage.removeItem("token");
       alert("로그아웃 되었습니다.");
       window.location.href = "loginjb.html";
     }
 
     function goChat() {
-      window.location.href = "chat.html";  
+      window.location.href = "chat.html";
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return;
-
-      fetch("/api/user/me", {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + token
-        }
-      })
-      .then(response => {
-        if (!response.ok) throw new Error("인증 실패");
-        return response.text();
-      })
-      .then(nickname => {
-        document.querySelector(".user-actions span").innerText = nickname + "님 안녕하세요!";
-      })
-      .catch(err => {
-        console.error("닉네임 불러오기 실패:", err);
-      });
-    });
+    window.addEventListener("DOMContentLoaded", loadUserInfo);
   </script>
 
 </body>

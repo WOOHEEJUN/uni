@@ -1,5 +1,9 @@
 package com.example.location_app.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.location_app.dto.LoginRequest;
 import com.example.location_app.dto.LoginResponse;
 import com.example.location_app.dto.SignUpRequest;
@@ -10,10 +14,8 @@ import com.example.location_app.entity.VerificationStatus;
 import com.example.location_app.repository.UniversityRepository;
 import com.example.location_app.repository.UserRepository;
 import com.example.location_app.security.JwtTokenProvider;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +66,7 @@ public class AuthService {
         }
 
         // JWT 토큰 생성 (모든 상태의 사용자에게 발급)
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+        String token = jwtTokenProvider.createToken(user);
 
         // 응답 데이터 생성
         return LoginResponse.builder()
