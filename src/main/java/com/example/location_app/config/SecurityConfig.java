@@ -32,21 +32,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/api/auth/**",
-                    "/",
-                    "/*.html",
-                    "/css/**",
-                    "/js/**",
-                    "/images/**",
-                    "/*.png",
-                    "/*.jpg",
-                    "/*.jpeg",
-                    "/*.gif",
-                    "/Uni 로고.png",
-                    "/favicon.ico"
-                ).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()  // 모든 요청 허용
             )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
