@@ -54,28 +54,18 @@
       color: #444;
     }
 
-    .user-actions button {
+    .user-actions a, .user-actions button {
       padding: 8px 14px;
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
+      background-color: #007bff;
       color: white;
+      text-decoration: none;
       cursor: pointer;
     }
 
-    .chat-btn {
-      background-color: #ff8bd4;
-    }
-
-    .chat-btn:hover {
-      background-color: #f173c2;
-    }
-
-    .blue-btn {
-      background-color: #007bff;
-    }
-
-    .blue-btn:hover {
+    .user-actions a:hover, .user-actions button:hover {
       background-color: #0056b3;
     }
 
@@ -128,7 +118,7 @@
     }
 
     footer {
-      background: #f4f4f4;
+      background: #f8f8f8;
       text-align: center;
       padding: 20px;
       font-size: 0.9rem;
@@ -140,23 +130,16 @@
 
   <!-- 헤더 -->
   <header>
-    <a href="userIndex.html" class="logo">
-      <img src="/img/Uni_logo.png" alt="메인으로">
-      <span>Uni messenger</span>
+    <a href="/" class="logo">
+      <img src="Uni 로고.png" alt="로고">
+      Uni messenger
     </a>
     <div class="user-actions">
-<<<<<<< HEAD
-      <button class="chat-btn" onclick="goChat()">💬 채팅 메시지</button>
-      <span>닉네임 부분</span>
-      <button class="blue-btn" onclick="goMyPage()">마이페이지</button>
-      <button class="blue-btn" onclick="logout()">로그아웃</button>
-=======
       <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
       <span id="userGreeting">@@님 안녕하세요!</span>
-      <span id="universityName" style="color: #a65bff; font-weight: bold; margin: 0 10px;"></span>
+      <span id="universityName" style="color: #007bff; font-weight: bold; margin: 0 10px;"></span>
       <a href="myPage.html">마이페이지</a>
       <button onclick="logout()">로그아웃</button>
->>>>>>> ca26722c7e765a020e625744cca252cb6388522e
     </div>
   </header>
 
@@ -203,7 +186,6 @@
   <script>
     let currentUser = null;
 
-    // 로그인된 유저의 정보 불러오기
     async function loadUserInfo() {
       try {
         const response = await fetch("/api/user/me", {
@@ -212,24 +194,11 @@
             "Authorization": "Bearer " + localStorage.getItem("token")
           }
         });
-        
+
         if (!response.ok) throw new Error("인증 실패");
-        
+
         currentUser = await response.json();
-        
-        // 콘솔에 사용자 정보 표시
-        console.log("ID:", currentUser.id);
-        console.log("아이디:", currentUser.username);
-        console.log("닉네임:", currentUser.nickname);
-        console.log("대학교 ID:", currentUser.university_id);
-        console.log("대학교:", currentUser.universityName);
-        console.log("상태:", currentUser.status);
-        console.log("권한:", currentUser.role);
-        
-        // 사용자 정보 표시
         document.querySelector("#userGreeting").innerText = currentUser.nickname + "님 안녕하세요!";
-        
-        // 대학교 이름 표시
         if (currentUser.universityName) {
           document.querySelector("#universityName").innerText = `🏫 ${currentUser.universityName}`;
         }
@@ -247,71 +216,10 @@
     }
 
     function goChat() {
-      window.location.href = "chat.html";  
+      window.location.href = "chat.html";
     }
 
-<<<<<<< HEAD
-    function goMyPage() {
-      const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-      if (!token) {
-        alert("로그인이 필요합니다.");
-        location.href = "loginjb.html";
-        return;
-      }
-
-      fetch("/api/user/me", {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + token
-        }
-      })
-      .then(res => {
-        if (!res.ok) throw new Error("인증 실패");
-        return res.json();
-      })
-      .then(user => {
-        const status = (user.status || user.userStatus || user.verificationStatus || "").toUpperCase();
-        if (status !== "APPROVED") {
-          alert("승인되지 않은 사용자입니다.");
-          location.href = "noTokenUserIndex.html";
-        } else {
-          location.href = "myPage.html";
-        }
-      })
-      .catch(() => {
-        alert("사용자 정보를 확인할 수 없습니다.");
-        location.href = "loginjb.html";
-      });
-    }
-
-    // 닉네임 불러오기
-    window.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-  if (!token) return;
-
-  fetch("/api/user/me", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token
-    }
-  })
-  .then(response => {
-    if (!response.ok) throw new Error("인증 실패");
-    return response.json();
-  })
-  .then(user => {
-    const nickname = user.nickname || "사용자";
-    document.querySelector(".user-actions span").innerText = `${nickname}님 안녕하세요!`;
-  })
-  .catch(err => {
-    console.error("닉네임 불러오기 실패:", err);
-    document.querySelector(".user-actions span").innerText = "로그인 오류";
-  });
-});
-=======
-    // 페이지 로드 시 사용자 정보 로드
     window.addEventListener("DOMContentLoaded", loadUserInfo);
->>>>>>> ca26722c7e765a020e625744cca252cb6388522e
   </script>
 
 </body>
