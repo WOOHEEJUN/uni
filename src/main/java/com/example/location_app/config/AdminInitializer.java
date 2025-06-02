@@ -4,6 +4,7 @@ import com.example.location_app.entity.User;
 import com.example.location_app.entity.UserRole;
 import com.example.location_app.entity.VerificationStatus;
 import com.example.location_app.repository.UserRepository;
+import com.example.location_app.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 public class AdminInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final UniversityRepository universityRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -24,6 +26,7 @@ public class AdminInitializer implements CommandLineRunner {
                 .username("admin")
                 .password(passwordEncoder.encode("admin"))
                 .nickname("관리자")
+                .university(universityRepository.findById(1).orElseThrow())
                 .role(UserRole.ADMIN)
                 .status(VerificationStatus.APPROVED)
                 .build();
