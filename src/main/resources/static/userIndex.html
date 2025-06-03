@@ -167,11 +167,8 @@
     <div class="right">
       <div class="section">
         <h3>📁 게시판 목록</h3>
-        <ul>
-          <li><a href="freeBorad.html">자유 게시판</a></li>
-          <li><a href="#">중고 거래</a></li>
-          <li><a href="secretBoard.html">비밀 게시판</a></li>
-          <li><a href="#">학과 게시판</a></li>
+        <ul id="boardList">
+          <!-- 게시판 목록이 동적으로 추가될 위치 -->
         </ul>
       </div>
     </div>
@@ -202,10 +199,54 @@
         if (currentUser.universityName) {
           document.querySelector("#universityName").innerText = `🏫 ${currentUser.universityName}`;
         }
+        
+        // 대학교 게시판 목록 로드
+        await loadUniversityBoards();
       } catch (err) {
         console.error("사용자 정보 불러오기 실패:", err);
         document.querySelector("#userGreeting").innerText = "로그인이 필요합니다.";
         window.location.href = "loginjb.html";
+      }
+    }
+
+    async function loadUniversityBoards() {
+      try {
+        const response = await fetch("/api/boards/my-university", {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          }
+        });
+
+        if (!response.ok) {
+          console.error("게시판 목록 응답 실패:", response.status, response.statusText);
+          throw new Error("게시판 목록을 불러오는데 실패했습니다.");
+        }
+
+        const boards = await response.json();
+        console.log("받아온 게시판 목록:", boards); // 디버깅용 로그
+
+        const boardList = document.getElementById("boardList");
+        boardList.innerHTML = ""; // 기존 목록 초기화
+
+        if (!boards || boards.length === 0) {
+          console.log("게시판 목록이 비어있습니다.");
+          boardList.innerHTML = "<li>게시판이 없습니다.</li>";
+          return;
+        }
+
+        boards.forEach(board => {
+          console.log("게시판 정보:", board); // 디버깅용 로그
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = `board.html?id=${board.id}&type=${board.type.toLowerCase()}`;
+          a.textContent = board.name;
+          li.appendChild(a);
+          boardList.appendChild(li);
+        });
+      } catch (err) {
+        console.error("게시판 목록 로드 실패:", err);
+        const boardList = document.getElementById("boardList");
+        boardList.innerHTML = "<li>게시판을 불러오는데 실패했습니다.</li>";
       }
     }
 
