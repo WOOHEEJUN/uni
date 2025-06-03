@@ -115,52 +115,6 @@
     </form>
 </div>
 
-<<script>
-    document.getElementById("signupForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
-
-        const username = document.getElementById("username").value.trim();
-        const nickname = document.getElementById("nickname").value.trim();
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
-        const universityId = parseInt(document.getElementById("university").value);
-        const errorBox = document.getElementById("errorBox");
-
-        if (!username || !nickname || !password || !confirmPassword || !universityId) {
-            errorBox.textContent = "모든 필드를 입력해주세요.";
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            errorBox.textContent = "비밀번호가 일치하지 않습니다.";
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/auth/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    nickname,
-                    password,
-                    universityId
-                })
-            });
-
-            if (response.ok) {
-                window.location.href = "submitEnrollment.html";
-            } else {
-                const errorData = await response.json();
-                errorBox.textContent = errorData.message || "회원가입 중 오류가 발생했습니다.";
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            errorBox.textContent = "서버와 통신 중 오류가 발생했습니다.";
-        } // ← 이 catch까지 포함해야 try 완성됨
-    });
-</script>
+<script src="/js/signup.js"></script>
 </body>
 </html>
