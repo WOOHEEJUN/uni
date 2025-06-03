@@ -41,8 +41,10 @@
     let stompClient = null;
     let buildingId = null;
     let nickname = null;
+    let university = null;
+    let roomId = null;
 
-    // JWT 기반 사용자 닉네임 불러오기
+    // 사용자 정보 로딩 (JWT 기반)
     window.addEventListener("DOMContentLoaded", () => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -62,50 +64,66 @@
       })
       .then(user => {
         nickname = user.nickname;
+        university = user.universityName; // ✅ 정확한 키로 수정
       })
       .catch(err => {
-        alert("인증에 실패했습니다. 다시 로그인해주세요.");
+        alert("인증 실패. 다시 로그인해주세요.");
         window.location.href = "/loginjb.html";
       });
     });
 
     function joinChat() {
       buildingId = document.getElementById("building-select").value;
+      if (!nickname || !university) {
+        alert("사용자 정보가 준비되지 않았습니다.");
+        return;
+      }
+
+      roomId = `${university}_${buildingId}`;
 
       const socket = new SockJS("/ws/chat");
       stompClient = Stomp.over(socket);
 
-      stompClient.connect({}, () => {
-        stompClient.subscribe(`/topic/${buildingId}`, (msg) => {
-          const message = JSON.parse(msg.body);
-          const div = document.createElement("div");
-          div.textContent = `${message.sender}: ${message.content}`;
-          document.getElementById("chat-messages").appendChild(div);
-        });
+      // JWT 토큰 가져오기
+      const token = localStorage.getItem("token");
 
-        document.getElementById("chat-section").style.display = "block";
+      // WebSocket 연결
+      stompClient.connect(
+        {
+          Authorization: "Bearer " + token // ✅ 추후 인터셉터 연동용
+        },
+        () => {
+          stompClient.subscribe(`/topic/${roomId}`, (msg) => {
+            const message = JSON.parse(msg.body);
+            const div = document.createElement("div");
+            div.textContent = `${message.sender}: ${message.content}`;
+            document.getElementById("chat-messages").appendChild(div);
+          });
 
-        // 입장 메시지 전송
-        stompClient.send(`/app/chat/${buildingId}`, {}, JSON.stringify({
-          sender: nickname,
-          content: `${nickname}님이 입장하셨습니다.`,
-          buildingId: buildingId
-        }));
-      }, (err) => {
-        console.error("WebSocket 연결 실패:", err);
-        alert("WebSocket 연결에 실패했습니다.");
-      });
+          document.getElementById("chat-section").style.display = "block";
+
+          stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify({
+            sender: nickname,
+            content: `${nickname}님이 입장하셨습니다.`,
+            buildingId: roomId
+          }));
+        },
+        (err) => {
+          console.error("WebSocket 연결 실패:", err);
+          alert("WebSocket 연결에 실패했습니다.");
+        }
+      );
     }
 
     function sendMessage() {
       const input = document.getElementById("chat-input");
       const content = input.value.trim();
-      if (!content || !nickname || !stompClient) return;
+      if (!content || !nickname || !stompClient || !roomId) return;
 
-      stompClient.send(`/app/chat/${buildingId}`, {}, JSON.stringify({
+      stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify({
         sender: nickname,
         content: content,
-        buildingId: buildingId
+        buildingId: roomId
       }));
 
       input.value = "";
