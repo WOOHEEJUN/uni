@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>고객센터 - Uni messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #e0f7fa, #fff3e0);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1080px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 45px;
+    }
+
+    .logo span {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-buttons button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .form-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    h2 {
+      color: #a65bff;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #333;
+      text-align: left;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #a65bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .success-message {
+      margin-top: 15px;
+      color: #cfaaff;
+      font-weight: bold;
+    }
+
+    #logoBtn img {
+      width: 50px;
+      height: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 고정된 로고 버튼 -->
+<a id="logoBtn" style="position: fixed; top: 20px; left: 20px; z-index: 999; cursor: pointer;">
+  <img src="/img/Uni_logo.png" alt="메인으로">
+</a>
+
+<header>
+  <div class="logo" onclick="goToHome()">
+    <img src="/img/Uni_logo.png" alt="로고">
+    <span>Uni Messenger</span>
+  </div>
+  <div class="header-buttons">
+    <button onclick="logout()">로그아웃</button>
+  </div>
+</header>
+
+<div class="form-container">
+  <h2>고객센터 문의</h2>
+  <form onsubmit="handleSubmit(event)">
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="content">문의 내용</label>
+    <textarea id="content" name="content" required></textarea>
+
+    <label for="file">첨부 파일</label>
+    <input type="file" id="file" name="file">
+
+    <button type="submit" class="submit-btn">문의 보내기</button>
+
+    <div class="success-message" id="successMsg" style="display: none;">
+      문의가 정상적으로 접수되었습니다.
+    </div>
+  </form>
+</div>
+
+<script>
+  function parseJwt(token) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    location.href = "login.html";
+  }
+
+  const payload = parseJwt(token);
+  const role = payload?.role;
+  const status = payload?.status;
+
+  function goToHome() {
+    if (role === "ADMIN") {
+      location.href = "admin.html";
+    } else if (status === "APPROVED") {
+      location.href = "userIndex.html";
+    } else {
+      location.href = "noTokenUserIndex.html";
+    }
+  }
+
+  document.getElementById("logoBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    goToHome();
+  });
+
+  function logout() {
+    localStorage.removeItem("token");
+    location.href = "index.html";
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    document.getElementById("successMsg").style.display = "block";
+  }
+</script>
+
+</body>
+</html>

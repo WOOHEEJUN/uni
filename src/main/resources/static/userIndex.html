@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     }
 
     body {
-      background: linear-gradient(to bottom right, #e0f0ff, #ffe4ef);
+      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -34,7 +34,7 @@
       gap: 10px;
       font-size: 1.8rem;
       font-weight: bold;
-      color: #a65bff;
+      color: #007bff;
       text-decoration: none;
     }
 
@@ -59,14 +59,14 @@
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
-      background-color: #a65bff;
+      background-color: #007bff;
       color: white;
       text-decoration: none;
       cursor: pointer;
     }
 
     .user-actions a:hover, .user-actions button:hover {
-      background-color: #8e45db;
+      background-color: #0056b3;
     }
 
     main {
@@ -93,7 +93,7 @@
     }
 
     .section h3 {
-      color: #a65bff;
+      color: #007bff;
       margin-bottom: 15px;
       font-size: 1.1rem;
     }
@@ -114,7 +114,7 @@
     }
 
     .section ul li a:hover {
-      color: #a65bff;
+      color: #007bff;
     }
 
     footer {
@@ -130,14 +130,14 @@
 
   <!-- 헤더 -->
   <header>
-    <a href="/" class="logo">
-      <img src="Uni 로고.png" alt="로고">
+    <a href="/userIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="로고">
       Uni messenger
     </a>
     <div class="user-actions">
       <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
       <span id="userGreeting">@@님 안녕하세요!</span>
-      <span id="universityName" style="color: #a65bff; font-weight: bold; margin: 0 10px;"></span>
+      <span id="universityName" style="color: #007bff; font-weight: bold; margin: 0 10px;"></span>
       <a href="myPage.html">마이페이지</a>
       <button onclick="logout()">로그아웃</button>
     </div>
@@ -147,7 +147,7 @@
   <main>
     <div class="left">
       <div class="section">
-        <h3>🔥 HOT 게시물</h3>
+        <h3>🔥 HOT 학과 게시물</h3>
         <ul>
           <li><a href="#">인기 글 1</a></li>
           <li><a href="#">인기 글 2</a></li>
@@ -168,9 +168,9 @@
       <div class="section">
         <h3>📁 게시판 목록</h3>
         <ul>
-          <li><a href="#">자유 게시판</a></li>
+          <li><a href="freeBorad.html">자유 게시판</a></li>
           <li><a href="#">중고 거래</a></li>
-          <li><a href="#">비밀 게시판</a></li>
+          <li><a href="secretBoard.html">비밀 게시판</a></li>
           <li><a href="#">학과 게시판</a></li>
         </ul>
       </div>
@@ -186,7 +186,6 @@
   <script>
     let currentUser = null;
 
-    // 로그인된 유저의 정보 불러오기
     async function loadUserInfo() {
       try {
         const response = await fetch("/api/user/me", {
@@ -195,24 +194,11 @@
             "Authorization": "Bearer " + localStorage.getItem("token")
           }
         });
-        
+
         if (!response.ok) throw new Error("인증 실패");
-        
+
         currentUser = await response.json();
-        
-        // 콘솔에 사용자 정보 표시
-        console.log("ID:", currentUser.id);
-        console.log("아이디:", currentUser.username);
-        console.log("닉네임:", currentUser.nickname);
-        console.log("대학교 ID:", currentUser.university_id);
-        console.log("대학교:", currentUser.universityName);
-        console.log("상태:", currentUser.status);
-        console.log("권한:", currentUser.role);
-        
-        // 사용자 정보 표시
         document.querySelector("#userGreeting").innerText = currentUser.nickname + "님 안녕하세요!";
-        
-        // 대학교 이름 표시
         if (currentUser.universityName) {
           document.querySelector("#universityName").innerText = `🏫 ${currentUser.universityName}`;
         }
@@ -230,10 +216,9 @@
     }
 
     function goChat() {
-      window.location.href = "chat.html";  
+      window.location.href = "chat.html";
     }
 
-    // 페이지 로드 시 사용자 정보 로드
     window.addEventListener("DOMContentLoaded", loadUserInfo);
   </script>
 
