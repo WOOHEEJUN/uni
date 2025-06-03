@@ -42,7 +42,7 @@ public class AdminService {
             .id(user.getId())
             .username(user.getUsername())
             .nickname(user.getNickname())
-            .universityName(user.getUniversity() != null ? user.getUniversity().getName() : null)
+            .university_id(user.getUniversity() != null ? user.getUniversity().getId() : null)
             .status(user.getStatus())
             .role(user.getRole())
             .build();

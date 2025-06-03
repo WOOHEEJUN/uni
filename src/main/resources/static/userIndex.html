@@ -13,7 +13,7 @@
     }
 
     body {
-      background: linear-gradient(to bottom right, #e0f0ff, #ffe4ef);
+      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -34,7 +34,7 @@
       gap: 10px;
       font-size: 1.8rem;
       font-weight: bold;
-      color: #a65bff;
+      color: #007bff;
       text-decoration: none;
     }
 
@@ -59,14 +59,14 @@
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
-      background-color: #a65bff;
+      background-color: #007bff;
       color: white;
       text-decoration: none;
       cursor: pointer;
     }
 
     .user-actions a:hover, .user-actions button:hover {
-      background-color: #8e45db;
+      background-color: #0056b3;
     }
 
     main {
@@ -93,7 +93,7 @@
     }
 
     .section h3 {
-      color: #a65bff;
+      color: #007bff;
       margin-bottom: 15px;
       font-size: 1.1rem;
     }
@@ -114,7 +114,7 @@
     }
 
     .section ul li a:hover {
-      color: #a65bff;
+      color: #007bff;
     }
 
     footer {
@@ -130,8 +130,8 @@
 
   <!-- 헤더 -->
   <header>
-    <a href="/" class="logo">
-      <img src="Uni 로고.png" alt="로고">
+    <a href="/userIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="로고">
       Uni messenger
     </a>
     <div class="user-actions">
@@ -139,7 +139,8 @@
       <a href="/building-select.html">
         <button style="background-color: #6c5ce7; padding: 8px 16px;">🏢 건물 채팅방</button>
       </a>
-      <span>@@님 안녕하세요!</span>
+      <span id="userGreeting">@@님 안녕하세요!</span>
+      <span id="universityName" style="color: #007bff; font-weight: bold; margin: 0 10px;"></span>
       <a href="myPage.html">마이페이지</a>
       <button onclick="logout()">로그아웃</button>
     </div>
@@ -149,7 +150,7 @@
   <main>
     <div class="left">
       <div class="section">
-        <h3>🔥 HOT 게시물</h3>
+        <h3>🔥 HOT 학과 게시물</h3>
         <ul>
           <li><a href="#">인기 글 1</a></li>
           <li><a href="#">인기 글 2</a></li>
@@ -170,9 +171,9 @@
       <div class="section">
         <h3>📁 게시판 목록</h3>
         <ul>
-          <li><a href="#">자유 게시판</a></li>
+          <li><a href="freeBorad.html">자유 게시판</a></li>
           <li><a href="#">중고 거래</a></li>
-          <li><a href="#">비밀 게시판</a></li>
+          <li><a href="secretBoard.html">비밀 게시판</a></li>
           <li><a href="#">학과 게시판</a></li>
         </ul>
       </div>
@@ -187,16 +188,8 @@
 
   <!-- 스크립트 -->
   <script>
-    function logout() {
-      alert("로그아웃 되었습니다.");
-      window.location.href = "loginjb.html";
-    }
+    let currentUser = null;
 
-    function goChat() {
-      window.location.href = "chat.html";  
-    }
-
-    // 로그인된 유저의 닉네임 불러오기
     window.addEventListener("DOMContentLoaded", () => {
       fetch("/api/user/me", {
         method: "GET",
@@ -209,14 +202,29 @@
         return response.json();
       })
       .then(user => {
-        document.querySelector(".user-actions span").innerText = user.nickname + "님 안녕하세요!";
+        currentUser = user;
+        document.querySelector("#userGreeting").innerText = user.nickname + "님 안녕하세요!";
+        if (user.universityName) {
+          document.querySelector("#universityName").innerText = `🏫 ${user.universityName}`;
+        }
         console.log("사용자 정보:", user);
       })
       .catch(err => {
         console.error("사용자 정보 불러오기 실패:", err);
-        document.querySelector(".user-actions span").innerText = "로그인이 필요합니다.";
+        document.querySelector("#userGreeting").innerText = "로그인이 필요합니다.";
+        window.location.href = "loginjb.html";
       });
     });
+
+    function logout() {
+      localStorage.removeItem("token");
+      alert("로그아웃 되었습니다.");
+      window.location.href = "loginjb.html";
+    }
+
+    function goChat() {
+      window.location.href = "chat.html";
+    }
   </script>
 
 </body>
