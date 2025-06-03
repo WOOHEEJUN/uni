@@ -55,7 +55,7 @@
     }
 
     .user-actions a, .user-actions button {
-      padding: 8px 14px;
+      padding: 8px 16px;
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
@@ -135,7 +135,10 @@
       Uni messenger
     </a>
     <div class="user-actions">
-      <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
+      <button onclick="goChat()" style="background-color: #ff8bd4; padding: 8px 16px;">💬 익명 채팅방</button>
+      <a href="/building-select.html">
+        <button style="background-color: #6c5ce7; padding: 8px 16px;">🏢 건물 채팅방</button>
+      </a>
       <span id="userGreeting">@@님 안녕하세요!</span>
       <span id="universityName" style="color: #007bff; font-weight: bold; margin: 0 10px;"></span>
       <a href="myPage.html">마이페이지</a>
@@ -172,6 +175,7 @@
         </ul>
       </div>
     </div>
+
   </main>
 
   <!-- 푸터 -->
@@ -183,70 +187,27 @@
   <script>
     let currentUser = null;
 
-    async function loadUserInfo() {
-      try {
-        const response = await fetch("/api/user/me", {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          }
-        });
-
-        if (!response.ok) throw new Error("인증 실패");
-
-        currentUser = await response.json();
-        document.querySelector("#userGreeting").innerText = currentUser.nickname + "님 안녕하세요!";
-        if (currentUser.universityName) {
-          document.querySelector("#universityName").innerText = `🏫 ${currentUser.universityName}`;
+    window.addEventListener("DOMContentLoaded", () => {
+      fetch("/api/user/me", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
         }
-        
-        // 대학교 게시판 목록 로드
-        await loadUniversityBoards();
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("인증 실패");
+        return response.json();
+      })
+      .then(user => {
+        currentUser = user;
+        document.querySelector("#userGreeting").innerText = user.nickname + "님 안녕하세요!";
+        if (user.universityName) {
+          document.querySelector("#universityName").innerText = `🏫 ${user.universityName}`;
+        }
       } catch (err) {
         console.error("사용자 정보 불러오기 실패:", err);
         document.querySelector("#userGreeting").innerText = "로그인이 필요합니다.";
         window.location.href = "loginjb.html";
-      }
-    }
-
-    async function loadUniversityBoards() {
-      try {
-        const response = await fetch("/api/boards/my-university", {
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          }
-        });
-
-        if (!response.ok) {
-          console.error("게시판 목록 응답 실패:", response.status, response.statusText);
-          throw new Error("게시판 목록을 불러오는데 실패했습니다.");
-        }
-
-        const boards = await response.json();
-        console.log("받아온 게시판 목록:", boards); // 디버깅용 로그
-
-        const boardList = document.getElementById("boardList");
-        boardList.innerHTML = ""; // 기존 목록 초기화
-
-        if (!boards || boards.length === 0) {
-          console.log("게시판 목록이 비어있습니다.");
-          boardList.innerHTML = "<li>게시판이 없습니다.</li>";
-          return;
-        }
-
-        boards.forEach(board => {
-          console.log("게시판 정보:", board); // 디버깅용 로그
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.href = `board.html?id=${board.id}&type=${board.type.toLowerCase()}`;
-          a.textContent = board.name;
-          li.appendChild(a);
-          boardList.appendChild(li);
-        });
-      } catch (err) {
-        console.error("게시판 목록 로드 실패:", err);
-        const boardList = document.getElementById("boardList");
-        boardList.innerHTML = "<li>게시판을 불러오는데 실패했습니다.</li>";
       }
     }
 
@@ -259,8 +220,6 @@
     function goChat() {
       window.location.href = "chat.html";
     }
-
-    window.addEventListener("DOMContentLoaded", loadUserInfo);
   </script>
 
 </body>
