@@ -4,83 +4,112 @@
     <meta charset="UTF-8">
     <title>회원가입 - Uni messenger</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+   <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Noto Sans KR', sans-serif;
+        background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+    }
 
-        .form-container {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 480px;
-        }
+    .form-container {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+    }
 
-        h2 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 30px;
-        }
+    h2 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 30px;
+        font-size: 1.6rem;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #333;
-        }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
+    input, select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
 
-        input[type="file"] {
-            border: none;
-        }
+    input:focus, select:focus {
+        border-color: #007bff;
+        outline: none;
+        background-color: #f9fbff;
+    }
 
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
+    input[type="file"] {
+        border: none;
+    }
 
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
 
-        .error-message {
-            color: red;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-    </style>
+    .submit-btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .error-message {
+        color: red;
+        margin-top: -10px;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    /* 상단 로고 */
+    .top-logo {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 999;
+    }
+
+    .top-logo img {
+        width: 80px;
+        height: 80px;
+        transition: transform 0.2s;
+    }
+
+    .top-logo img:hover {
+        transform: scale(1.05);
+    }
+</style>
 </head>
 <body>
 <div class="form-container">
     <h2>🎓 Uni messenger 회원가입</h2>
     <a href="index.html" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
-  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 50px; height: 50px;">
+  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 80px; height: 80px;">
 </a>
     <form id="signupForm">
         <label for="username">아이디</label>
@@ -115,7 +144,7 @@
     </form>
 </div>
 
-<<script>
+<script>
     document.getElementById("signupForm").addEventListener("submit", async function(e) {
         e.preventDefault();
 

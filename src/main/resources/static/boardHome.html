@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시판 메인 - Uni Messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo img {
+  width: 60px;
+  height: 60px;
+}
+
+.logo span {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.user-buttons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.user-buttons span {
+  font-weight: 600;
+  color: #333;
+}
+
+.user-buttons button {
+  background-color: #a65bff;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-buttons button:hover {
+  background-color: #8b3eea;
+}
+
+nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  margin: 0 auto 40px;
+  max-width: 1200px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+nav a {
+  text-decoration: none;
+  text-align: center;
+  padding: 18px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(to right, #6ca8ff, #a9d0ff);
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background: linear-gradient(to right, #4e90ff, #88c4ff);
+  transform: translateY(-2px);
+}
+
+.title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #6a2dbf;
+  margin-bottom: 30px;
+}
+
+.board-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e3d6ff;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.board-header h2 {
+  font-size: 1.6rem;
+  color: #007bff;
+}
+
+.board-header button {
+  background: #a65bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.board-header button:hover {
+  background-color: #8e45db;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  border: 2px solid #cfaaff;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: #f8f0ff;
+  color: #6a2dbf;
+}
+
+tr:hover {
+  background-color: #f5faff;
+  cursor: pointer;
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="userIndex.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="메인으로">     
+ </a>
+
+  </div>
+  <div class="user-buttons">
+    <span id="nickname">닉네임님</span>
+    <button onclick="location.href='mypage.html'">마이페이지</button>
+    <button onclick="logout()">로그아웃</button>
+  </div>
+</header>
+
+<nav>
+  <a href="freeBorad.html">자유게시판</a>
+  <a href="secretBoard.html">비밀게시판</a>
+  <a href="#">학과 게시판</a>
+  <a href="#">중고거래 게시판</a>
+</nav>
+
+<div class="title">Uni messenger</div>
+
+<div class="board-container">
+  <div class="board-header">
+    <h2>📋 자유게시판</h2>
+    <button onclick="location.href='writePost.html'">글쓰기</button>
+  </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="게시글 제목 검색...">
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>날짜</th>
+      </tr>
+    </thead>
+    <tbody id="postTableBody"></tbody>
+  </table>
+</div>
+
+<script>
+  function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
+    alert("로그아웃 되었습니다.");
+    location.href = "loginjb.html";
+  }
+
+  window.onload = function () {
+    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+    if (!token) return;
+    fetch("/api/user/me", {
+      headers: { "Authorization": "Bearer " + token }
+    })
+      .then(res => res.json())
+      .then(user => {
+        document.getElementById("nickname").innerText = `${user.nickname}님`;
+        if (user.university && user.university.name) {
+          document.getElementById("universityName").innerText = `${user.university.name} 커뮤니티`;
+        }
+      })
+      .catch(() => {
+        document.getElementById("nickname").innerText = "익명님";
+        document.getElementById("universityName").innerText = "학교 정보 없음";
+      });
+  };
+</script>
+
+</body>
+</html>
