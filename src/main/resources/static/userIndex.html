@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -55,7 +55,7 @@
     }
 
     .user-actions a, .user-actions button {
-      padding: 8px 14px;
+      padding: 8px 16px;
       font-size: 0.9rem;
       border: none;
       border-radius: 6px;
@@ -135,7 +135,10 @@
       Uni messenger
     </a>
     <div class="user-actions">
-      <button onclick="goChat()" style="background-color: #ff8bd4;">💬 채팅 메시지</button>
+      <button onclick="goChat()" style="background-color: #ff8bd4; padding: 8px 16px;">💬 익명 채팅방</button>
+      <a href="/building-select.html">
+        <button style="background-color: #6c5ce7; padding: 8px 16px;">🏢 건물 채팅방</button>
+      </a>
       <span>@@님 안녕하세요!</span>
       <a href="myPage.html">마이페이지</a>
       <button onclick="logout()">로그아웃</button>
@@ -174,6 +177,7 @@
         </ul>
       </div>
     </div>
+
   </main>
 
   <!-- 푸터 -->
@@ -206,7 +210,6 @@
       })
       .then(user => {
         document.querySelector(".user-actions span").innerText = user.nickname + "님 안녕하세요!";
-        // 필요한 경우 다른 사용자 정보도 사용할 수 있습니다
         console.log("사용자 정보:", user);
       })
       .catch(err => {
