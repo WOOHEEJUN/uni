@@ -56,7 +56,7 @@ CREATE TABLE boards (
     id INT AUTO_INCREMENT PRIMARY KEY,
     university_id INT,
     name VARCHAR(50) NOT NULL,
-    type ENUM('FREE', 'ANONYMOUS', 'MARKET') NOT NULL,
+    type ENUM('FREE', 'ANONYMOUS', 'MARKET', 'DEPARTMENT') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (university_id) REFERENCES universities(id)
 );
@@ -70,6 +70,7 @@ CREATE TABLE posts (
     content TEXT NOT NULL,
     is_anonymous BOOLEAN DEFAULT FALSE,
     view_count INT DEFAULT 0,
+    like_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (board_id) REFERENCES boards(id),
@@ -89,17 +90,6 @@ CREATE TABLE comments (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- 9. 게시판 좋아요 테이블
-CREATE TABLE post_likes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT,
-    user_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    UNIQUE KEY unique_post_user (post_id, user_id)
-);
-
 INSERT INTO universities (name, domain) VALUES
 ('서울대학교', 'snu.ac.kr'),
 ('연세대학교', 'yonsei.ac.kr'),
@@ -117,41 +107,41 @@ INSERT INTO boards (university_id, name, type) VALUES
 (1, '자유게시판', 'FREE'),
 (1, '비밀게시판', 'ANONYMOUS'),
 (1, '중고거래게시판', 'MARKET'),
-(1, '학과게시판', 'FREE'),
+(1, '학과게시판', 'DEPARTMENT'),
 (2, '자유게시판', 'FREE'),
 (2, '비밀게시판', 'ANONYMOUS'),
 (2, '중고거래게시판', 'MARKET'),
-(2, '학과게시판', 'FREE'),
+(2, '학과게시판', 'DEPARTMENT'),
 (3, '자유게시판', 'FREE'),
 (3, '비밀게시판', 'ANONYMOUS'),
 (3, '중고거래게시판', 'MARKET'),
-(3, '학과게시판', 'FREE'),
+(3, '학과게시판', 'DEPARTMENT'),
 (4, '자유게시판', 'FREE'),
 (4, '비밀게시판', 'ANONYMOUS'),
 (4, '중고거래게시판', 'MARKET'),
-(4, '학과게시판', 'FREE'),
+(4, '학과게시판', 'DEPARTMENT'),
 (5, '자유게시판', 'FREE'),
 (5, '비밀게시판', 'ANONYMOUS'),
 (5, '중고거래게시판', 'MARKET'),
-(5, '학과게시판', 'FREE'),
+(5, '학과게시판', 'DEPARTMENT'),
 (6, '자유게시판', 'FREE'),
 (6, '비밀게시판', 'ANONYMOUS'),
 (6, '중고거래게시판', 'MARKET'),
-(6, '학과게시판', 'FREE'),
+(6, '학과게시판', 'DEPARTMENT'),
 (7, '자유게시판', 'FREE'),
 (7, '비밀게시판', 'ANONYMOUS'),
 (7, '중고거래게시판', 'MARKET'),
-(7, '학과게시판', 'FREE'),
+(7, '학과게시판', 'DEPARTMENT'),
 (8, '자유게시판', 'FREE'),
 (8, '비밀게시판', 'ANONYMOUS'),
 (8, '중고거래게시판', 'MARKET'),
-(8, '학과게시판', 'FREE'),
+(8, '학과게시판', 'DEPARTMENT'),
 (9, '자유게시판', 'FREE'),
 (9, '비밀게시판', 'ANONYMOUS'),
 (9, '중고거래게시판', 'MARKET'),
-(9, '학과게시판', 'FREE'),
+(9, '학과게시판', 'DEPARTMENT'),
 (10, '자유게시판', 'FREE'),
 (10, '비밀게시판', 'ANONYMOUS'),
 (10, '중고거래게시판', 'MARKET'),
-(10, '학과게시판', 'FREE');
+(10, '학과게시판', 'DEPARTMENT');
 

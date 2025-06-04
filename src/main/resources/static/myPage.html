@@ -84,25 +84,24 @@
 </head>
 <body>
 <a href="#" onclick="goMain()" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
-  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 50px; height: 50px;">
+  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 80px; height: 80px;">
 </a>
 <div class="container">
   <div class="top-buttons">
     <button onclick="goMain()">홈으로</button>
     <button onclick="logout()">로그아웃</button>
   </div>
-  <img src="/img/user_pug.png" alt="유저 프로필 사진" class="profile-img">
+  <img src="/img/user.png" alt="유저 프로필 사진" class="profile-img">
   <div class="menu-buttons">
     <p id="nicknameArea" style="font-size: 1.2rem; font-weight: bold; color: #6a2dbf; margin: 16px 0 24px;">
-    닉네임
-</p>
+      닉네임
+    </p>
     <button onclick="location.href='submitEnrollment.html'">🎓  재학증명서 업로드</button>
     <button onclick="location.href='#'">✏️ 개인정보 수정</button>
     <button onclick="location.href='customerService.html'">📞 고객센터</button>
   </div>
 </div>
 <script>
-  // 닉네임 자동 표시
   window.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
     if (!token) return;
@@ -131,7 +130,6 @@
     const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
 
     if (!token) {
-      console.warn("❌ 토큰 없음");
       location.href = "noTokenUserIndex.html";
       return;
     }
@@ -142,23 +140,19 @@
       }
     })
     .then(res => {
-      if (!res.ok) throw new Error("❌ 인증 실패 or 응답 오류");
+      if (!res.ok) throw new Error("인증 실패");
       return res.json();
     })
     .then(user => {
-      console.log("✅ 사용자 정보:", user);
       const status = (user.status || user.userStatus || user.verificationStatus || "").toUpperCase();
 
       if (status === "APPROVED") {
-        console.log("✅ 승인된 사용자 → userIndex.html로 이동");
         location.href = "userIndex.html";
       } else {
-        console.warn("⚠️ 승인되지 않은 사용자 상태:", status);
         location.href = "noTokenUserIndex.html";
       }
     })
-    .catch(err => {
-      console.error("❌ 에러 발생:", err);
+    .catch(() => {
       location.href = "noTokenUserIndex.html";
     });
   }

@@ -1,0 +1,185 @@
+/* 공통 기본 설정 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 */
+header {
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+}
+
+/* 사용자 액션 버튼 */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-actions a,
+.user-actions button {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-actions a:hover,
+.user-actions button:hover {
+  opacity: 0.9;
+}
+
+.chat-btn {
+  background-color: #ff8bd4;
+}
+
+.chat-btn:hover {
+  background-color: #f970c1;
+}
+
+.building-btn {
+  background-color: #6c5ce7;
+}
+
+.building-btn:hover {
+  background-color: #4e3ad2;
+}
+
+.login-btn,
+.logout-btn,
+.signup,
+.mypage-btn {
+  background-color: #007bff;
+}
+
+.login-btn:hover,
+.logout-btn:hover,
+.signup:hover,
+.mypage-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 레이아웃 */
+main {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 30px 40px;
+}
+
+.left,
+.right {
+  width: 20%;
+}
+
+.center {
+  flex: 1;
+}
+
+/* 콘텐츠 박스 */
+.section {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.section h3 {
+  color: #007bff;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.section ul li {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.section ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.section ul li a:hover {
+  color: #007bff;
+}
+
+/* 버튼 */
+.all-board-button {
+  display: block;
+  width: 100%;
+  padding: 8px 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: none; /* 배경 제거 */
+  color: #333;
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  text-decoration: none;
+  margin-bottom: 6px;
+  transition: color 0.2s;
+}
+
+.all-board-button:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+/* 푸터 */
+footer {
+  background: #f8f8f8;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+.all-board-button {
+  display: block;             /* 반드시 block 처리 */
+  width: 100%;
+  margin-bottom: 10px;
+}
+#universityName {
+  color: #007bff;
+  font-weight: bold;
+}

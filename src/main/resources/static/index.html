@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Uni messenger - 홈</title>
+  <title>Uni Messenger - 게스트</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -13,7 +13,8 @@
     }
 
     body {
-      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+      background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+      min-height: 100vh;
       padding: 20px;
     }
 
@@ -21,7 +22,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .logo {
@@ -32,33 +33,56 @@
     }
 
     .logo img {
-      width: 50px;
-      height: 50px;
+      width:80px;
+      height: 80px;
     }
 
     .logo span {
       font-size: 1.8rem;
       font-weight: bold;
       color: #007bff;
-    }
-
-    .auth-buttons a {
-      text-decoration: none;
-    }
-
-    .auth-buttons button {
-      padding: 10px 20px;
-      margin-left: 10px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 6px;
       cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      transition: background-color 0.3s;
     }
 
-    .auth-buttons button:hover {
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-actions a button {
+  width: 130px; /* 👈 원하는 너비 설정 */
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  color: white;
+}
+
+    .chat-btn {
+      background-color: #ff8bd4;
+    }
+
+    .chat-btn:hover {
+      background-color: #f970c1;
+    }
+
+    .building-btn {
+      background-color: #6c5ce7;
+    }
+
+    .building-btn:hover {
+      background-color: #4e3ad2;
+    }
+
+    .login-btn, .logout-btn {
+      background-color: #007bff;
+    }
+
+    .login-btn:hover, .logout-btn:hover {
       background-color: #0056b3;
     }
 
@@ -67,35 +91,25 @@
       gap: 20px;
     }
 
-    .left {
-      width: 25%;
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .left, .right {
+      width: 22%;
     }
 
     .center {
       flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .right {
-      width: 25%;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .section {
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     .section h3 {
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-      color: #333;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: #007bff;
     }
 
     .section ul {
@@ -104,91 +118,80 @@
     }
 
     .section ul li {
-      margin-bottom: 8px;
-      padding: 8px;
-      background: #f4f4f4;
-      border-radius: 6px;
-    }
-
-    .section ul li a {
-      text-decoration: none;
-      color: #333;
-      display: block;
+      margin-bottom: 10px;
       font-weight: 500;
     }
 
-    .section ul li a:hover {
-      color: #007bff;
-    }
-
-    .message-box {
-      height: 200px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    .big-button {
+      width: 100%;
       padding: 20px;
       font-size: 1.1rem;
-      color: #444;
-      display: flex;
-      align-items: center;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(to right, #7fbfff, #a3d8ff);
+      color: white;
+      box-shadow: 0 8px 16px rgba(0,123,255,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .auth-buttons {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto; /* ✅ 오른쪽으로 밀어줌 */
+
+    .big-button:hover {
+      background: linear-gradient(to right, #66b2ff, #8ccfff);
+      transform: translateY(-2px);
+    }
+    .signup {
+  background-color: #007bff;
 }
+
+.signup:hover {
+  background-color: #0056b3;
+}
+
   </style>
 </head>
 <body>
 
-  <!-- ✅ 헤더 -->
-  <header>
+<header>
   <a href="index.html" class="logo">
-  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 50px; height: 50px;">
-  <span>Uni messenger</span>
-</a>
-
-  <div class="auth-buttons">
-  <a href="noLoginUser.html"><button style="background-color: #ff8bd4;">💬 익명채팅</button></a>
-  <a href="loginjb.html"><button>로그인</button></a>
-  <a href="signup.html"><button>회원가입</button></a>
+    <img src="/img/Uni_logo.png" alt="로고">
+    <span>Uni Messenger</span>
+  </a>
+  <div class="user-actions">
+  <a href="noLoginUser.html"><button class="chat-btn">💬 익명 채팅방</button></a>
+  <a href="noLoginUser.html"><button class="building-btn">🏢 건물 채팅방</button></a>
+  <a href="loginjb.html"><button class="login-btn">로그인</button></a>
+  <a href="signup.html"><button class="signup">회원가입</button></a>
 </div>
 </header>
 
-  <!-- ✅ 메인 -->
-  <main>
-    <div class="left">
-      <div class="section">
-        <h3>🔥 HOT 학과 게시물</h3>
-        <ul>
-          <li><a href="noLoginUser.html">인기 글 1</a></li>
-          <li><a href="noLoginUser.html">인기 글 2</a></li>
-          <li><a href="noLoginUser.html">인기 글 3</a></li>
-          <li><a href="noLoginUser.html">인기 글 4</a></li>
-          <li><a href="noLoginUser.html">인기 글 5</a></li>
-        </ul>
-      </div>
-    </div>
+<main>
+  <div class="left section">
+    <h3>🔥 HOT 학과 게시물</h3>
+    <ul>
+      <li>인기 글 1</li>
+      <li>인기 글 2</li>
+      <li>인기 글 3</li>
+      <li>인기 글 4</li>
+    </ul>
+  </div>
 
-    <div class="center">
-      <div class="message-box">
-        💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.
-      </div>
-    </div>
-
-    <div class="right">
+  <div class="center section">
+    <h3>📢 공지사항</h3>
+    <p>💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.</p>
+  </div>
+<div class="right">
       <div class="section">
         <h3>📁 게시판 목록</h3>
-        <ul>
-          <li><a href="noLoginUser.html">자유 게시판</a></li>
-          <li><a href="noLoginUser.html">중고 거래</a></li>
-          <li><a href="noLoginUser.html">비밀 게시판</a></li>
-          <li><a href="noLoginUser.html">학과 게시판</a></li>
-        </ul>
+        <ul id="boardList">
+  <li><a href="noLoginUser.html">📌 자유게시판</a></li>
+  <li><a href="noLoginUser.html">🙈 비밀게시판</a></li>
+  <li><a href="noLoginUser.html">🛍 중고거래게시판</a></li>
+  <li><a href="noLoginUser.html">🎓 학과 게시판</a></li>
+</ul>
       </div>
     </div>
-  </main>
+</main>
 
 </body>
 </html>
