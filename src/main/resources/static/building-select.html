@@ -8,123 +8,123 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/common.css">
   <style>
-* {
-  font-family: 'Noto Sans KR', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  background: linear-gradient(to bottom right, #e0f0ff, #ffe9f1);
-  min-height: 100vh;
-  padding: 30px;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  background: white;
-  padding: 20px 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-.logo img {
-  width: 80px;
-  height: 80px;
-}
-.logo span {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #007bff;
-}
-.header-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #333;
-}
-.header-buttons {
-  display: flex;
-  gap: 10px;
-}
-.header-buttons button {
-  background: #a65bff;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.title-banner {
-  background: rgba(173, 216, 255, 0.3);
-  color: #007bff;
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-align: center;
-  padding: 20px;
-  border-radius: 20px;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-select, button {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: bold;
-}
-select {
-  margin-right: 10px;
-}
-#chat-section {
-  margin-top: 30px;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-#chat-messages {
-  height: 300px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  padding: 12px;
-  margin-bottom: 10px;
-  background: #f9f9f9;
-  border-radius: 10px;
-}
-#chat-input {
-  width: 75%;
-  padding: 12px;
-  border: 2px solid #cfaaff;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-#send-button {
-  width: 20%;
-  padding: 12px;
-  background: #007bff;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-#send-button:hover {
-  background: #0056b3;
-}
+    * {
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: linear-gradient(to bottom right, #e0f0ff, #ffe9f1);
+      min-height: 100vh;
+      padding: 30px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      background: white;
+      padding: 20px 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo img {
+      width: 80px;
+      height: 80px;
+    }
+    .logo span {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .header-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .header-buttons button {
+      background: #a65bff;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .title-banner {
+      background: rgba(173, 216, 255, 0.3);
+      color: #007bff;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    select, button {
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    select {
+      margin-right: 10px;
+    }
+    #chat-section {
+      margin-top: 30px;
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f9f9f9;
+      border-radius: 10px;
+    }
+    #chat-input {
+      width: 75%;
+      padding: 12px;
+      border: 2px solid #cfaaff;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    #send-button {
+      width: 20%;
+      padding: 12px;
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    #send-button:hover {
+      background: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -154,7 +154,7 @@ select {
     <h3>💬 채팅방</h3>
     <div id="chat-messages"></div>
     <div style="display: flex; gap: 10px;">
-      <input type="text" id="chat-input" placeholder="메시지를 입력하세요" />
+      <input type="text" id="chat-input" placeholder="메시지를 입력하세요" onkeydown="handleKey(event)" />
       <button id="send-button" onclick="sendMessage()">전송</button>
     </div>
   </div>
@@ -253,6 +253,12 @@ select {
         buildingId: roomId
       }));
       input.value = "";
+    }
+
+    function handleKey(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
     }
 
     function logout() {

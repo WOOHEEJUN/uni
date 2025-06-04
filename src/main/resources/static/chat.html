@@ -22,7 +22,7 @@
 <body>
   <h2>익명 채팅방</h2>
   <div id="chat-box"></div>
-  <input type="text" id="message" placeholder="메시지 입력" />
+  <input type="text" id="message" placeholder="메시지 입력" onkeydown="handleKey(event)" />
   <button onclick="sendMessage()">전송</button>
 
   <script>
@@ -59,8 +59,13 @@
         content: content,
         buildingId: roomId
       }));
-
       input.value = "";
+    }
+
+    function handleKey(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
     }
 
     window.onload = connect;
