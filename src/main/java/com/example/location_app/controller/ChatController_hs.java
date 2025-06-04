@@ -5,12 +5,15 @@ import java.time.LocalDateTime;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.example.location_app.entity.ChatMessage_hs;
 import com.example.location_app.repository.ChatMessageRepository_hs;
+import com.example.location_app.security.JwtTokenProvider;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -19,22 +22,40 @@ public class ChatController_hs {
 
     private final ChatMessageRepository_hs chatMessageRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    /**
-     * STOMP 메시지를 받아서 저장하고 해당 건물 채팅방에 브로드캐스트.
-     * @param roomId university_buildingId 조합 (예: "snu_101")
-     * @param message 클라이언트가 보낸 메시지
-     */
     @MessageMapping("/chat/{roomId}")
     public void sendMessage(@DestinationVariable String roomId,
-                            @Payload ChatMessage_hs message) {
+                            @Payload ChatMessage_hs message,
+                            SimpMessageHeaderAccessor headerAccessor) {
 
         message.setTimestamp(LocalDateTime.now());
-        message.setBuildingId(roomId); // 여기서는 실제로는 roomId (university_buildingId)
+        message.setBuildingId(roomId);
 
+        // 익명 채팅 처리
+        if ("anonymous".equals(roomId)) {
+            messagingTemplate.convertAndSend("/topic/anonymous", message);
+            return;
+        }
+
+        // 사용자 토큰에서 university 정보 확인
+        String token = headerAccessor.getFirstNativeHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            Claims claims = jwtTokenProvider.getClaims(token);
+
+            String userUni = String.valueOf(claims.get("universityName"));
+            String expectedPrefix = userUni + "_";
+
+            // 건물ID의 prefix가 자신의 대학과 일치하지 않으면 차단
+            if (!roomId.startsWith(expectedPrefix)) {
+                System.out.println("⚠️ 접근 거부: 타 대학 건물 채팅방 접속 시도");
+                return; // 메시지 전송하지 않음
+            }
+        }
+
+        // 저장 후 브로드캐스트
         ChatMessage_hs saved = chatMessageRepository.save(message);
-
-        // 해당 채팅방 구독자에게 메시지 브로드캐스트
         messagingTemplate.convertAndSend("/topic/" + roomId, saved);
     }
 }

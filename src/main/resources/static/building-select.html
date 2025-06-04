@@ -14,14 +14,11 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   background: linear-gradient(to bottom right, #e0f0ff, #ffe9f1);
   min-height: 100vh;
   padding: 30px;
 }
-
-/* 헤더 레이아웃 */
 header {
   display: flex;
   justify-content: space-between;
@@ -31,27 +28,21 @@ header {
   padding: 20px 40px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
-/* 왼쪽: 로고 */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
 }
-
 .logo img {
   width: 80px;
   height: 80px;
 }
-
 .logo span {
   font-size: 1.4rem;
   font-weight: bold;
   color: #007bff;
 }
-
-/* 가운데: 타이틀 */
 .header-title {
   position: absolute;
   left: 50%;
@@ -60,13 +51,10 @@ header {
   font-weight: bold;
   color: #333;
 }
-
-/* 오른쪽: 버튼들 */
 .header-buttons {
   display: flex;
   gap: 10px;
 }
-
 .header-buttons button {
   background: #a65bff;
   color: white;
@@ -76,8 +64,6 @@ header {
   cursor: pointer;
   font-weight: bold;
 }
-
-/* 타이틀 배너 */
 .title-banner {
   background: rgba(173, 216, 255, 0.3);
   color: #007bff;
@@ -89,8 +75,6 @@ header {
   margin-bottom: 40px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
-
-/* 셀렉트박스 및 버튼 */
 select, button {
   padding: 12px;
   border: none;
@@ -98,12 +82,9 @@ select, button {
   font-size: 1rem;
   font-weight: bold;
 }
-
 select {
   margin-right: 10px;
 }
-
-/* 채팅 UI */
 #chat-section {
   margin-top: 30px;
   background: white;
@@ -114,7 +95,6 @@ select {
   margin-left: auto;
   margin-right: auto;
 }
-
 #chat-messages {
   height: 300px;
   overflow-y: auto;
@@ -124,7 +104,6 @@ select {
   background: #f9f9f9;
   border-radius: 10px;
 }
-
 #chat-input {
   width: 75%;
   padding: 12px;
@@ -132,7 +111,6 @@ select {
   border-radius: 10px;
   font-size: 1rem;
 }
-
 #send-button {
   width: 20%;
   padding: 12px;
@@ -144,7 +122,6 @@ select {
   margin-left: 10px;
   cursor: pointer;
 }
-
 #send-button:hover {
   background: #0056b3;
 }
@@ -200,10 +177,7 @@ select {
       fetch("/api/user/me", {
         headers: { "Authorization": "Bearer " + token }
       })
-      .then(res => {
-        if (!res.ok) throw new Error("인증 실패");
-        return res.json();
-      })
+      .then(res => res.ok ? res.json() : Promise.reject("인증 실패"))
       .then(user => {
         nickname = user.nickname;
         university = user.universityName;
@@ -214,6 +188,10 @@ select {
       });
     });
 
+    function slugify(text) {
+      return text.replace(/\s+/g, '_').toLowerCase();
+    }
+
     function joinChat() {
       buildingId = document.getElementById("building-select").value;
 
@@ -222,11 +200,21 @@ select {
         return;
       }
 
-      roomId = `${university}_${buildingId}`;
+      roomId = `${slugify(university)}_${buildingId}`;
 
+      if (stompClient && stompClient.connected) {
+        stompClient.disconnect(() => {
+          console.log("이전 WebSocket 연결 해제됨.");
+          connectToRoom();
+        });
+      } else {
+        connectToRoom();
+      }
+    }
+
+    function connectToRoom() {
       const socket = new SockJS("/ws/chat");
       stompClient = Stomp.over(socket);
-
       const token = localStorage.getItem("token");
 
       stompClient.connect(

@@ -27,7 +27,7 @@
     <div class="user-actions">
       <button class="chat-btn" onclick="goChat()">💬 익명 채팅방</button>
       <a href="/building-select.html"><button class="building-btn">🏢 건물 채팅방</button></a>
-      <span id="userGreeting">123님 안녕하세요!</span>
+      <span id="userGreeting">@@님 안녕하세요!</span>
       <span id="universityName">🏠 서울대학교</span>
       <a href="myPage.html"><button class="mypage-btn">마이페이지</button></a>
       <button class="logout-btn" onclick="logout()">로그아웃</button>
@@ -66,12 +66,13 @@
       </div>
     </div>
   </main>
+
   <!-- 푸터 -->
   <footer>
     ⓒ 2025 Uni Messenger. All rights reserved.
   </footer>
 
-  <!-- 스크립트 -->
+  <!-- 통합 스크립트 -->
   <script>
     let currentUser = null;
 
@@ -119,12 +120,12 @@
         console.log("가져온 게시판 목록:", boards);
         const boardList = document.getElementById("boardList");
         boardList.innerHTML = ""; // 기존 목록 초기화
-        
+
         boards.forEach(board => {
           console.log("게시판 정보:", board);
           const li = document.createElement("li");
           const a = document.createElement("a");
-          a.href = `/boardHome.html?id=${board.id}`;
+          a.href = `/boardHome.html?boardId=${board.id}&boardType=${board.type}`;
           a.textContent = board.name;
           li.appendChild(a);
           boardList.appendChild(li);
