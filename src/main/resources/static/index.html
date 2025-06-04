@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Uni Messenger - 게스트</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/index.css">
   <style>
     * {
       box-sizing: border-box;
@@ -18,13 +17,14 @@
       min-height: 100vh;
       padding: 20px;
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 5px;
-    }
+header {
+  background: white;                            /* ✅ 흰 배경 */
+  display: flex;
+  justify-content: space-between;              /* 좌우 정렬 */
+  align-items: center;
+  padding: 20px 60px;                           /* ✅ 내부 여백 (상하/좌우) */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);    /* ✅ 박스 그림자 효과 */
+}
 
     .logo {
       display: flex;
@@ -87,10 +87,13 @@
       background-color: #0056b3;
     }
 
-    main {
-      display: flex;
-      gap: 20px;
-    }
+   main {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 30px 40px;
+  margin-top: 5px; /* ✅ 원하는 만큼 아래로 내림 */
+}
 
     .section {
       background: white;
@@ -148,19 +151,14 @@
 .signup:hover {
   background-color: #0056b3;
 }
-.left, .center {
-  width: 28%; /* 🔻 너비 줄이기 */
+.right .section ul li a {
+  color: #000 !important; /* 글자색을 완전한 검정색으로 고정 */
+  text-decoration: none;
 }
 
-.section {
-  padding: 16px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-}
-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+.right .section ul li a:hover {
+  color: #000 !important; /* hover해도 검정 유지 */
+  text-decoration: underline; /* 선택사항: 밑줄 */
 }
 
   </style>

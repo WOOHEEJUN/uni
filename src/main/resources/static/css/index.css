@@ -16,18 +16,11 @@ body {
 /* 헤더 */
 header {
   background: white;
-  padding: 30px 0; /* ⬆ 높이 더 넓힘 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  margin-bottom: 30px;
-}
-
-.header-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 20px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -49,13 +42,20 @@ header {
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 4px; /* ✅ 간격 좁힘: 기존보다 훨씬 촘촘 */
+  gap: 10px;
 }
 
-.user-actions button,
-.user-actions a {
-  padding: 6px 12px; /* ✅ 버튼 안 여백도 살짝 축소 (선택) */
-  font-size: 0.85rem;
+.user-actions a,
+.user-actions button {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .user-actions a:hover,
