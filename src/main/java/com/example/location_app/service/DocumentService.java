@@ -54,10 +54,10 @@ public class DocumentService { //증명서 제출
             .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         log.info("User found: {}", user.getUsername());
 
-        // @uploads 폴더 생성
-        Path uploadsDir = Paths.get("@uploads");
+        // upload 폴더 생성
+        Path uploadsDir = Paths.get("upload");
         if (!Files.exists(uploadsDir)) {
-            log.info("Creating uploads directory at: {}", uploadsDir);
+            log.info("Creating upload directory at: {}", uploadsDir);
             Files.createDirectories(uploadsDir);
         }
 
@@ -79,7 +79,7 @@ public class DocumentService { //증명서 제출
             log.info("File saved successfully at: {}", filePath);
 
             // DB에 문서 정보 저장 (상대 경로 저장)
-            String relativePath = userId + "/" + fileName;
+            String relativePath = "upload/" + userId + "/" + fileName;
             UserDocument document = UserDocument.builder()
                 .user(user)
                 .imagePath(relativePath)

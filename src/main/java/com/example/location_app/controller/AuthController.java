@@ -20,9 +20,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest request) {
-        authService.signUp(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<LoginResponse> signUp(@Valid @RequestBody SignUpRequest request) {
+        LoginResponse response = authService.signUp(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")

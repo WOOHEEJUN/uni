@@ -24,7 +24,7 @@ import java.util.Optional;
 public class AdminController {
 
     private final AdminService adminService;
-    private final String UPLOAD_DIR = "@uploads";
+    private final String UPLOAD_DIR = "upload";
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")

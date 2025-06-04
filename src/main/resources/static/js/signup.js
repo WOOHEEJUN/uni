@@ -33,13 +33,19 @@ document.getElementById("signupForm").addEventListener("submit", async function(
         });
 
         if (response.ok) {
-            window.location.href = "submitEnrollment.html";
+            errorBox.style.color = "green";
+            errorBox.textContent = "회원가입이 성공적으로 완료되었습니다. 잠시 후 로그인 페이지로 이동합니다.";
+            setTimeout(() => {
+                window.location.href = "loginjb.html";
+            }, 2000);
         } else {
             const errorData = await response.json();
+            errorBox.style.color = "red";
             errorBox.textContent = errorData.message || "회원가입 중 오류가 발생했습니다.";
         }
     } catch (error) {
         console.error('Error:', error);
+        errorBox.style.color = "red";
         errorBox.textContent = "서버와 통신 중 오류가 발생했습니다.";
     }
 }); 
