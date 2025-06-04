@@ -7,244 +7,130 @@
   <style>
     * {
       box-sizing: border-box;
+      font-family: 'Noto Sans KR', sans-serif;
       margin: 0;
       padding: 0;
-      font-family: 'Noto Sans KR', sans-serif;
     }
-
     body {
-      background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
       min-height: 100vh;
-      padding: 20px;
+      padding: 40px;
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: white;
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-      margin-bottom: 30px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
     }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .logo img {
-      width: 60px;
-      height: 60px;
-    }
-
-    .logo span {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: #007bff;
-    }
-
-    .user-buttons {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .user-buttons span {
-      font-weight: 600;
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
       color: #333;
     }
-
-    .user-buttons button {
-      background-color: #a65bff;
-      color: white;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .user-buttons button:hover {
-      background-color: #8b3eea;
-    }
-
-    .board-nav {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      background: white;
-      padding: 24px;
-      margin: 0 auto 40px;
-      max-width: 1200px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .board-nav a {
-      text-decoration: none;
-      text-align: center;
-      padding: 20px 0;
-      font-size: 1.15rem;
-      font-weight: bold;
-      border-radius: 12px;
-      color: white;
-      background: linear-gradient(to right, #6ca8ff, #a9d0ff);
-      box-shadow: 0 6px 14px rgba(0, 123, 255, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    .board-nav a:hover {
-      background: linear-gradient(to right, #4e90ff, #88c4ff);
-      transform: translateY(-2px);
-    }
-
-    .section {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .section-header {
+    .board-list {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-
-    .section-header h2 {
-      font-size: 1.5rem;
-      color: #6a2dbf;
-    }
-
-    .section-header button {
-      background-color: #a65bff;
-      color: white;
-      padding: 10px 20px;
+    .board-button {
+      background-color: #a5d8ff;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
+      padding: 10px 20px;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.2s;
     }
-
-    .section-header button:hover {
-      background-color: #8b3eea;
+    .board-button:hover {
+      background-color: #74c0fc;
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .board-detail {
+      margin-top: 30px;
+      display: none;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 16px;
     }
-
-    th, td {
-      padding: 14px;
-      border-bottom: 1px solid #eee;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f0e8ff;
-      color: #6a2dbf;
-    }
-
-    tr:hover {
-      background-color: #f9faff;
-      cursor: pointer;
+    .board-detail h3 {
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="/userIndex.html" class="logo">
-    <img src="/img/Uni_logo.png" alt="메인으로">
-    <span>Uni Messenger</span>
-  </a>
-  <div class="user-buttons">
-    <span id="nickname">닉네임님</span>
-    <button onclick="location.href='mypage.html'">마이페이지</button>
-    <button onclick="logout()">로그아웃</button>
+<div class="container">
+  <h2 id="universityTitle">게시판 목록</h2>
+  <div class="board-list" id="boardList">
+    <!-- 게시판 버튼들 동적으로 생성 -->
   </div>
-</header>
 
-<nav class="board-nav">
-  <a href="/board/FREE">자유게시판</a>
-  <a href="/board/ANONYMOUS">비밀게시판</a>
-  <a href="/board/DEPARTMENT">학과 게시판</a>
-  <a href="/board/MARKET">중고거래 게시판</a>
-</nav>
-
-<div class="section">
-  <div class="section-header">
-    <h2 id="universityName">소속 대학 게시판</h2>
-    <button onclick="location.href='writePost.html'">글쓰기</button>
+  <div class="board-detail" id="boardDetail">
+    <h3 id="boardName">게시판 이름</h3>
+    <p>유형: <span id="boardType"></span></p>
+    <p>생성일: <span id="boardDate"></span></p>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>추천</th>
-      </tr>
-    </thead>
-    <tbody id="postTableBody">
-      <!-- 글 목록 렌더링 영역 -->
-    </tbody>
-  </table>
 </div>
 
 <script>
-function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("accessToken");
-  alert("로그아웃 되었습니다.");
-  location.href = "loginjb.html";
-}
+  const token = localStorage.getItem('jwtToken');
+  const payload = token ? JSON.parse(atob(token.split('.')[1])) : null;
 
-window.onload = async function () {
-  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-  if (!token) return;
-
-  try {
-    const userRes = await fetch("/api/user/me", {
-      headers: { "Authorization": "Bearer " + token }
-    });
-    const user = await userRes.json();
-
-    document.getElementById("nickname").innerText = `${user.nickname}님`;
-    if (user.university && user.university.name) {
-      document.getElementById("universityName").innerText = `${user.university.name} 게시판입니다`;
-    }
-
-    const postRes = await fetch("/api/posts/my-university", {
-      headers: { "Authorization": "Bearer " + token }
-    });
-    const posts = await postRes.json();
-
-    const tbody = document.getElementById("postTableBody");
-    tbody.innerHTML = posts.map((post, idx) => `
-      <tr onclick="location.href='/board/post/${post.id}'">
-        <td>${idx + 1}</td>
-        <td>${post.title}</td>
-        <td>${post.author}</td>
-        <td>${new Date(post.createdAt).toLocaleDateString()}</td>
-        <td>${post.likes || 0}</td>
-      </tr>
-    `).join('');
-  } catch (e) {
-    console.error("오류 발생:", e);
+  if (!token || !payload) {
+    alert("로그인이 필요합니다.");
+    window.location.href = "/login.html";
   }
-};
+
+  const universityName = payload.universityName || '나의 대학교';
+
+  document.getElementById('universityTitle').innerText = `${universityName} 게시판 목록`;
+
+  fetch('/api/boards/my-university', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("게시판 목록 조회 실패");
+    return res.json();
+  })
+  .then(data => {
+    const boardList = document.getElementById('boardList');
+    boardList.innerHTML = '';
+    data.forEach(board => {
+      const btn = document.createElement('button');
+      btn.className = 'board-button';
+      btn.innerText = board.name;
+      btn.onclick = () => loadBoardDetail(board.id);
+      boardList.appendChild(btn);
+    });
+  })
+  .catch(err => {
+    alert("오류 발생: " + err.message);
+  });
+
+  function loadBoardDetail(boardId) {
+    fetch(`/api/boards/${boardId}`, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("게시판 상세 조회 실패");
+      return res.json();
+    })
+    .then(board => {
+      document.getElementById('boardName').innerText = board.name;
+      document.getElementById('boardType').innerText = board.type;
+      document.getElementById('boardDate').innerText = new Date(board.createdAt).toLocaleString();
+      document.getElementById('boardDetail').style.display = 'block';
+    })
+    .catch(err => {
+      alert("오류 발생: " + err.message);
+    });
+  }
 </script>
 
 </body>

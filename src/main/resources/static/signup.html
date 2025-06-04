@@ -4,113 +4,122 @@
     <meta charset="UTF-8">
     <title>회원가입 - Uni messenger</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-   <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Noto Sans KR', sans-serif;
-        background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        position: relative;
-    }
+     <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    .form-container {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 20px;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 500px;
-    }
+        .form-container {
+            background: #ffffff;
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 520px;
+            animation: fadeIn 0.6s ease-out;
+        }
 
-    h2 {
-        text-align: center;
-        color: #007bff;
-        margin-bottom: 30px;
-        font-size: 1.6rem;
-    }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #333;
-    }
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
 
-    input, select {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border: 2px solid #ccc;
-        border-radius: 10px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-    }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #444;
+        }
 
-    input:focus, select:focus {
-        border-color: #007bff;
-        outline: none;
-        background-color: #f9fbff;
-    }
+        input, select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 24px;
+            border: 2px solid #ccc;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+        }
 
-    input[type="file"] {
-        border: none;
-    }
+        input:focus, select:focus {
+            border-color: #007bff;
+            background-color: #f1f7ff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
 
-    .submit-btn {
-        width: 100%;
-        padding: 14px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #6fbaff, #007bff);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2);
+        }
 
-    .submit-btn:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-    }
+        .submit-btn:hover {
+            background: linear-gradient(to right, #5fa9f5, #0066cc);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 123, 255, 0.3);
+        }
 
-    .error-message {
-        color: red;
-        margin-top: -10px;
-        margin-bottom: 20px;
-        font-size: 0.95rem;
-        text-align: center;
-    }
+        .error-message {
+            color: red;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            text-align: center;
+        }
 
-    /* 상단 로고 */
-    .top-logo {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 999;
-    }
+        .top-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+        }
 
-    .top-logo img {
-        width: 80px;
-        height: 80px;
-        transition: transform 0.2s;
-    }
+        .top-logo img {
+            width: 80px;
+            height: 80px;
+            transition: transform 0.2s;
+        }
 
-    .top-logo img:hover {
-        transform: scale(1.05);
-    }
-</style>
+        .top-logo img:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 <div class="form-container">
     <h2>🎓 Uni messenger 회원가입</h2>
-    <a href="index.html" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
-  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 80px; height: 80px;">
-</a>
+    <a href="index.html" class="top-logo">
+        <img src="/img/Uni_logo.png" alt="메인으로">
+    </a>
     <form id="signupForm">
         <label for="username">아이디</label>
         <input type="text" id="username" name="username" required>
@@ -144,7 +153,6 @@
     </form>
 </div>
 
-<<<<<<< HEAD
 <script>
     document.getElementById("signupForm").addEventListener("submit", async function(e) {
         e.preventDefault();
@@ -181,7 +189,7 @@
             });
 
             if (response.ok) {
-                window.location.href = "submitEnrollment.html";
+                window.location.href = "submitEnrollment.html"; // 성공 시 인증서 업로드 페이지로 이동
             } else {
                 const errorData = await response.json();
                 errorBox.textContent = errorData.message || "회원가입 중 오류가 발생했습니다.";
@@ -189,11 +197,8 @@
         } catch (error) {
             console.error('Error:', error);
             errorBox.textContent = "서버와 통신 중 오류가 발생했습니다.";
-        } // ← 이 catch까지 포함해야 try 완성됨
+        }
     });
 </script>
-=======
-<script src="/js/signup.js"></script>
->>>>>>> f586ec8afe03c03eb845d4e2113447ebbd3afcc7
 </body>
 </html>

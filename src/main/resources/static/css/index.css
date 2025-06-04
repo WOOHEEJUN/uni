@@ -145,25 +145,25 @@ main {
 }
 
 /* 버튼 */
-.big-button,
 .all-board-button {
+  display: block;
   width: 100%;
-  padding: 14px;
+  padding: 8px 4px;
   font-size: 1rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #7fbfff, #a3d8ff);
-  color: white;
+  font-weight: 500;
+  background: none; /* 배경 제거 */
+  color: #333;
   border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
+  border-radius: 0;
+  text-align: left;
+  text-decoration: none;
+  margin-bottom: 6px;
+  transition: color 0.2s;
 }
 
-.big-button:hover,
 .all-board-button:hover {
-  background: linear-gradient(to right, #66b2ff, #8ccfff);
-  transform: translateY(-2px);
+  color: #007bff;
+  text-decoration: underline;
 }
 
 /* 푸터 */
@@ -173,4 +173,13 @@ footer {
   padding: 20px;
   font-size: 0.9rem;
   color: #666;
+}
+.all-board-button {
+  display: block;             /* 반드시 block 처리 */
+  width: 100%;
+  margin-bottom: 10px;
+}
+#universityName {
+  color: #007bff;
+  font-weight: bold;
 }

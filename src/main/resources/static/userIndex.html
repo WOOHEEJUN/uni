@@ -4,280 +4,16 @@
   <meta charset="UTF-8">
   <title>Uni Messenger</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/index.css">
   <style>
-   * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-body {
-  background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-header {
-  background: white;
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #007bff;
-  text-decoration: none;
-}
-
-.logo img {
-  width: 40px;
-  height: 40px;
-}
-
-.user-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-actions span {
-  font-weight: 500;
-  color: #444;
-}
-
-/* ✅ 일반 버튼 (마이페이지, 로그아웃) */
-.user-actions a:not(.building-btn-only),
-.user-actions button:not(.building-btn-only) {
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-/* ✅ 건물 채팅방 버튼 */
-.building-btn-only {
-  background: none !important;
-  border: none !important;
-  color: #6c5ce7 !important;
-  font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  outline: none;
-}
-
-.building-btn-only:hover {
-  background-color: #6c5ce7;
-  color: white;
-}
-.building-btn-only:focus {
-  outline: none;
-}
-
-main {
-  flex: 1;
-  display: flex;
-  gap: 20px;
-  padding: 30px 40px;
-}
-
-.left, .right {
-  width: 20%;
-}
-
-.center {
-  flex: 1;
-}
-
-.section {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  margin-bottom: 20px;
-}
-
-.section h3 {
-  color: #007bff;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-}
-
-.section ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.section ul li {
-  margin-bottom: 8px;
-}
-
-.section ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-}
-
-.section ul li a:hover {
-  color: #007bff;
-}
-
-footer {
-  background: #f8f8f8;
-  text-align: center;
-  padding: 20px;
-  font-size: 0.9rem;
-  color: #666;
-}
-.building-btn-only {
-  display: inline-block;
-  background-color: #6c5ce7 !important;
-  color: white !important;
-  padding: 8px 16px;
-  font-weight: bold;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  border: none !important;
-  outline: none !important;
-}
-
-.building-btn-only:hover {
-  background-color: #4e3ad2 !important;
-}
-.board-card {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  width: 100%;
-  max-width: 500px; /* ✅ 카드 최대 크기 확장 */
-  margin: 0 auto;
-}
-
-.board-card-title {
-  color: #007bff;
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 24px;
-  white-space: nowrap; /* ✅ 한 줄 유지 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.all-board-button {
-  display: block;
-  width: 100%;
-  max-width: 460px; /* ✅ 카드 안에서 거의 꽉 차게 */
-  margin: 0 auto;
-  background: linear-gradient(to right, #89c9ff, #a3d8ff);
-  color: white;
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding: 22px 0;
-  border-radius: 16px;
-  white-space: nowrap;
-  text-align: center;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
-}
-
-.all-board-button:hover {
-  background: linear-gradient(to right, #66b2ff, #8ccfff);
-  transform: translateY(-3px);
-}
-.all-board-button {
-  display: block;
-  width: 100%;            /* 카드 기준 꽉 채움 */
-  max-width: 260px;       /* ✅ 카드보다 약간 작게 제한 */
-  margin: 0 auto;         /* 가운데 정렬 */
-  background: linear-gradient(to right, #89c9ff, #a3d8ff);
-  color: white;
-  font-weight: bold;
-  font-size: 1.05rem;
-  padding: 18px 0;
-  border-radius: 14px;
-  white-space: nowrap;
-  text-align: center;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
-}
-
-.all-board-button:hover {
-  background: linear-gradient(to right, #66b2ff, #8ccfff);
-  transform: translateY(-2px);
-}
-
-.all-board-button {
-  white-space: nowrap; /* ✅ 한 줄로 유지 */
-}
-.story-board-title {
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  color: #007bff;
-  font-weight: bold;
-  white-space: nowrap;      /* ✅ 줄바꿈 방지 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-}
-
-/* 섹션(카드): 넓게 확장 */
-.story-board-card {
-  max-width: 480px;         /* ✅ 카드 자체 넓이 확장 */
-  margin: 0 auto;           /* 가운데 정렬 */
-  text-align: center;
-}
-
-/* 버튼: 시원하게 크게 */
-.all-board-button {
-  display: block;
-  width: 100%;
-  max-width: 440px;         /* ✅ 카드 안에서 꽉 차게 */
-  margin: 0 auto;
-  padding: 20px 0;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #89c9ff, #a3d8ff);
-  color: white;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
-  white-space: nowrap;      /* ✅ 버튼 텍스트 한 줄로 */
-}
-
-.all-board-button:hover {
-  background: linear-gradient(to right, #66b2ff, #8ccfff);
-  transform: translateY(-2px);
-}
-
-
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px; /* 간격 줄임 */
+    }
+    .all-board-button {
+      margin-bottom: 8px; /* 버튼 여백 최소화 */
+    }
   </style>
 </head>
 <body>
@@ -289,29 +25,31 @@ footer {
       Uni messenger
     </a>
     <div class="user-actions">
-      <button onclick="goChat()" style="background-color: #ff8bd4; padding: 8px 16px;">💬 익명 채팅방</button>
-   <a href="/building-select.html" class="building-btn-only">🏢 건물 채팅방</a>
-      <span id="userGreeting">@@님 안녕하세요!</span>
-      <span id="universityName" style="color: #007bff; font-weight: bold; margin: 0 10px;"></span>
-      <a href="myPage.html">마이페이지</a>
-      <button onclick="logout()">로그아웃</button>
+      <button class="chat-btn" onclick="goChat()">💬 익명 채팅방</button>
+      <a href="/building-select.html"><button class="building-btn">🏢 건물 채팅방</button></a>
+      <span id="userGreeting">123님 안녕하세요!</span>
+      <span id="universityName">🏠 서울대학교</span>
+      <a href="myPage.html"><button class="mypage-btn">마이페이지</button></a>
+      <button class="logout-btn" onclick="logout()">로그아웃</button>
     </div>
   </header>
 
   <!-- 본문 -->
   <main>
+    <!-- 🔥 HOT 게시물 (왼쪽) -->
     <div class="left">
       <div class="section">
-        <h3>🔥 HOT 학과 게시물</h3>
+        <h3>🔥 HOT 게시물</h3>
         <ul>
-          <li><a href="#">인기 글 1</a></li>
-          <li><a href="#">인기 글 2</a></li>
-          <li><a href="#">인기 글 3</a></li>
-          <li><a href="#">인기 글 4</a></li>
+          <li><a href="#">💬 인기 글 1</a></li>
+          <li><a href="#">💬 인기 글 2</a></li>
+          <li><a href="#">💬 인기 글 3</a></li>
+          <li><a href="#">💬 인기 글 4</a></li>
         </ul>
       </div>
     </div>
 
+    <!-- 📢 공지사항 (가운데) -->
     <div class="center">
       <div class="section">
         <h3>📢 공지사항</h3>
@@ -319,28 +57,98 @@ footer {
       </div>
     </div>
 
-   <div class="right">
-  <div class="section story-board-card">
-    <h3 class="story-board-title">재밌는 이야기 올리기</h3>
-    <button class="all-board-button" onclick="location.href=' boardHome.html'">
-      📁 게시판 전체 보기
-    </button>
-  </div>
-</div>
-        
-        </ul>
+    <!-- 📁 게시판 목록 (오른쪽) -->
+    <div class="right">
+      <div class="section">
+        <h3>📁 게시판 목록</h3>
+        <a class="all-board-button" href="/boardHome.html?boardId=1">📌 자유게시판</a>
+        <a class="all-board-button" href="/boardHome.html?boardId=2">🙈 비밀게시판</a>
+        <a class="all-board-button" href="/boardHome.html?boardId=3">🛍 중고거래게시판</a>
+        <a class="all-board-button" href="/boardHome.html?boardId=4">🎓 학과 게시판</a> <!-- 이거만 추가됨 -->
       </div>
     </div>
-
   </main>
-
   <!-- 푸터 -->
   <footer>
     ⓒ 2025 Uni Messenger. All rights reserved.
   </footer>
 
   <!-- 스크립트 -->
-  <script src="/js/userIndex.js"></script>
+  <script>
+    let currentUser = null;
+
+    window.addEventListener("DOMContentLoaded", () => {
+      fetch("/api/user/me", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("인증 실패");
+        return response.json();
+      })
+      .then(user => {
+        currentUser = user;
+        console.log("현재 로그인한 사용자 정보:", user);
+        document.querySelector("#userGreeting").innerText = user.nickname + "님 안녕하세요!";
+        if (user.universityName) {
+          document.querySelector("#universityName").innerText = `🏫 ${user.universityName}`;
+        }
+        // 사용자 정보를 가져온 후 게시판 목록 로드
+        loadUniversityBoards();
+      })
+      .catch(err => {
+        console.error("사용자 정보 불러오기 실패:", err);
+        document.querySelector("#userGreeting").innerText = "로그인이 필요합니다.";
+        window.location.href = "loginjb.html";
+      });
+    });
+
+    function loadUniversityBoards() {
+      console.log("게시판 목록 로드 시작...");
+      fetch("/api/boards/my-university", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("게시판 목록을 가져오는데 실패했습니다.");
+        return response.json();
+      })
+      .then(boards => {
+        console.log("가져온 게시판 목록:", boards);
+        const boardList = document.getElementById("boardList");
+        boardList.innerHTML = ""; // 기존 목록 초기화
+        
+        boards.forEach(board => {
+          console.log("게시판 정보:", board);
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = `/boardHome.html?id=${board.id}`;
+          a.textContent = board.name;
+          li.appendChild(a);
+          boardList.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error("게시판 목록 로드 실패:", err);
+        const boardList = document.getElementById("boardList");
+        boardList.innerHTML = "<li>게시판을 불러오는데 실패했습니다.</li>";
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      alert("로그아웃 되었습니다.");
+      window.location.href = "loginjb.html";
+    }
+
+    function goChat() {
+      window.location.href = "chat.html";
+    }
+  </script>
 
 </body>
 </html>
