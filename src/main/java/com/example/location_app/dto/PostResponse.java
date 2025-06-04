@@ -19,6 +19,7 @@ public class PostResponse {
     private String boardType;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer authorId;
 
     public static PostResponse from(Post post) {
         PostResponse response = new PostResponse();
@@ -32,6 +33,7 @@ public class PostResponse {
         response.setAuthorName(post.isAnonymous() || post.getBoard().getType().name().equals("ANONYMOUS") ? "익명" : post.getUser().getNickname());
         response.setCreatedAt(post.getCreatedAt());
         response.setUpdatedAt(post.getUpdatedAt());
+        response.setAuthorId(post.getUser().getId());
         return response;
     }
 } 

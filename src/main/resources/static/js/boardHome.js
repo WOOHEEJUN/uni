@@ -85,7 +85,7 @@ function updatePostTable(posts) {
     const tbody = document.getElementById("postTableBody");
     tbody.innerHTML = posts.map((post, idx) => `
         <tr onclick="location.href='postDetail.html?postId=${post.id}'">
-            <td>${idx + 1}</td>
+            <td>${posts.length - idx}</td>
             <td>${post.anonymous ? '익명' : post.authorName}</td>
             <td>${post.title}</td>
             <td>${post.viewCount || 0}</td>

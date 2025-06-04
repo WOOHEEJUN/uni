@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정 - Uni Messenger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo span {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .edit-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .primary-button {
+            background-color: #a65bff;
+            color: white;
+        }
+
+        .secondary-button {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="userIndex.html" class="logo">
+            <img src="/img/Uni_logo.png" alt="메인으로">
+            <span>Uni Messenger</span>
+        </a>
+        <div class="user-buttons">
+            <span id="nickname"></span>
+            <button onclick="location.href='mypage.html'">마이페이지</button>
+            <button onclick="logout()">로그아웃</button>
+        </div>
+    </header>
+
+    <div class="edit-container">
+        <h1>게시글 수정</h1>
+        <form class="edit-form" onsubmit="submitEdit(event)">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" required>
+            </div>
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea id="content" required></textarea>
+            </div>
+            <div class="button-group">
+                <button type="button" class="button secondary-button" onclick="goBack()">취소</button>
+                <button type="submit" class="button primary-button">수정하기</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/js/editPost.js"></script>
+</body>
+</html> 
