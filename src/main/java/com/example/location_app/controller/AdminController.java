@@ -24,7 +24,7 @@ import java.util.Optional;
 public class AdminController {
 
     private final AdminService adminService;
-    private final String UPLOAD_DIR = "uploads";
+    private final String UPLOAD_DIR = "@uploads";
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
@@ -45,7 +45,8 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Resource> getCertificateImage(@PathVariable Integer userId) {
         try {
-            Path userDir = Paths.get(UPLOAD_DIR, userId.toString());
+            Path userDir = Paths.get(UPLOAD_DIR).resolve(userId.toString());
+            
             if (!Files.exists(userDir)) {
                 return ResponseEntity.notFound().build();
             }
