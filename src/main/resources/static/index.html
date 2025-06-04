@@ -17,13 +17,14 @@
       min-height: 100vh;
       padding: 20px;
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
+header {
+  background: white;                            /* ✅ 흰 배경 */
+  display: flex;
+  justify-content: space-between;              /* 좌우 정렬 */
+  align-items: center;
+  padding: 20px 60px;                           /* ✅ 내부 여백 (상하/좌우) */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);    /* ✅ 박스 그림자 효과 */
+}
 
     .logo {
       display: flex;
@@ -86,10 +87,13 @@
       background-color: #0056b3;
     }
 
-    main {
-      display: flex;
-      gap: 20px;
-    }
+   main {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 30px 40px;
+  margin-top: 5px; /* ✅ 원하는 만큼 아래로 내림 */
+}
 
     .section {
       background: white;
@@ -146,6 +150,15 @@
 
 .signup:hover {
   background-color: #0056b3;
+}
+.right .section ul li a {
+  color: #000 !important; /* 글자색을 완전한 검정색으로 고정 */
+  text-decoration: none;
+}
+
+.right .section ul li a:hover {
+  color: #000 !important; /* hover해도 검정 유지 */
+  text-decoration: underline; /* 선택사항: 밑줄 */
 }
 
   </style>
