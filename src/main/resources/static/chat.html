@@ -59,8 +59,8 @@
       background-color: #007bff;
       color: white;
       border: none;
-      padding: 12px 19px; /* ✅ padding 증가 */
-      font-size: 1.2rem;  
+      padding: 12px 19px;
+      font-size: 1.2rem;
       font-weight: bold;
       border-radius: 10px;
       cursor: pointer;
@@ -82,7 +82,6 @@
       backdrop-filter: blur(6px);
     }
 
-    /* 배경 Uni 워터마크 */
     #chat-box::before {
       content: "Uni";
       position: absolute;
@@ -139,14 +138,47 @@
   <h2 style="margin-bottom: 20px; color: #333;">익명 채팅방</h2>
 
   <div id="chat-box"></div>
-  <input type="text" id="message" placeholder="메시지 입력" onkeydown="handleKey(event)" />
-  <button onclick="sendMessage()">전송</button>
+
+  <div class="input-area">
+    <input type="text" id="message" placeholder="메시지 입력" onkeydown="handleKey(event)" />
+    <button onclick="sendMessage()">전송</button>
+  </div>
 
   <script>
     let stompClient = null;
-    const roomId = "anonymous";
+    let anonymousName = "익명";
+    let roomId = "anonymous";
+
+    function getUniversityNameFromToken() {
+      const token = localStorage.getItem("token");
+      if (!token) return null;
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.universityName;
+      } catch (e) {
+        console.error("토큰 파싱 실패:", e);
+        return null;
+      }
+    }
+
+    function generateAnonymousName() {
+      const saved = localStorage.getItem("anonymousName");
+      if (saved) {
+        anonymousName = saved;
+      } else {
+        const randomNum = Math.floor(Math.random() * 900) + 100; // 익명100~999
+        anonymousName = `익명${randomNum}`;
+        localStorage.setItem("anonymousName", anonymousName);
+      }
+    }
 
     function connect() {
+      generateAnonymousName();
+      const university = getUniversityNameFromToken();
+      if (university) {
+        roomId = `${university}_anonymous`;
+      }
+
       const socket = new SockJS("/ws/chat");
       stompClient = Stomp.over(socket);
 
@@ -154,13 +186,15 @@
         stompClient.subscribe(`/topic/${roomId}`, (msg) => {
           const message = JSON.parse(msg.body);
           const div = document.createElement("div");
-          div.textContent = message.sender + ": " + message.content;
-          document.getElementById("chat-box").appendChild(div);
+          div.textContent = `${message.sender}: ${message.content}`;
+          const chatBox = document.getElementById("chat-box");
+          chatBox.appendChild(div);
+          chatBox.scrollTop = chatBox.scrollHeight;
         });
 
         stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify({
-          sender: "익명",
-          content: "익명님이 입장하셨습니다.",
+          sender: anonymousName,
+          content: `${anonymousName}님이 입장하셨습니다.`,
           buildingId: roomId
         }));
       });
@@ -172,10 +206,11 @@
       if (!content || !stompClient) return;
 
       stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify({
-        sender: "익명",
+        sender: anonymousName,
         content: content,
         buildingId: roomId
       }));
+
       input.value = "";
     }
 
