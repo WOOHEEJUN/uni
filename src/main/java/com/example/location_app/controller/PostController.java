@@ -75,4 +75,17 @@ public class PostController {
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(postService.toggleLike(postId, userDetails.getUsername()));
     }
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostResponse> updatePost(
+            @PathVariable Long postId,
+            @RequestBody PostCreateRequest request,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(postService.updatePost(postId, request, userDetails.getUsername()));
+    }
+
+    @GetMapping("/hot/{universityId}")
+    public ResponseEntity<List<PostResponse>> getHotPosts(@PathVariable Integer universityId) {
+        return ResponseEntity.ok(postService.getHotPostsByUniversity(universityId));
+    }
 } 

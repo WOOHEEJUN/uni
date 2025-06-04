@@ -74,11 +74,15 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
         
-        User user = userService.getUserByUsername(username);
-        if (!post.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("게시글을 삭제할 권한이 없습니다.");
+        User currentUser = userService.getUserByUsername(username);
+        if (!post.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("게시글은 작성자만 삭제할 수 있습니다.");
         }
 
+        // 게시글의 댓글들을 먼저 삭제
+        commentRepository.deleteByPostId(postId);
+        
+        // 그 다음 게시글 삭제
         postRepository.delete(post);
     }
 
@@ -145,5 +149,29 @@ public class PostService {
         postRepository.save(post);
         result.put("likeCount", post.getLikeCount());
         return result;
+    }
+
+    @Transactional
+    public PostResponse updatePost(Long postId, PostCreateRequest request, String username) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+        
+        User currentUser = userService.getUserByUsername(username);
+        if (!post.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("게시글은 작성자만 수정할 수 있습니다.");
+        }
+
+        post.setTitle(request.getTitle());
+        post.setContent(request.getContent());
+
+        return PostResponse.from(postRepository.save(post));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponse> getHotPostsByUniversity(Integer universityId) {
+        return postRepository.findTop4ByBoardUniversityIdOrderByViewCountPlusLikeCountDesc(universityId)
+                .stream()
+                .map(PostResponse::from)
+                .collect(Collectors.toList());
     }
 } 

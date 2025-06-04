@@ -3,6 +3,7 @@ let currentPostId = null;
 let currentUserId = null;
 let isLiked = false;
 let isSecretBoard = false;
+let postAuthorId = null;  // 게시글 작성자 ID 추가
 
 // 로그아웃 함수
 function logout() {
@@ -25,6 +26,7 @@ async function loadUserInfo() {
             headers: { "Authorization": "Bearer " + token }
         });
         const user = await response.json();
+        currentUserId = user.id;  // 현재 사용자 ID 저장
         document.getElementById("nickname").innerText = `${user.nickname}님`;
     } catch (error) {
         console.error("Error:", error);
@@ -52,8 +54,11 @@ async function loadPost() {
         document.getElementById("postDate").textContent = new Date(post.createdAt).toLocaleDateString();
         document.getElementById("postContent").textContent = post.content;
 
+        // 게시글 작성자 ID 저장
+        postAuthorId = post.authorId;
+
         // 비밀 게시판 여부 확인
-        isSecretBoard = post.boardType === "SECRET";
+        isSecretBoard = post.boardType === "ANONYMOUS";
 
         // 좋아요 상태와 좋아요 수 확인
         const likeResponse = await fetch(`/api/posts/${currentPostId}/like`, {
@@ -165,6 +170,12 @@ function goToEdit() {
 async function deletePost() {
     if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) return;
 
+    // 작성자 ID와 현재 사용자 ID 비교
+    if (currentUserId !== postAuthorId) {
+        alert("게시글은 작성자만 삭제할 수 있습니다.");
+        return;
+    }
+
     const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
     try {
         const response = await fetch(`/api/posts/${currentPostId}`, {
@@ -174,7 +185,7 @@ async function deletePost() {
 
         if (response.ok) {
             alert("게시글이 삭제되었습니다.");
-            goBack();
+            window.location.href = "boardHome.html";  // boardHome.html로 리다이렉트
         } else {
             alert("게시글 삭제에 실패했습니다.");
         }
