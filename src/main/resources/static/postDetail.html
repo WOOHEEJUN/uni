@@ -37,8 +37,8 @@
         }
 
         .logo img {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
         }
 
         .logo span {
@@ -175,6 +175,34 @@
             background-color: #e9ecef;
             color: #495057;
         }
+        .user-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-buttons #nickname {
+  font-weight: bold;
+  color: #333;
+}
+
+.blue-button {
+  background-color: #a65bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.blue-button:hover {
+  background-color:  #a65bff;
+  transform: translateY(-1px);
+}
     </style>
 </head>
 <body>
@@ -184,10 +212,10 @@
             <span>Uni Messenger</span>
         </a>
         <div class="user-buttons">
-            <span id="nickname"></span>
-            <button onclick="location.href='mypage.html'">마이페이지</button>
-            <button onclick="logout()">로그아웃</button>
-        </div>
+  <span id="nickname">닉네임님</span>
+  <button class="blue-button" onclick="location.href='mypage.html'">마이페이지</button>
+  <button class="blue-button" onclick="logout()">로그아웃</button>
+</div>
     </header>
 
     <div class="post-container">
