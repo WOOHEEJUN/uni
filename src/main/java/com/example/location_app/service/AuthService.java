@@ -26,7 +26,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public void signUp(SignUpRequest request) {
+    public LoginResponse signUp(SignUpRequest request) {
         // 아이디 중복 검사
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("이미 사용 중인 아이디입니다.");
@@ -51,7 +51,20 @@ public class AuthService {
             .status(VerificationStatus.REJECTED)
             .build();
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        // JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user);
+
+        // 응답 데이터 생성
+        return LoginResponse.builder()
+            .token(token)
+            .username(user.getUsername())
+            .nickname(user.getNickname())
+            .role(user.getRole())
+            .status(user.getStatus())
+            .redirectUrl(user.getRole() == UserRole.ADMIN ? "/admin" : "/")
+            .build();
     }
 
     @Transactional(readOnly = true)

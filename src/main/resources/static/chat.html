@@ -139,10 +139,15 @@
   <h2 style="margin-bottom: 20px; color: #333;">익명 채팅방</h2>
 
   <div id="chat-box"></div>
+<<<<<<< HEAD
 
   <div class="input-area">
     <input type="text" id="message" placeholder="메시지 입력" />
     <button onclick="sendMessage()">전송</button>
+=======
+  <input type="text" id="message" placeholder="메시지 입력" onkeydown="handleKey(event)" />
+  <button onclick="sendMessage()">전송</button>
+>>>>>>> acdb38e3416af500c15dc7ec420cdb4722e45470
 
   <script>
     let stompClient = null;
@@ -178,8 +183,13 @@
         content: content,
         buildingId: roomId
       }));
-
       input.value = "";
+    }
+
+    function handleKey(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
     }
 
     window.onload = connect;
