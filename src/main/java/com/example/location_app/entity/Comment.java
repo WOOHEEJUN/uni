@@ -9,36 +9,27 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "comments")
 @Getter
 @Setter
-public class Post {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(nullable = false, length = 200)
-    private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "is_anonymous")
     private boolean anonymous;
-
-    @Column(name = "view_count")
-    private Integer viewCount = 0;
-
-    @Column(name = "like_count")
-    private Integer likeCount = 0;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

@@ -49,7 +49,7 @@ function loadUniversityBoards() {
       console.log("게시판 정보:", board);
       const li = document.createElement("li");
       const a = document.createElement("a");
-      a.href = `/board.html?id=${board.id}`;
+      a.href = `/boardHome.html?boardId=${board.id}&boardType=${board.type}`;
       a.textContent = board.name;
       li.appendChild(a);
       boardList.appendChild(li);
