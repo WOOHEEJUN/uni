@@ -36,6 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                
+                // userId를 요청 속성으로 설정
+                Integer userId = jwtTokenProvider.getUserIdFromJWT(jwt).intValue();
+                request.setAttribute("userId", userId);
             }
         } catch (Exception ex) {
             logger.error("JWT 인증 처리 중 오류 발생", ex);

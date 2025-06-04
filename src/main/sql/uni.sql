@@ -31,26 +31,6 @@ CREATE TABLE user_documents (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- 4. 채팅방 (같은 Wi-Fi 사용자는 같은 university_id를 공유)
-CREATE TABLE chat_rooms (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    university_id INT,
-    name VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (university_id) REFERENCES universities(id)
-);
-
--- 5. 채팅 메시지
-CREATE TABLE chat_messages (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    room_id INT,
-    sender_id INT,
-    message TEXT NOT NULL,
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (room_id) REFERENCES chat_rooms(id),
-    FOREIGN KEY (sender_id) REFERENCES users(id)
-);
-
 -- 6. 게시판 종류 (자유, 비밀, 중고거래)
 CREATE TABLE boards (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,6 +67,19 @@ CREATE TABLE comments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES posts(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- 사용자 시간표 테이블
+CREATE TABLE IF NOT EXISTS user_schedules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL COMMENT '사용자 ID',
+    title VARCHAR(100) NOT NULL COMMENT '일정 제목',
+    day_of_week INT NOT NULL COMMENT '요일 (1:월, 2:화, 3:수, 4:목, 5:금)',
+    start_time TIME NOT NULL COMMENT '시작 시간',
+    end_time TIME NOT NULL COMMENT '종료 시간',
+    color VARCHAR(20) DEFAULT '#4285F4' COMMENT '색상',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
