@@ -103,6 +103,16 @@
     .write-container button:hover {
       background-color: #8e45db;
     }
+    .anonymous-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .anonymous-check input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -110,7 +120,7 @@
 <header>
   <a href="userIndex.html" class="logo">
       <img src="/img/Uni_logo.png" alt="메인으로">     
- </a>
+  </a>
   <div class="user-buttons">
     <span id="nickname">닉네임님</span>
     <button onclick="location.href='mypage.html'">마이페이지</button>
@@ -120,44 +130,22 @@
 
 <div class="write-container">
   <h2>✏️ 게시글 작성</h2>
-  <form>
+  <form id="writeForm" onsubmit="submitPost(event)">
     <label for="title">제목</label>
     <input type="text" id="title" name="title" required>
 
     <label for="content">내용</label>
     <textarea id="content" name="content" rows="10" required></textarea>
 
+    <div class="anonymous-check">
+      <input type="checkbox" id="isAnonymous" name="isAnonymous">
+      <label for="isAnonymous">익명으로 작성</label>
+    </div>
+
     <button type="submit">등록하기</button>
   </form>
 </div>
 
-<script>
-  function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("accessToken");
-    alert("로그아웃 되었습니다.");
-    location.href = "loginjb.html";
-  }
-
-  window.onload = function () {
-    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-    if (!token) return;
-    fetch("/api/user/me", {
-      headers: { "Authorization": "Bearer " + token }
-    })
-      .then(res => res.json())
-      .then(user => {
-        document.getElementById("nickname").innerText = `${user.nickname}님`;
-        if (user.university && user.university.name) {
-          document.getElementById("universityName").innerText = `${user.university.name} 커뮤니티`;
-        }
-      })
-      .catch(() => {
-        document.getElementById("nickname").innerText = "익명님";
-        document.getElementById("universityName").innerText = "학교 정보 없음";
-      });
-  };
-</script>
-
+<script src="/js/writePost.js"></script>
 </body>
 </html>

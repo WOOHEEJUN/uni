@@ -70,6 +70,7 @@ CREATE TABLE posts (
     content TEXT NOT NULL,
     is_anonymous BOOLEAN DEFAULT FALSE,
     view_count INT DEFAULT 0,
+    like_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (board_id) REFERENCES boards(id),
@@ -87,17 +88,6 @@ CREATE TABLE comments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES posts(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
--- 9. 게시판 좋아요 테이블
-CREATE TABLE post_likes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    post_id INT,
-    user_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts(id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    UNIQUE KEY unique_post_user (post_id, user_id)
 );
 
 INSERT INTO universities (name, domain) VALUES

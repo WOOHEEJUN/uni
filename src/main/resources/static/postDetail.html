@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세 - Uni Messenger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo span {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .post-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-header {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .post-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .post-info {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            min-height: 200px;
+            margin: 30px 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .like-button {
+            background: none;
+            border: none;
+            color: #ff4757;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .like-button.liked {
+            color: #ff4757;
+        }
+
+        .comment-section {
+            margin-top: 40px;
+        }
+
+        .comment-form {
+            margin-bottom: 30px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        .comment-list {
+            margin-top: 20px;
+        }
+
+        .comment-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .comment-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .comment-content {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .primary-button {
+            background-color: #a65bff;
+            color: white;
+        }
+
+        .secondary-button {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="userIndex.html" class="logo">
+            <img src="/img/Uni_logo.png" alt="메인으로">
+            <span>Uni Messenger</span>
+        </a>
+        <div class="user-buttons">
+            <span id="nickname"></span>
+            <button onclick="location.href='mypage.html'">마이페이지</button>
+            <button onclick="logout()">로그아웃</button>
+        </div>
+    </header>
+
+    <div class="post-container">
+        <div class="post-header">
+            <h1 class="post-title" id="postTitle"></h1>
+            <div class="post-info">
+                <span id="postAuthor"></span>
+                <span id="postDate"></span>
+            </div>
+        </div>
+        <div class="post-content" id="postContent"></div>
+        <div class="post-actions">
+            <button class="like-button" onclick="toggleLike()">
+                <span id="likeIcon">❤</span>
+                <span id="likeCount">0</span>
+            </button>
+            <div class="button-group">
+                <button class="button secondary-button" onclick="goBack()">목록으로</button>
+                <button class="button primary-button" onclick="goToEdit()">수정</button>
+                <button class="button secondary-button" onclick="deletePost()">삭제</button>
+            </div>
+        </div>
+
+        <div class="comment-section">
+            <h3>댓글</h3>
+            <form class="comment-form" onsubmit="submitComment(event)">
+                <textarea class="comment-input" id="commentContent" rows="3" placeholder="댓글을 작성하세요..." required></textarea>
+                <button type="submit" class="button primary-button">댓글 작성</button>
+            </form>
+            <div class="comment-list" id="commentList"></div>
+        </div>
+    </div>
+
+    <script src="/js/postDetail.js"></script>
+</body>
+</html> 

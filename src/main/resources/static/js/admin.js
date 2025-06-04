@@ -15,6 +15,7 @@ async function loadUsers() {
         }
         
         const users = await response.json();
+        console.log('Users data:', users); // 디버깅을 위한 로그
         displayUsers(users);
     } catch (error) {
         alert(error.message);
@@ -26,11 +27,23 @@ function displayUsers(users) {
     tbody.innerHTML = '';
     
     users.forEach(user => {
+        // 대학교 정보 확인을 위한 로그
+        console.log('User university info:', user.university);
+        
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${user.username}</td>
             <td>${user.nickname}</td>
             <td>${user.universityName || '-'}</td>
+            <td>
+                ${user.id ? `<div class="certificate-container">
+                    <img src="/api/admin/uploads/${user.id}/certificate" 
+                        class="certificate-image" 
+                        onclick="showImage(this.src)" 
+                        onerror="this.parentElement.innerHTML='-'"
+                        alt="증명서">
+                </div>` : '-'}
+            </td>
             <td>${user.status}</td>
             <td>
                 <select onchange="updateUserStatus(${user.id}, this.value)">
@@ -69,4 +82,25 @@ async function updateUserStatus(userId, status) {
 function logout() {
     localStorage.removeItem('token');
     window.location.href = 'loginjb.html';
+}
+
+// 이미지 모달 관련 함수들
+function showImage(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modal.style.display = "block";
+    modalImg.src = src;
+}
+
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = "none";
+}
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    const modal = document.getElementById('imageModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 } 

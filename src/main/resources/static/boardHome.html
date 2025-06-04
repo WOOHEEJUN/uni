@@ -159,6 +159,12 @@
       background-color: #f9faff;
       cursor: pointer;
     }
+
+    .board-link.active {
+      background: linear-gradient(to right, #4e90ff, #88c4ff);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -176,25 +182,26 @@
 </header>
 
 <nav class="board-nav">
-  <a href="/board/FREE">자유게시판</a>
-  <a href="/board/ANONYMOUS">비밀게시판</a>
-  <a href="/board/DEPARTMENT">학과 게시판</a>
-  <a href="/board/MARKET">중고거래 게시판</a>
+  <a href="javascript:void(0)" onclick="changeBoard('FREE')" class="board-link" data-type="FREE">자유게시판</a>
+  <a href="javascript:void(0)" onclick="changeBoard('ANONYMOUS')" class="board-link" data-type="ANONYMOUS">비밀게시판</a>
+  <a href="javascript:void(0)" onclick="changeBoard('DEPARTMENT')" class="board-link" data-type="DEPARTMENT">학과 게시판</a>
+  <a href="javascript:void(0)" onclick="changeBoard('MARKET')" class="board-link" data-type="MARKET">중고거래 게시판</a>
 </nav>
 
 <div class="section">
   <div class="section-header">
     <h2 id="universityName">소속 대학 게시판</h2>
-    <button onclick="location.href='writePost.html'">글쓰기</button>
+    <button onclick="goToWritePost()">글쓰기</button>
   </div>
   <table>
     <thead>
       <tr>
         <th>번호</th>
-        <th>제목</th>
         <th>작성자</th>
+        <th>제목</th>
+        <th>조회수</th>
+        <th>좋아요</th>
         <th>작성일</th>
-        <th>추천</th>
       </tr>
     </thead>
     <tbody id="postTableBody">
@@ -203,49 +210,6 @@
   </table>
 </div>
 
-<script>
-function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("accessToken");
-  alert("로그아웃 되었습니다.");
-  location.href = "loginjb.html";
-}
-
-window.onload = async function () {
-  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-  if (!token) return;
-
-  try {
-    const userRes = await fetch("/api/user/me", {
-      headers: { "Authorization": "Bearer " + token }
-    });
-    const user = await userRes.json();
-
-    document.getElementById("nickname").innerText = `${user.nickname}님`;
-    if (user.university && user.university.name) {
-      document.getElementById("universityName").innerText = `${user.university.name} 게시판입니다`;
-    }
-
-    const postRes = await fetch("/api/posts/my-university", {
-      headers: { "Authorization": "Bearer " + token }
-    });
-    const posts = await postRes.json();
-
-    const tbody = document.getElementById("postTableBody");
-    tbody.innerHTML = posts.map((post, idx) => `
-      <tr onclick="location.href='/board/post/${post.id}'">
-        <td>${idx + 1}</td>
-        <td>${post.title}</td>
-        <td>${post.author}</td>
-        <td>${new Date(post.createdAt).toLocaleDateString()}</td>
-        <td>${post.likes || 0}</td>
-      </tr>
-    `).join('');
-  } catch (e) {
-    console.error("오류 발생:", e);
-  }
-};
-</script>
-
+<script src="/js/boardHome.js"></script>
 </body>
 </html>

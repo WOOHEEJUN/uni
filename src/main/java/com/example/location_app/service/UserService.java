@@ -37,6 +37,13 @@ public class UserService {
             .build();
     }
 
+    @Transactional(readOnly = true)
+    public User getCurrentUserEntity() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+    }
+
     @Transactional
     public void updateUserStatus(VerificationStatus status) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
