@@ -1,6 +1,8 @@
 package com.example.location_app.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,9 +28,13 @@ public class ChatController_hs {
     private final SimpMessagingTemplate messagingTemplate;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 익명 채팅을 위한 세션별 닉네임 저장소
     private final ConcurrentHashMap<String, String> sessionNicknameMap = new ConcurrentHashMap<>();
     private final AtomicInteger anonymousCounter = new AtomicInteger(1);
+
+    // 수정 가능한 금지어 리스트
+    private static final List<String> bannedWords = new ArrayList<>(List.of(
+        "바보", "멍청이", "병신", "씨발","존나","좆까","좆","애미","니미","개새끼","새끼","ㅆㅂ","ㅅㅂ","ㅈㄴ","ㅈㄲ","ㅂㅅ","ㅄ","ㄳㄲ","ㅅㄲ","ㄴㅇㅁ","ㅇㅁ"
+    ));
 
     @MessageMapping("/chat/{roomId}")
     public void sendMessage(@DestinationVariable String roomId,
@@ -38,7 +44,10 @@ public class ChatController_hs {
         message.setTimestamp(LocalDateTime.now());
         message.setBuildingId(roomId);
 
-        //  익명 채팅 처리
+        // 금지어 필터 적용
+        message.setContent(filterBannedWords(message.getContent()));
+
+        // 익명 채팅 처리
         if ("anonymous".equals(roomId)) {
             String sessionId = headerAccessor.getSessionId();
             String nickname = sessionNicknameMap.computeIfAbsent(sessionId, id -> "익명" + anonymousCounter.getAndIncrement());
@@ -48,7 +57,7 @@ public class ChatController_hs {
             return;
         }
 
-        //  건물 채팅 - 사용자 토큰 확인
+        // 건물 채팅방 토큰 확인
         String token = headerAccessor.getFirstNativeHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
@@ -65,5 +74,18 @@ public class ChatController_hs {
 
         ChatMessage_hs saved = chatMessageRepository.save(message);
         messagingTemplate.convertAndSend("/topic/" + roomId, saved);
+    }
+
+    // 금지어 필터링 함수
+    private String filterBannedWords(String content) {
+        if (content == null) return null;
+
+        String result = content;
+        for (String word : bannedWords) {
+            if (word != null && !word.isBlank()) {
+                result = result.replaceAll("(?i)" + word, "***");
+            }
+        }
+        return result;
     }
 }
