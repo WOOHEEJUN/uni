@@ -273,6 +273,11 @@
     return res.json();
   })
   .then(user => {
+    if (user.status === "APPROVED") {
+      location.href = "userIndex.html";  // ✅ 승인된 유저는 자동 이동
+      return;
+    }
+
     const nickname = user.nickname || "게스트";
     document.querySelector("span").innerText = `${nickname}님 안녕하세요!`;
   })
@@ -281,12 +286,13 @@
     document.querySelector("span").innerText = "게스트님 안녕하세요!";
   });
 });
-    function logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("accessToken");
-      alert("로그아웃 되었습니다.");
-      location.href = "index.html";  // ✅ 로그아웃 후 index로 이동
-    }
+
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("accessToken");
+  alert("로그아웃 되었습니다.");
+  location.href = "index.html";  // ✅ 로그아웃 후 index로 이동
+}
   </script>
 
 </body>
