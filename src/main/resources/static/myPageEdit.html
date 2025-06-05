@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>개인정보 수정</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background: white;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    header img {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      margin-top: 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #007bff;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .status {
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="userIndex.html"><img src="/img/Uni_logo.png" alt="로고"></a>
+  </header>
+
+  <div class="container">
+    <h2>개인정보 수정</h2>
+
+    <label for="nickname">닉네임</label>
+    <input type="text" id="nickname" placeholder="새 닉네임 입력">
+    <div class="status" id="nicknameStatus"></div>
+
+    <label for="currentPassword">현재 비밀번호</label>
+    <input type="password" id="currentPassword" placeholder="현재 비밀번호">
+    <div class="status" id="passwordStatus"></div>
+
+    <label for="newPassword">새 비밀번호</label>
+    <input type="password" id="newPassword" placeholder="새 비밀번호">
+
+    <button class="btn" onclick="updateProfile()">정보 수정</button>
+  </div>
+
+ <script>
+  let isNicknameChecked = false;
+  let lastCheckedNickname = "";
+
+  async function checkNickname() {
+    const nickname = document.getElementById("nickname").value.trim();
+    if (!nickname) {
+      alert("닉네임을 입력하세요.");
+      return;
+    }
+
+    const res = await fetch(`/api/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+    const result = await res.text();
+
+    if (result === "OK") {
+      alert("사용 가능한 닉네임입니다.");
+      isNicknameChecked = true;
+      lastCheckedNickname = nickname;
+    } else {
+      alert("이미 사용 중인 닉네임입니다.");
+      isNicknameChecked = false;
+      lastCheckedNickname = "";
+    }
+  }
+
+  async function updateProfile() {
+    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+    if (!token) return alert("로그인이 필요합니다.");
+
+    const nickname = document.getElementById("nickname").value.trim();
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+
+    if (!nickname || !currentPassword || !newPassword) {
+      alert("모든 항목을 입력해주세요.");
+      return;
+    }
+
+    if (!isNicknameChecked || nickname !== lastCheckedNickname) {
+      alert("닉네임 중복 확인을 다시 해주세요.");
+      return;
+    }
+
+    const res = await fetch("/api/user/update-profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ nickname, currentPassword, newPassword })
+    });
+
+    if (res.ok) {
+      alert("정보가 성공적으로 수정되었습니다.");
+      location.href = "userIndex.html";
+    } else {
+      const msg = await res.text();
+      alert("수정 실패: " + msg);
+    }
+  }
+</script>
+</body>
+</html>
