@@ -1,0 +1,12 @@
+package com.example.location_app.repository;
+
+import com.example.location_app.entity.UserSchedule;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface UserScheduleRepository extends JpaRepository<UserSchedule, Integer> {
+    List<UserSchedule> findByUserId(Integer userId);
+} 
