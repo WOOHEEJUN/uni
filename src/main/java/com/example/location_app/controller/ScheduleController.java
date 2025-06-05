@@ -48,6 +48,31 @@ public class ScheduleController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSchedule(
+            @PathVariable Integer id,
+            @RequestBody UserSchedule schedule,
+            @RequestAttribute Integer userId) {
+        try {
+            if (schedule.getTitle() == null || schedule.getTitle().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("일정 제목은 필수입니다.");
+            }
+            if (schedule.getDayOfWeek() == null || schedule.getDayOfWeek() < 1 || schedule.getDayOfWeek() > 5) {
+                return ResponseEntity.badRequest().body("올바른 요일을 선택해주세요.");
+            }
+            if (schedule.getStartTime() == null || schedule.getEndTime() == null) {
+                return ResponseEntity.badRequest().body("시작 시간과 종료 시간은 필수입니다.");
+            }
+            
+            schedule.setId(id);
+            schedule.setUserId(userId);
+            UserSchedule updatedSchedule = scheduleService.updateSchedule(schedule);
+            return ResponseEntity.ok(updatedSchedule);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSchedule(
             @PathVariable Integer id,

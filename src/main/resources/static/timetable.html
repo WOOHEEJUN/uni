@@ -133,6 +133,40 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .schedule-item .schedule-title {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .schedule-item .schedule-actions {
+      display: none;
+      gap: 4px;
+      margin-left: 4px;
+    }
+
+    .schedule-item:hover .schedule-actions {
+      display: flex;
+    }
+
+    .schedule-item .action-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 10px;
+    }
+
+    .schedule-item .action-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .schedule-item.half-hour {

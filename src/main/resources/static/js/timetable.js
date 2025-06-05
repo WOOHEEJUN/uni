@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTimetable();
     loadSchedules();
     setupTimeInputs();
+
+    // 폼 제출 핸들러 설정 (추가/수정 공용)
+    document.getElementById('scheduleForm').onsubmit = handleScheduleFormSubmit;
 });
 
 // 시간 입력 필드 설정
@@ -105,6 +108,8 @@ async function loadSchedules() {
         }
 
         const schedules = await response.json();
+        // 기존 일정을 모두 지우고 다시 그림
+        document.getElementById('timetableGrid').querySelectorAll('.schedule-item').forEach(item => item.remove());
         schedules.forEach(schedule => {
             addScheduleToGrid(schedule);
         });
@@ -114,8 +119,14 @@ async function loadSchedules() {
     }
 }
 
-// 일정을 그리드에 추가
+// 일정을 그리드에 추가 (또는 업데이트)
 function addScheduleToGrid(schedule) {
+    // 기존에 동일한 ID를 가진 일정이 있는지 확인하고 제거
+    const existingItem = document.querySelector(`.schedule-item[data-id="${schedule.id}"]`);
+    if (existingItem) {
+        existingItem.remove();
+    }
+
     const startTime = schedule.startTime.split(':');
     const endTime = schedule.endTime.split(':');
     const startHour = parseInt(startTime[0]);
@@ -133,7 +144,40 @@ function addScheduleToGrid(schedule) {
     const scheduleItem = document.createElement('div');
     scheduleItem.className = 'schedule-item';
     scheduleItem.style.backgroundColor = schedule.color;
-    scheduleItem.textContent = schedule.title;
+    scheduleItem.dataset.id = schedule.id; // 스케줄 ID 저장
+
+    // 스케줄 제목과 액션 버튼을 포함하는 컨테이너
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'schedule-title';
+    titleSpan.textContent = schedule.title;
+
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'schedule-actions';
+
+    // 수정 버튼
+    const editBtn = document.createElement('button');
+    editBtn.className = 'action-btn';
+    editBtn.textContent = '수정';
+    editBtn.onclick = (e) => {
+        e.stopPropagation();
+        openEditModal(schedule);
+    };
+
+    // 삭제 버튼
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'action-btn';
+    deleteBtn.textContent = '삭제';
+    deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (confirm('이 일정을 삭제하시겠습니까?')) {
+            deleteSchedule(schedule.id);
+        }
+    };
+
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
+    scheduleItem.appendChild(titleSpan);
+    scheduleItem.appendChild(actionsDiv);
 
     // 그리드 내에서의 시작 시간 (분 단위, 9시 0분 기준)
     const startMinutesFromGridStart = (startHour - gridStartTimeHour) * 60 + startMinute;
@@ -149,7 +193,7 @@ function addScheduleToGrid(schedule) {
     // 시간 슬롯 영역의 시작 오프셋을 더함
     const firstTimeSlot = document.querySelector(`.time-slot[data-hour="${gridStartTimeHour}"]`);
     if (firstTimeSlot) {
-        topPosition += firstTimeSlot.offsetTop;
+        topPosition += firstTimeSlot.offsetTop; // 상대 위치에 오프셋 더함
     } else {
         console.error(`Could not find the first time slot cell for hour ${gridStartTimeHour}`);
         return; // 첫 시간 슬롯을 찾지 못하면 스케줄을 추가하지 않음
@@ -179,18 +223,85 @@ function addScheduleToGrid(schedule) {
     grid.appendChild(scheduleItem);
 }
 
-// 모달 열기
+// 일정 삭제 함수
+async function deleteSchedule(scheduleId) {
+    try {
+        const response = await fetch(`/api/schedules/${scheduleId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('일정 삭제에 실패했습니다.');
+        }
+
+        // 성공 시 시간표 새로고침
+        // document.getElementById('timetableGrid').innerHTML = '';
+        // initializeTimetable();
+        loadSchedules(); // loadSchedules 함수 내에서 기존 일정 삭제 후 새로 그림
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message);
+    }
+}
+
+// 모달 상태 관리를 위한 변수
+let currentScheduleId = null; // 현재 수정 중인 일정의 ID
+
+// 수정 모달 열기
+function openEditModal(schedule) {
+    const modal = document.getElementById('scheduleModal');
+    const form = document.getElementById('scheduleForm');
+    const modalTitle = modal.querySelector('h2');
+
+    modalTitle.textContent = '일정 수정'; // 모달 제목 변경
+    currentScheduleId = schedule.id; // 수정 모드로 설정하고 ID 저장
+
+    // 폼 필드 채우기
+    document.getElementById('title').value = schedule.title;
+    document.getElementById('day').value = schedule.dayOfWeek;
+
+    const [startHour, startMinute] = schedule.startTime.split(':');
+    document.getElementById('startHour').value = startHour;
+    document.getElementById('startMinute').value = startMinute;
+
+    const [endHour, endMinute] = schedule.endTime.split(':');
+    document.getElementById('endHour').value = endHour;
+    document.getElementById('endMinute').value = endMinute;
+
+    document.getElementById('color').value = schedule.color;
+
+    modal.style.display = 'block';
+}
+
+// 모달 닫을 때 폼 초기화 및 상태 초기화
+function closeModal() {
+    const modal = document.getElementById('scheduleModal');
+    const form = document.getElementById('scheduleForm');
+    const modalTitle = modal.querySelector('h2');
+
+    form.reset();
+    modalTitle.textContent = '일정 추가'; // 모달 제목 원래대로 복구
+    currentScheduleId = null; // 상태 초기화
+
+    modal.style.display = 'none';
+}
+
+// 모달 열기 (추가 모드)
 function openModal() {
+    const modal = document.getElementById('scheduleModal');
+    const modalTitle = modal.querySelector('h2');
+
+    modalTitle.textContent = '일정 추가'; // 모달 제목 설정
+    currentScheduleId = null; // 추가 모드로 설정
+
     document.getElementById('scheduleModal').style.display = 'block';
 }
 
-// 모달 닫기
-function closeModal() {
-    document.getElementById('scheduleModal').style.display = 'none';
-}
-
-// 일정 추가 폼 제출
-document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+// 일정 추가/수정 폼 제출 처리
+async function handleScheduleFormSubmit(e) {
     e.preventDefault();
 
     const startHour = document.getElementById('startHour').value;
@@ -212,7 +323,7 @@ document.getElementById('scheduleForm').addEventListener('submit', async (e) => 
         return;
     }
 
-    const schedule = {
+    const scheduleData = {
         title: document.getElementById('title').value,
         dayOfWeek: parseInt(document.getElementById('day').value),
         startTime: startTime,
@@ -220,29 +331,41 @@ document.getElementById('scheduleForm').addEventListener('submit', async (e) => 
         color: document.getElementById('color').value
     };
 
+    let apiUrl = '/api/schedules';
+    let httpMethod = 'POST';
+
+    // 수정 모드인 경우 URL과 메소드 변경
+    if (currentScheduleId !== null) {
+        apiUrl = `/api/schedules/${currentScheduleId}`;
+        httpMethod = 'PUT';
+        scheduleData.id = currentScheduleId; // 수정 시 ID 포함
+    }
+
+    console.log('Sending schedule data:', scheduleData); // TODO: 디버깅 로그 추가
+
     try {
-        const response = await fetch('/api/schedules', {
-            method: 'POST',
+        const response = await fetch(apiUrl, {
+            method: httpMethod,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify(schedule)
+            body: JSON.stringify(scheduleData)
         });
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || '일정 추가에 실패했습니다.');
+            throw new Error(errorData.message || `${currentScheduleId ? '일정 수정' : '일정 추가'}에 실패했습니다.`);
         }
 
         // 성공 시 시간표 새로고침
-        document.getElementById('timetableGrid').innerHTML = '';
-        initializeTimetable();
-        loadSchedules();
+        // document.getElementById('timetableGrid').innerHTML = '';
+        // initializeTimetable();
+        loadSchedules(); // loadSchedules 함수 내에서 기존 일정 삭제 후 새로 그림
         closeModal();
         e.target.reset();
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
     }
-}); 
+} 

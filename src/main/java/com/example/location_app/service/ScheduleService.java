@@ -24,6 +24,24 @@ public class ScheduleService {
     }
 
     @Transactional
+    public UserSchedule updateSchedule(UserSchedule schedule) {
+        UserSchedule existingSchedule = scheduleRepository.findById(schedule.getId())
+                .orElseThrow(() -> new RuntimeException("일정을 찾을 수 없습니다."));
+        
+        if (!existingSchedule.getUserId().equals(schedule.getUserId())) {
+            throw new RuntimeException("해당 일정을 수정할 권한이 없습니다.");
+        }
+        
+        existingSchedule.setTitle(schedule.getTitle());
+        existingSchedule.setDayOfWeek(schedule.getDayOfWeek());
+        existingSchedule.setStartTime(schedule.getStartTime());
+        existingSchedule.setEndTime(schedule.getEndTime());
+        existingSchedule.setColor(schedule.getColor());
+        
+        return existingSchedule;
+    }
+
+    @Transactional
     public void deleteSchedule(Integer id, Integer userId) {
         UserSchedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("일정을 찾을 수 없습니다."));
