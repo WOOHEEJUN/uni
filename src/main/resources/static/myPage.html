@@ -96,15 +96,19 @@
     <p id="nicknameArea" style="font-size: 1.2rem; font-weight: bold; color: #6a2dbf; margin: 16px 0 24px;">
       닉네임
     </p>
-    <button onclick="location.href='myPageEdit.html'">🗂️ 개인정보 수정하기 </button>
+    <button onclick="location.href='update-profile.html'">🗂️ 개인정보 수정</button>
     <button onclick="location.href=' timetable.html'">✏️ 시간표 작성</button>
     <button onclick="location.href='customerService.html'">📞 고객센터</button>
   </div>
 </div>
 <script>
+  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+
   window.addEventListener("DOMContentLoaded", () => {
-    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-    if (!token) return;
+    if (!token) {
+      document.getElementById("nicknameArea").innerText = "게스트님 안녕하세요!";
+      return;
+    }
 
     fetch("/api/user/me", {
       method: "GET",
@@ -127,8 +131,6 @@
   });
 
   function goMain() {
-    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-
     if (!token) {
       location.href = "noTokenUserIndex.html";
       return;
@@ -145,14 +147,14 @@
     })
     .then(user => {
       const status = (user.status || user.userStatus || user.verificationStatus || "").toUpperCase();
-
       if (status === "APPROVED") {
         location.href = "userIndex.html";
       } else {
         location.href = "noTokenUserIndex.html";
       }
     })
-    .catch(() => {
+    .catch(err => {
+      console.error("메인 페이지 이동 실패:", err);
       location.href = "noTokenUserIndex.html";
     });
   }
@@ -164,5 +166,6 @@
     location.href = "loginjb.html";
   }
 </script>
+
 </body>
 </html>

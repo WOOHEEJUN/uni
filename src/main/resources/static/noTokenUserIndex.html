@@ -107,101 +107,102 @@
       margin-bottom: 20px;
     }
 
-   .section h3 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #007bff;
-}
+    .section h3 {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #007bff;
+    }
 
-.section h3::before {
-  content: '📁';
-  font-size: 1.2rem;
-}
+    .section ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 10px;
+    }
 
-/* 게시판 리스트 스타일 */
-.section ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 10px;
-}
+    .section ul li {
+      font-size: 0.95rem;
+      color: #222;
+      font-weight: 500;
+      margin-bottom: 6px;
+      padding-left: 4px;
+      transition: color 0.2s ease;
+    }
 
-.section ul li {
-  font-size: 0.95rem;
-  color: #222;
-  font-weight: 500;
-  margin-bottom: 6px;
-  padding-left: 4px;
-  transition: color 0.2s ease;
-}
+    .right .section {
+      background: linear-gradient(to bottom right, #f6f9ff, #fef9fc);
+      padding: 20px 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
 
-.section ul li:hover {
-  color: #007bff;
-  cursor: pointer;
-}
-.right .section {
-  background: linear-gradient(to bottom right, #f6f9ff, #fef9fc);
-  padding: 20px 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-}
-.right .section h3 {
-  display: flex;
-  align-items: center;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #007bff;
-  margin-bottom: 14px;
-  gap: 6px;
-}
+    .right .section .all-board-button {
+      background: none;
+      border: 1.5px solid #ccc;
+      color: #333;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: none;
+    }
 
-.right .section h3::before {
-  content: '📁';
-  font-size: 1.2rem;
-}
+    .right .section .all-board-button::before {
+      content: '📁';
+    }
 
-/* 게시판 전체 보기 버튼 스타일 */
-.right .section .all-board-button {
-  background: none;
-  border: 1.5px solid #ccc;
-  color: #333;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: none;
-}
+    .right .section .all-board-button:hover {
+      background-color: #f2f6ff;
+      color: #007bff;
+      border-color: #007bff;
+    }
 
-.right .section .all-board-button::before {
-  content: '📁';
-}
+    .right .section ul li a {
+      color: #000 !important;
+      text-decoration: none;
+    }
 
-.right .section .all-board-button:hover {
-  background-color: #f2f6ff;
-  color: #007bff;
-  border-color: #007bff;
-}
-.right .section ul li a {
-  color: #000 !important; /* 글자색을 완전한 검정색으로 고정 */
-  text-decoration: none;
-}
+    .right .section ul li a:hover {
+      color: #000 !important;
+      text-decoration: underline;
+    }
 
-.right .section ul li a:hover {
-  color: #000 !important; /* hover해도 검정 유지 */
-  text-decoration: underline; /* 선택사항: 밑줄 */
-}
+    /* timetable */
+    .timetable-preview {
+      margin-top: 20px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+    }
 
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(5, 1fr);
+      gap: 1px;
+      background: #ccc;
+    }
+
+    .mini-grid div {
+      background: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .day-header {
+      background: #e0f0ff;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-
   <header>
     <a href="/noTokenUserIndex.html" class="logo">
       <img src="/img/Uni_logo.png" alt="로고">
@@ -210,9 +211,9 @@
     <div class="user-actions">
       <button class="chat-btn" onclick="location.href='pending.html'">💬 익명 채팅방</button>
       <button class="building-btn" onclick="location.href='pending.html'">📘 건물 채팅방</button>
-      <span>게스트님 안녕하세요!</span>
+      <span id="nicknameArea">게스트님 안녕하세요!</span>
       <span style="color: #007bff; font-weight: bold;">🏫 학교 정보 없음</span>
-      <a href="myPage.html" class="mypage-btn">마이페이지</a>
+      <a href="submitEnrollment.html" class="mypage-btn">재학증명서</a>
       <button class="logout-btn" onclick="logout()">로그아웃</button>
     </div>
   </header>
@@ -235,19 +236,35 @@
         <h3>📢 공지사항</h3>
         <p>💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.</p>
       </div>
+      <div id="timetablePreview" class="timetable-preview">
+        <h3>📅 시간표 미리보기</h3>
+        <div class="mini-grid" id="miniTimetableGrid">
+          <div class="day-header">시간</div>
+          <div class="day-header">월</div>
+          <div class="day-header">화</div>
+          <div class="day-header">수</div>
+          <div class="day-header">목</div>
+          <div class="day-header">금</div>
+          <div>09:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>10:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>11:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>12:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>13:00</div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
     </div>
 
     <div class="right">
-  <div class="section">
-    <h3>게시물 목록</h3>
-    <ul>
-      <li><a href="pending.html">📌 자유 게시판</a></li>
-      <li><a href="pending.html">🙈 비밀 게시판</a></li>
-      <li><a href="pending.html">🛍 중고거래 게시판</a></li>
-      <li><a href="pending.html">🎓 학과 게시판</a></li> <!-- ✅ 추가된 학과 게시판 -->
-    </ul>
-  </div>
-</div>
+      <div class="section">
+        <h3>게시물 목록</h3>
+        <ul>
+          <li><a href="pending.html">📌 자유 게시판</a></li>
+          <li><a href="pending.html">🙈 비밀 게시판</a></li>
+          <li><a href="pending.html">🛍 중고거래 게시판</a></li>
+          <li><a href="pending.html">🎓 학과 게시판</a></li>
+        </ul>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -256,44 +273,39 @@
 
   <script>
     window.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-  if (!token) {
-    document.querySelector("span").innerText = "게스트님 안녕하세요!";
-    return;
-  }
+      const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+      if (!token) return;
 
-  fetch("/api/user/me", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token
+      fetch("/api/user/me", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("인증 실패");
+        return res.json();
+      })
+      .then(user => {
+        if (user.status === "APPROVED") {
+          location.href = "userIndex.html";
+          return;
+        }
+        const nickname = user.nickname || "게스트";
+        document.getElementById("nicknameArea").innerText = `${nickname}님 안녕하세요!`;
+      })
+      .catch(err => {
+        console.warn("닉네임 불러오기 실패:", err);
+        document.getElementById("nicknameArea").innerText = "게스트님 안녕하세요!";
+      });
+    });
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
+      alert("로그아웃 되었습니다.");
+      location.href = "index.html";
     }
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("인증 실패");
-    return res.json();
-  })
-  .then(user => {
-    if (user.status === "APPROVED") {
-      location.href = "userIndex.html";  // ✅ 승인된 유저는 자동 이동
-      return;
-    }
-
-    const nickname = user.nickname || "게스트";
-    document.querySelector("span").innerText = `${nickname}님 안녕하세요!`;
-  })
-  .catch(err => {
-    console.warn("닉네임 불러오기 실패:", err);
-    document.querySelector("span").innerText = "게스트님 안녕하세요!";
-  });
-});
-
-function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("accessToken");
-  alert("로그아웃 되었습니다.");
-  location.href = "index.html";  // ✅ 로그아웃 후 index로 이동
-}
   </script>
-
 </body>
 </html>

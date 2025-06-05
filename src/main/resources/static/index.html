@@ -17,14 +17,15 @@
       min-height: 100vh;
       padding: 20px;
     }
-header {
-  background: white;                            /* ✅ 흰 배경 */
-  display: flex;
-  justify-content: space-between;              /* 좌우 정렬 */
-  align-items: center;
-  padding: 20px 60px;                           /* ✅ 내부 여백 (상하/좌우) */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);    /* ✅ 박스 그림자 효과 */
-}
+
+    header {
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
     .logo {
       display: flex;
@@ -34,7 +35,7 @@ header {
     }
 
     .logo img {
-      width:80px;
+      width: 80px;
       height: 80px;
     }
 
@@ -52,48 +53,33 @@ header {
     }
 
     .user-actions a button {
-  width: 130px; /* 👈 원하는 너비 설정 */
-  padding: 10px 0;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  color: white;
-}
-
-    .chat-btn {
-      background-color: #ff8bd4;
+      width: 130px;
+      padding: 10px 0;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      color: white;
     }
 
-    .chat-btn:hover {
-      background-color: #f970c1;
-    }
+    .chat-btn { background-color: #ff8bd4; }
+    .chat-btn:hover { background-color: #f970c1; }
+    .building-btn { background-color: #6c5ce7; }
+    .building-btn:hover { background-color: #4e3ad2; }
+    .login-btn, .logout-btn { background-color: #007bff; }
+    .login-btn:hover, .logout-btn:hover { background-color: #0056b3; }
+    .signup { background-color: #007bff; }
+    .signup:hover { background-color: #0056b3; }
 
-    .building-btn {
-      background-color: #6c5ce7;
+    main {
+      flex: 1;
+      display: flex;
+      gap: 20px;
+      padding: 30px 40px;
+      margin-top: 5px;
     }
-
-    .building-btn:hover {
-      background-color: #4e3ad2;
-    }
-
-    .login-btn, .logout-btn {
-      background-color: #007bff;
-    }
-
-    .login-btn:hover, .logout-btn:hover {
-      background-color: #0056b3;
-    }
-
-   main {
-  flex: 1;
-  display: flex;
-  gap: 20px;
-  padding: 30px 40px;
-  margin-top: 5px; /* ✅ 원하는 만큼 아래로 내림 */
-}
 
     .section {
       background: white;
@@ -126,85 +112,114 @@ header {
       font-weight: 500;
     }
 
-    .big-button {
-      width: 100%;
-      padding: 20px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
+    .right .section ul li a {
+      color: #000 !important;
+      text-decoration: none;
+    }
+
+    .right .section ul li a:hover {
+      color: #000 !important;
+      text-decoration: underline;
+    }
+
+    /* 시간표 미리보기 */
+    .timetable-preview {
+      margin-top: 20px;
+      background: #f9f9f9;
       border-radius: 12px;
-      background: linear-gradient(to right, #7fbfff, #a3d8ff);
-      color: white;
-      box-shadow: 0 8px 16px rgba(0,123,255,0.2);
-      cursor: pointer;
-      transition: all 0.3s ease;
+      padding: 20px;
     }
 
-    .big-button:hover {
-      background: linear-gradient(to right, #66b2ff, #8ccfff);
-      transform: translateY(-2px);
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(5, 1fr);
+      gap: 1px;
+      background: #ccc;
     }
-    .signup {
-  background-color: #007bff;
+
+    .mini-grid div {
+      background: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .day-header {
+      background: #e0f0ff;
+      font-weight: bold;
+    }
+    .left {
+  width: 22%;
+  max-height: 220px; /* 🔹 전체 높이 제한 */
+  overflow-y: auto;
 }
 
-.signup:hover {
-  background-color: #0056b3;
+.left ul {
+  max-height: 150px;  /* 🔹 글 목록만 따로 제한 */
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
 }
-.right .section ul li a {
-  color: #000 !important; /* 글자색을 완전한 검정색으로 고정 */
-  text-decoration: none;
-}
-
-.right .section ul li a:hover {
-  color: #000 !important; /* hover해도 검정 유지 */
-  text-decoration: underline; /* 선택사항: 밑줄 */
-}
-
   </style>
 </head>
 <body>
+  <header>
+    <a href="index.html" class="logo">
+      <img src="/img/Uni_logo.png" alt="로고">
+      <span>Uni Messenger</span>
+    </a>
+    <div class="user-actions">
+      <a href="noLoginUser.html"><button class="chat-btn">💬 익명 채팅방</button></a>
+      <a href="noLoginUser.html"><button class="building-btn">🏢 건물 채팅방</button></a>
+      <a href="loginjb.html"><button class="login-btn">로그인</button></a>
+      <a href="signup.html"><button class="signup">회원가입</button></a>
+    </div>
+  </header>
 
-<header>
-  <a href="index.html" class="logo">
-    <img src="/img/Uni_logo.png" alt="로고">
-    <span>Uni Messenger</span>
-  </a>
-  <div class="user-actions">
-  <a href="noLoginUser.html"><button class="chat-btn">💬 익명 채팅방</button></a>
-  <a href="noLoginUser.html"><button class="building-btn">🏢 건물 채팅방</button></a>
-  <a href="loginjb.html"><button class="login-btn">로그인</button></a>
-  <a href="signup.html"><button class="signup">회원가입</button></a>
-</div>
-</header>
+  <main>
+    <div class="left section">
+      <h3>🔥 HOT 학과 게시물</h3>
+      <ul>
+        <li>인기 글 1</li>
+        <li>인기 글 2</li>
+        <li>인기 글 3</li>
+        <li>인기 글 4</li>
+      </ul>
+    </div>
 
-<main>
-  <div class="left section">
-    <h3>🔥 HOT 학과 게시물</h3>
-    <ul>
-      <li>인기 글 1</li>
-      <li>인기 글 2</li>
-      <li>인기 글 3</li>
-      <li>인기 글 4</li>
-    </ul>
-  </div>
+    <div class="center section">
+      <h3>📢 공지사항</h3>
+      <p>💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.</p>
 
-  <div class="center section">
-    <h3>📢 공지사항</h3>
-    <p>💬 환영합니다! 여기는 Uni messenger입니다. 공지 및 메시지 공간입니다.</p>
-  </div>
-<div class="right">
+      <div id="timetablePreview" class="timetable-preview">
+        <h3>📅 시간표 미리보기</h3>
+        <div class="mini-grid" id="miniTimetableGrid">
+          <div class="day-header">시간</div>
+          <div class="day-header">월</div>
+          <div class="day-header">화</div>
+          <div class="day-header">수</div>
+          <div class="day-header">목</div>
+          <div class="day-header">금</div>
+          <div>09:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>10:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>11:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>12:00</div><div></div><div></div><div></div><div></div><div></div>
+          <div>13:00</div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
       <div class="section">
         <h3>📁 게시판 목록</h3>
         <ul id="boardList">
-  <li><a href="noLoginUser.html">📌 자유게시판</a></li>
-  <li><a href="noLoginUser.html">🙈 비밀게시판</a></li>
-  <li><a href="noLoginUser.html">🛍 중고거래게시판</a></li>
-  <li><a href="noLoginUser.html">🎓 학과 게시판</a></li>
-</ul>
+          <li><a href="noLoginUser.html">📌 자유게시판</a></li>
+          <li><a href="noLoginUser.html">🙈 비밀게시판</a></li>
+          <li><a href="noLoginUser.html">🛍 중고거래게시판</a></li>
+          <li><a href="noLoginUser.html">🎓 학과 게시판</a></li>
+        </ul>
       </div>
     </div>
-</main>
-
+  </main>
 </body>
 </html>

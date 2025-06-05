@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원정보 수정 - Uni messenger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: white;
+      padding: 10px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .logo img {
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .header-buttons button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .header-buttons button:hover {
+      background-color: #0056b3;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 460px;
+      margin-top: 60px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #007bff;
+      font-size: 26px;
+      margin-bottom: 35px;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .error-message {
+      color: #d8000c;
+      margin-top: 14px;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        location.href = "pending.html";
+      }
+    });
+
+    function goToMypage() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        location.href = "notokenuserindex.html";
+        return;
+      }
+
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.role === 'USER') {
+          location.href = "userIndex.html";
+        } else {
+          alert("접근 권한이 없습니다.");
+        }
+      } catch (e) {
+        console.error("토큰 파싱 오류:", e);
+        location.href = "notokenuserindex.html";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
+      alert("로그아웃 되었습니다.");
+      location.href = "index.html";
+    }
+  </script>
+
+  <header>
+    <a class="logo" href="userIndex.html"><img src="/img/Uni_logo.png" alt="로고"></a>
+    <div class="header-buttons">
+      <a href="myPage.html"><button class="mypage-btn">마이페이지</button></a>
+      <button onclick="logout()">로그아웃</button>
+    </div>
+  </header>
+
+  <div class="form-container">
+    <h2>회원정보 수정</h2>
+    <form id="updateForm">
+      <div class="form-group">
+        <label for="currentPassword">현재 비밀번호</label>
+        <input type="password" id="currentPassword" required>
+      </div>
+
+      <div class="form-group">
+        <label for="newPassword">새 비밀번호</label>
+        <input type="password" id="newPassword">
+      </div>
+
+      <div class="form-group">
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" required>
+      </div>
+
+      <button type="submit" class="submit-btn">수정하기</button>
+      <div id="errorBox" class="error-message"></div>
+    </form>
+  </div>
+
+  <script src="/js/update-profile.js"></script>
+</body>
+</html>
