@@ -76,14 +76,9 @@ window.addEventListener("DOMContentLoaded", () => {
         throw new Error("상태 변경에 실패했습니다.");
       }
 
-      successMsg.style.display = "block";
-      successMsg.textContent = "재학증명서가 성공적으로 제출되었습니다. 관리자 승인을 기다려주세요.";
-      fileInput.value = ""; // 파일 입력 초기화
+      alert("재학증명서가 성공적으로 제출되었습니다. 관리자 승인을 기다려주세요.");
+      window.location.href = "pending.html";
       
-      // 3초 후 pending.html로 이동
-      setTimeout(() => {
-        window.location.href = "pending.html";
-      }, 3000);
     } catch (error) {
       console.error('Error:', error);
       alert(error.message || "서버와 통신 중 오류가 발생했습니다.");

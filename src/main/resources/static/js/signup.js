@@ -33,11 +33,8 @@ document.getElementById("signupForm").addEventListener("submit", async function(
         });
 
         if (response.ok) {
-            errorBox.style.color = "green";
-            errorBox.textContent = "회원가입이 성공적으로 완료되었습니다. 잠시 후 로그인 페이지로 이동합니다.";
-            setTimeout(() => {
-                window.location.href = "loginjb.html";
-            }, 2000);
+            alert("회원가입이 성공적으로 완료되었습니다.");
+            window.location.href = "loginjb.html";
         } else {
             const errorData = await response.json();
             errorBox.style.color = "red";
