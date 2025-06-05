@@ -73,7 +73,7 @@
 
     #chat-box {
       height: 400px;
-      overflow-y: scroll;
+      overflow-y: auto;
       border: 2px solid #ccc;
       padding: 16px;
       background: rgba(255, 255, 255, 0.85);
@@ -166,7 +166,7 @@
       if (saved) {
         anonymousName = saved;
       } else {
-        const randomNum = Math.floor(Math.random() * 900) + 100; // 익명100~999
+        const randomNum = Math.floor(Math.random() * 900) + 100;
         anonymousName = `익명${randomNum}`;
         localStorage.setItem("anonymousName", anonymousName);
       }
@@ -218,6 +218,12 @@
       if (event.key === "Enter") {
         sendMessage();
       }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      alert("로그아웃 되었습니다.");
+      location.href = "index.html";
     }
 
     window.onload = connect;
