@@ -42,14 +42,6 @@
       font-weight: bold;
       color: #007bff;
     }
-    .header-title {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: #333;
-    }
     .header-buttons {
       display: flex;
       gap: 10px;
@@ -216,6 +208,9 @@
       stompClient = Stomp.over(socket);
       const token = localStorage.getItem("token");
 
+      // ✅ 메시지 초기화
+      document.getElementById("chat-messages").innerHTML = "";
+
       stompClient.connect(
         { Authorization: "Bearer " + token },
         () => {
@@ -225,7 +220,7 @@
             div.textContent = `${message.sender}: ${message.content}`;
             const chatBox = document.getElementById("chat-messages");
             chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight; // 자동 스크롤
+            chatBox.scrollTop = chatBox.scrollHeight;
           });
 
           document.getElementById("chat-section").style.display = "block";
