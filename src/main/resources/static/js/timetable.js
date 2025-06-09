@@ -1,4 +1,6 @@
 // 시간표 초기화
+// 반응형 시간표 JS
+
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -11,23 +13,24 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSchedules();
     setupTimeInputs();
 
-    // 폼 제출 핸들러 설정 (추가/수정 공용)
     document.getElementById('scheduleForm').onsubmit = handleScheduleFormSubmit;
+
+    // ✅ 창 크기 변경 시 시간표 다시 그림
+    window.addEventListener('resize', () => {
+        initializeTimetable();
+        loadSchedules();
+    });
 });
 
-// 시간 입력 필드 설정
 function setupTimeInputs() {
     const startHour = document.getElementById('startHour');
     const startMinute = document.getElementById('startMinute');
     const endHour = document.getElementById('endHour');
     const endMinute = document.getElementById('endMinute');
 
-    // 시작 시간 변경 시
     function updateStartTime() {
         if (startHour.value && startMinute.value) {
             const startTime = `${startHour.value}:${startMinute.value}`;
-            
-            // 종료 시간이 시작 시간보다 이전이면 종료 시간 업데이트
             if (endHour.value && endMinute.value) {
                 const endTime = `${endHour.value}:${endMinute.value}`;
                 if (endTime <= startTime) {
@@ -38,12 +41,9 @@ function setupTimeInputs() {
         }
     }
 
-    // 종료 시간 변경 시
     function updateEndTime() {
         if (endHour.value && endMinute.value) {
             const endTime = `${endHour.value}:${endMinute.value}`;
-            
-            // 시작 시간이 종료 시간보다 이후면 시작 시간 업데이트
             if (startHour.value && startMinute.value) {
                 const startTime = `${startHour.value}:${startMinute.value}`;
                 if (startTime >= endTime) {
@@ -60,13 +60,13 @@ function setupTimeInputs() {
     endMinute.addEventListener('change', updateEndTime);
 }
 
-// 시간표 그리드 초기화
 function initializeTimetable() {
     const grid = document.getElementById('timetableGrid');
-    const days = ['', '월', '화', '수', '목', '금'];
-    const hours = Array.from({length: 14}, (_, i) => i + 9); // 9시부터 22시까지
+    grid.innerHTML = ''; // ✅ 기존 내용 초기화
 
-    // 요일 헤더 추가
+    const days = ['', '월', '화', '수', '목', '금'];
+    const hours = Array.from({ length: 14 }, (_, i) => i + 9);
+
     days.forEach(day => {
         const dayHeader = document.createElement('div');
         dayHeader.className = 'day-header';
@@ -74,15 +74,13 @@ function initializeTimetable() {
         grid.appendChild(dayHeader);
     });
 
-    // 시간대별 셀 추가
     hours.forEach(hour => {
-        // 시간 표시
         const timeSlot = document.createElement('div');
         timeSlot.className = 'time-slot';
         timeSlot.textContent = `${hour}:00`;
+        timeSlot.dataset.hour = hour;
         grid.appendChild(timeSlot);
 
-        // 각 요일별 셀
         for (let i = 1; i <= 5; i++) {
             const cell = document.createElement('div');
             cell.className = 'time-slot';
@@ -92,7 +90,6 @@ function initializeTimetable() {
         }
     });
 }
-
 // 일정 불러오기
 async function loadSchedules() {
     try {
