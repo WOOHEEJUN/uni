@@ -5,280 +5,277 @@
   <title>시간표 - Uni messenger</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-    }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+  }
 
-    .timetable-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-    }
+  .timetable-container {
+    position: relative;
+    width: 100%;
+    max-width: 1300px;
+    min-height: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    overflow-x: auto;
+  }
 
-    /* ✅ 상단 네비게이션 추가 */
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      gap: 10px;
-    }
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 10px;
+  }
 
-    .logo img {
-      width: 80px;
-      height: 80px;
-    }
+  .logo img {
+    width: 80px;
+    height: 80px;
+  }
 
-    .logo span {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #4285F4;
-    }
+  .logo span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4285F4;
+  }
 
-    .top-buttons {
-      display: flex;
-      gap: 10px;
-    }
+  .top-buttons {
+    display: flex;
+    gap: 10px;
+  }
 
-    .top-buttons button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  .top-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-    .timetable-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+  .timetable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-    .timetable-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
+  .timetable-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
 
-    .add-schedule-btn {
-      background: #4285F4;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+  .add-schedule-btn {
+    background: #4285F4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
+  .timetable-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr); /* 시간 + 요일 */
+    width: 100%;
+    min-width: 700px;
+  }
+
+  .time-slot {
+    position: relative;
+    height: 60px;
+    overflow: hidden;
+    min-width: 80px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .day-header {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    min-width: 80px;
+    border-right: 1px solid #eee;
+  }
+
+  .schedule-item {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 4px;
+    margin: 2px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .schedule-item .schedule-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .schedule-item .schedule-actions {
+    display: none;
+    gap: 4px;
+    margin-left: 4px;
+  }
+
+  .schedule-item:hover .schedule-actions {
+    display: flex;
+  }
+
+  .schedule-item .action-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 10px;
+  }
+
+  .schedule-item .action-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .submit-btn {
+    background: #4285F4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  .time-select-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  .time-select-container select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+  }
+
+  @media (max-width: 768px) {
     .timetable-grid {
-      display: grid;
-      grid-template-columns: 100px repeat(5, 1fr);
-      gap: 1px;
-      background: #e0e0e0;
-      border: 1px solid #e0e0e0;
-    }
-
-    .time-slot {
-      background: white;
-      padding: 10px;
-      text-align: center;
-      font-size: 14px;
-      position: relative;
-      min-height: 60px;
-      overflow: hidden;
-    }
-
-    .day-header {
-      background: #f8f9fa;
-      padding: 15px;
-      text-align: center;
-      font-weight: bold;
-      position: sticky;
-      top: 0;
-      z-index: 2;
+      grid-template-columns: 60px repeat(5, minmax(100px, 1fr));
     }
 
     .schedule-item {
-      position: absolute;
-      left: 0;
-      right: 0;
-      padding: 5px;
-      color: white;
-      font-size: 12px;
-      cursor: pointer;
-      z-index: 1;
-      border-radius: 4px;
-      margin: 2px;
-      box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      font-size: 14px;
     }
 
-    .schedule-item .schedule-title {
-      flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .top-buttons button {
+      padding: 8px 12px;
+      font-size: 13px;
     }
 
-    .schedule-item .schedule-actions {
-      display: none;
-      gap: 4px;
-      margin-left: 4px;
+    .timetable-title {
+      font-size: 20px;
     }
-
-    .schedule-item:hover .schedule-actions {
-      display: flex;
-    }
-
-    .schedule-item .action-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      padding: 2px 6px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 10px;
-    }
-
-    .schedule-item .action-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .schedule-item.half-hour {
-      height: calc(50% - 4px);
-    }
-
-    .schedule-item.half-hour.top {
-      top: 2px;
-    }
-
-    .schedule-item.half-hour.bottom {
-      bottom: 2px;
-    }
-
-    .schedule-item.full-hour {
-      height: calc(100% - 4px);
-      top: 2px;
-    }
-
-    input[type="time"] {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-
-    input[type="time"]::-webkit-calendar-picker-indicator {
-      cursor: pointer;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: white;
-      width: 90%;
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 12px;
-      position: relative;
-      z-index: 1001;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-
-    .submit-btn {
-      background: #4285F4;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: bold;
-    }
-
-    .time-select-container {
-      display: flex;
-      gap: 10px;
-    }
-
-    .time-select-container select {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background-color: white;
-    }
+  }
   </style>
 </head>
 <body>
   <div class="timetable-container">
-    <!-- ✅ 상단 네비게이션 추가 -->
     <div class="top-nav">
       <a href="userIndex.html" class="logo">
         <img src="/img/Uni_logo.png" alt="로고" />
@@ -296,95 +293,94 @@
     </div>
 
     <div class="timetable-grid" id="timetableGrid">
-      <!-- 동적 시간표 -->
+      <!-- 여기에 동적 시간표 렌더링됨 -->
     </div>
   </div>
 
-    <!-- 일정 추가 모달 -->
-    <div id="scheduleModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>일정 추가</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <form id="scheduleForm">
-                <div class="form-group">
-                    <label for="title">일정 제목</label>
-                    <input type="text" id="title" required>
-                </div>
-                <div class="form-group">
-                    <label for="day">요일</label>
-                    <select id="day" required>
-                        <option value="1">월요일</option>
-                        <option value="2">화요일</option>
-                        <option value="3">수요일</option>
-                        <option value="4">목요일</option>
-                        <option value="5">금요일</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="startTime">시작 시간</label>
-                    <div class="time-select-container">
-                        <select id="startHour" required>
-                            <option value="">시</option>
-                            <option value="09">9시</option>
-                            <option value="10">10시</option>
-                            <option value="11">11시</option>
-                            <option value="12">12시</option>
-                            <option value="13">13시</option>
-                            <option value="14">14시</option>
-                            <option value="15">15시</option>
-                            <option value="16">16시</option>
-                            <option value="17">17시</option>
-                            <option value="18">18시</option>
-                            <option value="19">19시</option>
-                            <option value="20">20시</option>
-                            <option value="21">21시</option>
-                            <option value="22">22시</option>
-                        </select>
-                        <select id="startMinute" required>
-                            <option value="">분</option>
-                            <option value="00">00분</option>
-                            <option value="30">30분</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="endTime">종료 시간</label>
-                    <div class="time-select-container">
-                        <select id="endHour" required>
-                            <option value="">시</option>
-                            <option value="09">9시</option>
-                            <option value="10">10시</option>
-                            <option value="11">11시</option>
-                            <option value="12">12시</option>
-                            <option value="13">13시</option>
-                            <option value="14">14시</option>
-                            <option value="15">15시</option>
-                            <option value="16">16시</option>
-                            <option value="17">17시</option>
-                            <option value="18">18시</option>
-                            <option value="19">19시</option>
-                            <option value="20">20시</option>
-                            <option value="21">21시</option>
-                            <option value="22">22시</option>
-                        </select>
-                        <select id="endMinute" required>
-                            <option value="">분</option>
-                            <option value="00">00분</option>
-                            <option value="30">30분</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="color">색상</label>
-                    <input type="color" id="color" value="#4285F4">
-                </div>
-                <button type="submit" class="submit-btn">저장</button>
-            </form>
+  <div id="scheduleModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>일정 추가</h2>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <form id="scheduleForm">
+        <div class="form-group">
+          <label for="title">일정 제목</label>
+          <input type="text" id="title" required>
         </div>
+        <div class="form-group">
+          <label for="day">요일</label>
+          <select id="day" required>
+            <option value="1">월요일</option>
+            <option value="2">화요일</option>
+            <option value="3">수요일</option>
+            <option value="4">목요일</option>
+            <option value="5">금요일</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="startTime">시작 시간</label>
+          <div class="time-select-container">
+            <select id="startHour" required>
+              <option value="">시</option>
+              <option value="09">9시</option>
+              <option value="10">10시</option>
+              <option value="11">11시</option>
+              <option value="12">12시</option>
+              <option value="13">13시</option>
+              <option value="14">14시</option>
+              <option value="15">15시</option>
+              <option value="16">16시</option>
+              <option value="17">17시</option>
+              <option value="18">18시</option>
+              <option value="19">19시</option>
+              <option value="20">20시</option>
+              <option value="21">21시</option>
+              <option value="22">22시</option>
+            </select>
+            <select id="startMinute" required>
+              <option value="">분</option>
+              <option value="00">00분</option>
+              <option value="30">30분</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="endTime">종료 시간</label>
+          <div class="time-select-container">
+            <select id="endHour" required>
+              <option value="">시</option>
+              <option value="09">9시</option>
+              <option value="10">10시</option>
+              <option value="11">11시</option>
+              <option value="12">12시</option>
+              <option value="13">13시</option>
+              <option value="14">14시</option>
+              <option value="15">15시</option>
+              <option value="16">16시</option>
+              <option value="17">17시</option>
+              <option value="18">18시</option>
+              <option value="19">19시</option>
+              <option value="20">20시</option>
+              <option value="21">21시</option>
+              <option value="22">22시</option>
+            </select>
+            <select id="endMinute" required>
+              <option value="">분</option>
+              <option value="00">00분</option>
+              <option value="30">30분</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="color">색상</label>
+          <input type="color" id="color" value="#4285F4">
+        </div>
+        <button type="submit" class="submit-btn">저장</button>
+      </form>
     </div>
+  </div>
 
-    <script src="/js/timetable.js"></script>
+  <script src="/js/timetable.js"></script>
 </body>
-</html> 
+</html>
