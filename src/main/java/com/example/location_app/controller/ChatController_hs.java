@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 
 import com.example.location_app.entity.ChatMessage_hs;
 import com.example.location_app.repository.ChatMessageRepository_hs;
+import com.example.location_app.repository.UserRepository;
 import com.example.location_app.security.JwtTokenProvider;
 
 import io.jsonwebtoken.Claims;
@@ -27,13 +28,14 @@ public class ChatController_hs {
     private final ChatMessageRepository_hs chatMessageRepository;
     private final SimpMessagingTemplate messagingTemplate;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
 
     private final ConcurrentHashMap<String, String> sessionNicknameMap = new ConcurrentHashMap<>();
     private final AtomicInteger anonymousCounter = new AtomicInteger(1);
 
-    // 수정 가능한 금지어 리스트
     private static final List<String> bannedWords = new ArrayList<>(List.of(
-        "바보", "멍청이", "병신", "씨발","존나","좆까","좆","애미","니미","개새끼","새끼","ㅆㅂ","ㅅㅂ","ㅈㄴ","ㅈㄲ","ㅂㅅ","ㅄ","ㄳㄲ","ㅅㄲ","ㄴㅇㅁ","ㅇㅁ"
+        "바보", "멍청이", "병신", "씨발", "존나", "좆까", "좆", "애미", "니미", "개새끼", "새끼",
+        "ㅆㅂ", "ㅅㅂ", "ㅈㄴ", "ㅈㄲ", "ㅂㅅ", "ㅄ", "ㄳㄲ", "ㅅㄲ", "ㄴㅇㅁ", "ㅇㅁ"
     ));
 
     @MessageMapping("/chat/{roomId}")
@@ -44,7 +46,7 @@ public class ChatController_hs {
         message.setTimestamp(LocalDateTime.now());
         message.setBuildingId(roomId);
 
-        // 금지어 필터 적용
+        // 금지어 필터링
         message.setContent(filterBannedWords(message.getContent()));
 
         // 익명 채팅 처리
@@ -53,16 +55,19 @@ public class ChatController_hs {
             String nickname = sessionNicknameMap.computeIfAbsent(sessionId, id -> "익명" + anonymousCounter.getAndIncrement());
             message.setSender(nickname);
 
+            // 익명 채팅은 user 없이 저장
+            chatMessageRepository.save(message);
             messagingTemplate.convertAndSend("/topic/anonymous", message);
             return;
         }
 
-        // 건물 채팅방 토큰 확인
+        // 건물 채팅: 토큰 인증 처리
         String token = headerAccessor.getFirstNativeHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
             Claims claims = jwtTokenProvider.getClaims(token);
 
+            Long userId = Long.parseLong(String.valueOf(claims.get("id")));
             String userUni = String.valueOf(claims.get("universityName"));
             String expectedPrefix = userUni + "_";
 
@@ -70,13 +75,18 @@ public class ChatController_hs {
                 System.out.println("⚠️ 접근 거부: 타 대학 건물 채팅방 접속 시도");
                 return;
             }
+
+            // 사용자 설정
+            userRepository.findById(userId.intValue()).ifPresent(user -> {
+                message.setUser(user);
+                message.setSender(user.getNickname());
+            });
         }
 
         ChatMessage_hs saved = chatMessageRepository.save(message);
         messagingTemplate.convertAndSend("/topic/" + roomId, saved);
     }
 
-    // 금지어 필터링 함수
     private String filterBannedWords(String content) {
         if (content == null) return null;
 
