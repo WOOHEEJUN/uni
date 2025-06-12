@@ -6,117 +6,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      font-family: 'Noto Sans KR', sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: linear-gradient(to bottom right, #e0f0ff, #ffe9f1);
-      min-height: 100vh;
-      padding: 30px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      background: white;
-      padding: 20px 40px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .logo img {
-      width: 80px;
-      height: 80px;
-    }
-    .logo span {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #007bff;
-    }
-    .header-buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .header-buttons button {
-      background: #a65bff;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .title-banner {
-      background: rgba(173, 216, 255, 0.3);
-      color: #007bff;
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-align: center;
-      padding: 20px;
-      border-radius: 20px;
-      margin-bottom: 40px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-    select, button {
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: bold;
-    }
-    select {
-      margin-right: 10px;
-    }
-    #chat-section {
-      margin-top: 30px;
-      background: white;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #chat-messages {
-      height: 300px;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      padding: 12px;
-      margin-bottom: 10px;
-      background: #f9f9f9;
-      border-radius: 10px;
-    }
-    #chat-input {
-      width: 75%;
-      padding: 12px;
-      border: 2px solid #cfaaff;
-      border-radius: 10px;
-      font-size: 1rem;
-    }
-    #send-button {
-      width: 20%;
-      padding: 12px;
-      background: #007bff;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-    #send-button:hover {
-      background: #0056b3;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/building-select.css">
 </head>
 <body>
   <header>
@@ -132,7 +22,7 @@
 
   <div class="title-banner">🏢 건물 채팅방</div>
 
-  <div style="text-align:center; margin-bottom: 20px;">
+  <div class="select-container">
     <select id="building-select">
       <option value="101">공학관</option>
       <option value="102">도서관</option>
@@ -144,124 +34,12 @@
   <div id="chat-section" style="display:none;">
     <h3>💬 채팅방</h3>
     <div id="chat-messages"></div>
-    <div style="display: flex; gap: 10px;">
+    <div class="chat-input-container">
       <input type="text" id="chat-input" placeholder="메시지를 입력하세요" onkeydown="handleKey(event)" />
       <button id="send-button" onclick="sendMessage()">전송</button>
     </div>
   </div>
 
-  <script>
-    let stompClient = null;
-    let buildingId = null;
-    let nickname = null;
-    let university = null;
-    let roomId = null;
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("로그인이 필요합니다.");
-        location.href = "/loginjb.html";
-        return;
-      }
-
-      fetch("/api/user/me", {
-        headers: { "Authorization": "Bearer " + token }
-      })
-      .then(res => res.ok ? res.json() : Promise.reject("인증 실패"))
-      .then(user => {
-        nickname = user.nickname;
-        university = user.universityName;
-      })
-      .catch(() => {
-        alert("인증 실패. 다시 로그인해주세요.");
-        location.href = "/loginjb.html";
-      });
-    });
-
-    function slugify(text) {
-      return text.replace(/\s+/g, '_').toLowerCase();
-    }
-
-    function joinChat() {
-      buildingId = document.getElementById("building-select").value;
-
-      if (!nickname || !university) {
-        alert("사용자 정보가 준비되지 않았습니다.");
-        return;
-      }
-
-      roomId = `${slugify(university)}_${buildingId}`;
-
-      if (stompClient && stompClient.connected) {
-        stompClient.disconnect(() => {
-          console.log("이전 WebSocket 연결 해제됨.");
-          connectToRoom();
-        });
-      } else {
-        connectToRoom();
-      }
-    }
-
-    function connectToRoom() {
-      const socket = new SockJS("/ws/chat");
-      stompClient = Stomp.over(socket);
-      const token = localStorage.getItem("token");
-
-      // ✅ 메시지 초기화
-      document.getElementById("chat-messages").innerHTML = "";
-
-      stompClient.connect(
-        { Authorization: "Bearer " + token },
-        () => {
-          stompClient.subscribe(`/topic/${roomId}`, (msg) => {
-            const message = JSON.parse(msg.body);
-            const div = document.createElement("div");
-            div.textContent = `${message.sender}: ${message.content}`;
-            const chatBox = document.getElementById("chat-messages");
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
-          });
-
-          document.getElementById("chat-section").style.display = "block";
-
-          stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify({
-            sender: nickname,
-            content: `${nickname}님이 입장하셨습니다.`,
-            buildingId: roomId
-          }));
-        },
-        (err) => {
-          console.error("WebSocket 연결 실패:", err);
-          alert("WebSocket 연결에 실패했습니다.");
-        }
-      );
-    }
-
-    function sendMessage() {
-      const input = document.getElementById("chat-input");
-      const content = input.value.trim();
-      if (!content || !nickname || !stompClient || !roomId) return;
-
-      stompClient.send(`/app/chat/${roomId}`, {}, JSON.stringify({
-        sender: nickname,
-        content: content,
-        buildingId: roomId
-      }));
-      input.value = "";
-    }
-
-    function handleKey(event) {
-      if (event.key === "Enter") {
-        sendMessage();
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem("token");
-      alert("로그아웃 되었습니다.");
-      location.href = "index.html";
-    }
-  </script>
+  <script src="/js/building-select.js"></script>
 </body>
 </html>

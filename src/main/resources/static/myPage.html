@@ -5,86 +5,11 @@
   <meta charset="UTF-8">
   <title>마이페이지</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
- <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-
-  body {
-    background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
-    min-height: 100vh;
-    padding: 40px;
-  }
-
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-
-  .top-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
-
-  .top-buttons button {
-    padding: 10px 20px;
-    background-color: #a65bff;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .top-buttons button:hover {
-    background-color: #8e45db;
-  }
-
-  .profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 4px solid #a65bff;
-    object-fit: cover;
-    margin: 0 auto 20px;
-  }
-
-  .menu-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .menu-buttons button {
-    padding: 14px;
-    border: 2px solid #cfaaff;
-    border-radius: 10px;
-    background-color: #f3e5ff;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #6a2dbf;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  .menu-buttons button:hover {
-    background-color: #e2ccff;
-  }
-</style>
+  <link rel="stylesheet" href="/css/myPage.css">
 </head>
 <body>
-<a href="#" onclick="goMain()" style="position: fixed; top: 20px; left: 20px; z-index: 999;">
-  <img src="/img/Uni_logo.png" alt="메인으로" style="width: 80px; height: 80px;">
+<a href="#" onclick="goMain()" class="logo-link">
+  <img src="/img/Uni_logo.png" alt="메인으로">
 </a>
 <div class="container">
   <div class="top-buttons">
@@ -93,7 +18,7 @@
   </div>
   <img src="/img/user.png" alt="유저 프로필 사진" class="profile-img">
   <div class="menu-buttons">
-    <p id="nicknameArea" style="font-size: 1.2rem; font-weight: bold; color: #6a2dbf; margin: 16px 0 24px;">
+    <p id="nicknameArea" class="nickname-area">
       닉네임
     </p>
     <button onclick="location.href='update-profile.html'">🎓  개인정보 수정</button>
@@ -101,68 +26,6 @@
     <button onclick="location.href='customerService.html'">📞 고객센터</button>
   </div>
 </div>
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-    if (!token) return;
-
-    fetch("/api/user/me", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    })
-    .then(response => {
-      if (!response.ok) throw new Error("인증 실패");
-      return response.json();
-    })
-    .then(user => {
-      const nickname = user.nickname || "사용자";
-      document.getElementById("nicknameArea").innerText = `${nickname}님 안녕하세요!`;
-    })
-    .catch(err => {
-      console.error("닉네임 불러오기 실패:", err);
-      document.getElementById("nicknameArea").innerText = "로그인 오류";
-    });
-  });
-
-  function goMain() {
-    const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-
-    if (!token) {
-      location.href = "noTokenUserIndex.html";
-      return;
-    }
-
-    fetch("/api/user/me", {
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    })
-    .then(res => {
-      if (!res.ok) throw new Error("인증 실패");
-      return res.json();
-    })
-    .then(user => {
-      const status = (user.status || user.userStatus || user.verificationStatus || "").toUpperCase();
-
-      if (status === "APPROVED") {
-        location.href = "userIndex.html";
-      } else {
-        location.href = "noTokenUserIndex.html";
-      }
-    })
-    .catch(() => {
-      location.href = "noTokenUserIndex.html";
-    });
-  }
-
-  function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("accessToken");
-    alert("로그아웃 되었습니다.");
-    location.href = "loginjb.html";
-  }
-</script>
+<script src="/js/myPage.js"></script>
 </body>
 </html>

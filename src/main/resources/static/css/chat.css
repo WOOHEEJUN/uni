@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom right, #d5e8ff, #ffe9f1);
+    min-height: 100vh;
+    padding: 30px;
+    position: relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+}
+
+.logo span {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 19px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.header-buttons button:hover {
+    background-color: #0056b3;
+}
+
+#chat-box {
+    height: 400px;
+    overflow-y: auto;
+    border: 2px solid #ccc;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    position: relative;
+    backdrop-filter: blur(6px);
+}
+
+#chat-box::before {
+    content: "Uni";
+    position: absolute;
+    font-size: 120px;
+    color: rgba(0, 123, 255, 0.1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    user-select: none;
+}
+
+.input-area {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+}
+
+.input-area button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.input-area button:hover {
+    background-color: #0056b3;
+}
+
+.chat-title {
+    margin-bottom: 20px;
+    color: #333;
+} 

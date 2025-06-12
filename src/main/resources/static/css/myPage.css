@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
+    min-height: 100vh;
+    padding: 40px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.top-buttons button {
+    padding: 10px 20px;
+    background-color: #a65bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.top-buttons button:hover {
+    background-color: #8e45db;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #a65bff;
+    object-fit: cover;
+    margin: 0 auto 20px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.menu-buttons button {
+    padding: 14px;
+    border: 2px solid #cfaaff;
+    border-radius: 10px;
+    background-color: #f3e5ff;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #6a2dbf;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.menu-buttons button:hover {
+    background-color: #e2ccff;
+}
+
+.nickname-area {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #6a2dbf;
+    margin: 16px 0 24px;
+}
+
+.logo-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+}
+
+.logo-link img {
+    width: 80px;
+    height: 80px;
+} 

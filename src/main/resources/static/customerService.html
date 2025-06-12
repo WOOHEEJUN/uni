@@ -4,91 +4,13 @@
   <meta charset="UTF-8">
   <title>문의 접수 완료 - Uni messenger</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-    }
-
-    body {
-      background: linear-gradient(to bottom right, #cde6ff, #ffe4ed);
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .bg-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 6rem;
-      font-weight: 700;
-      color: rgba(0, 123, 255, 0.08);
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 0;
-      user-select: none;
-    }
-
-    .card {
-      background: white;
-      padding: 50px 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 420px;
-      position: relative;
-      z-index: 1;
-      margin: 0 auto;
-      top: 50%;
-      transform: translateY(-50%);
-      text-align: center;
-    }
-
-    .emoji {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      color: #a65bff;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1rem;
-      color: #555;
-      line-height: 1.6;
-    }
-
-    .home-link {
-      margin-top: 30px;
-      display: inline-block;
-      font-size: 0.95rem;
-      text-decoration: none;
-      color: #007bff;
-      cursor: pointer;
-    }
-
-    .home-link:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 500px) {
-      .bg-text {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/css/customerService.css">
 </head>
 <body>
 
   <!-- 왼쪽 상단 로고 -->
-  <a id="logoLink" style="position: fixed; top: 20px; left: 20px; z-index: 999; cursor: pointer;">
-    <img src="/img/Uni_logo.png" alt="메인으로" style="width: 80px; height: 80px;">
+  <a id="logoLink" class="logo-link">
+    <img src="/img/Uni_logo.png" alt="메인으로">
   </a>
 
   <div class="bg-text">Uni messenger</div>
@@ -98,47 +20,14 @@
     <h2>문의는 이메일로 부탁드립니다.</h2>
     <p>
       고객님의 문의는 늦어질 수 있습니다.<br>
-      처리는 <b>noreply@github.com</b> 이메일로<br>
+      처리는 <b>8756521@naver.com</b> 이메일로<br>
       안내드릴 예정입니다.<br><br>
       빠른 시일 내에 확인해 주세요!
     </p>
     <a class="home-link" onclick="goHome()">메인으로 돌아가기</a>
   </div>
 
-  <script>
-    function goHome() {
-      const token = localStorage.getItem("token") || localStorage.getItem("accessToken");
-
-      if (!token) {
-        location.href = "noTokenUserIndex.html";
-        return;
-      }
-
-      fetch("/api/user/me", {
-        headers: {
-          "Authorization": "Bearer " + token
-        }
-      })
-      .then(res => {
-        if (!res.ok) throw new Error();
-        return res.json();
-      })
-      .then(user => {
-        if (user.role === "ADMIN") {
-          location.href = "admin.html";
-        } else if (user.status === "APPROVED") {
-          location.href = "userIndex.html";
-        } else {
-          location.href = "noTokenUserIndex.html";
-        }
-      })
-      .catch(() => {
-        location.href = "noTokenUserIndex.html";
-      });
-    }
-
-    document.getElementById("logoLink").addEventListener("click", goHome);
-  </script>
+  <script src="/js/customerService.js"></script>
 
 </body>
 </html>
